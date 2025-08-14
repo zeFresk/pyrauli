@@ -124,6 +124,9 @@ PYBIND11_MODULE(_core, m) {
 		.def("apply_amplitude_damping", &Observable<coeff_t>::apply_amplitude_damping)
 		.def("expectation_value", &Observable<coeff_t>::expectation_value)
 		.def("merge", &Observable<coeff_t>::merge)
+		.def("size", &Observable<coeff_t>::size)
+		.def(py::self == py::self)
+		.def(py::self != py::self)
 		.def("__getitem__", [](const Observable<coeff_t>& obs, size_t i) { return obs[i]; })
 		.def("__len__", &Observable<coeff_t>::size)
 		.def(
