@@ -15,16 +15,16 @@ FetchContent_Declare(
 FetchContent_Declare(
 		propauli
 		GIT_REPOSITORY https://github.com/zefresk/propauli.git
-		GIT_TAG pyrauli
+		GIT_TAG v1.0.1
 )
 
 FetchContent_MakeAvailable(pybind11 propauli)
 
-pybind11_add_module(pyrauli._core src/pyrauli/_core/bindings.cpp)
+pybind11_add_module(_core src/pyrauli/_core/bindings.cpp)
 
-target_link_libraries(pyrauli._core PRIVATE propaulib)
+target_link_libraries(_core PRIVATE propaulib)
 
 install(
-				TARGETS pyrauli._core
+				TARGETS _core
 				LIBRARY DESTINATION pyrauli
 )

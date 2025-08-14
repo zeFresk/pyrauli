@@ -113,6 +113,9 @@ PYBIND11_MODULE(_core, m) {
 		.def(py::init([](const std::vector<PauliTerm<coeff_t>>& paulis) {
 			return Observable<coeff_t>(paulis.begin(), paulis.end());
 		}))
+		.def(py::init([](const std::vector<std::string>& paulis) {
+			return Observable<coeff_t>(paulis.begin(), paulis.end());
+		}))
 		.def("apply_pauli", &Observable<coeff_t>::apply_pauli)
 		.def("apply_clifford", &Observable<coeff_t>::apply_clifford)
 		.def("apply_unital_noise", &Observable<coeff_t>::apply_unital_noise)
@@ -165,8 +168,8 @@ PYBIND11_MODULE(_core, m) {
 	py::class_<Circuit<coeff_t>>(m, "Circuit")
 		.def(py::init<unsigned, std::shared_ptr<Truncator<coeff_t>>, const NoiseModel<coeff_t>&,
 			      std::shared_ptr<SchedulingPolicy>, std::shared_ptr<SchedulingPolicy>>(),
-		     py::arg("nb_qubits"), py::arg("truncator"), py::arg("noise_model") = NoiseModel<coeff_t>(),
-		     py::arg("merge_policy"), py::arg("truncate_policy"))
+		     py::arg("nb_qubits"), py::arg("truncator") = std::make_shared<NeverTruncator>(), py::arg("noise_model") = NoiseModel<coeff_t>(),
+		     py::arg("merge_policy") = std::make_shared<AlwaysAfterSplittingPolicy>(), py::arg("truncate_policy") = std::make_shared<AlwaysAfterSplittingPolicy>())
 		.def("nb_qubits", &Circuit<coeff_t>::nb_qubits)
 		// Use lambdas to resolve templated overloads
 		.def(
