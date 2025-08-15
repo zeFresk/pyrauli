@@ -21,6 +21,11 @@ from ._core import (
     AlwaysBeforeSplittingPolicy,
     AlwaysAfterSplittingPolicy,
     Circuit,
+    OperationType,
+    Timing,
+    SimulationState,
+    CompressionResult,
+    LambdaPolicy,
 )
 
 __all__ = [
@@ -45,6 +50,11 @@ __all__ = [
     "AlwaysBeforeSplittingPolicy",
     "AlwaysAfterSplittingPolicy",
     "Circuit",
+    "OperationType",
+    "Timing",
+    "SimulationState",
+    "CompressionResult",
+    "LambdaPolicy",
 ]
 
 # Conditionally import Qiskit-related functionality

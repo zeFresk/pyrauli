@@ -33,6 +33,19 @@ using LambdaPredicate_t = std::function<bool(PauliTerm<coeff_t> const&)>;
 using LambdaTruncator = PredicateTruncator<LambdaPredicate_t>;
 using LambdaTruncatorPtr = std::shared_ptr<LambdaTruncator>;
 
+struct LambdaPolicy : public SchedulingPolicy {
+    public:
+	using predicate_t = std::function<bool(SimulationState const&, OperationType, Timing)>;
+	LambdaPolicy(predicate_t const& pred) : predicate{ pred } {}
+	~LambdaPolicy() override {}
+	bool should_apply(SimulationState const& state, OperationType op_type, Timing timing) override {
+		return predicate(state, op_type, timing);
+	}
+
+    private:
+	predicate_t predicate;
+};
+
 PYBIND11_MODULE(_core, m) {
 	m.doc() = "Core C++ functionality for pyrauli, wrapped with pybind11";
 
@@ -161,10 +174,38 @@ PYBIND11_MODULE(_core, m) {
 	py::class_<NeverTruncator, Truncator<coeff_t>, NeverTruncatorPtr>(m, "NeverTruncator").def(py::init<>());
 	py::class_<LambdaTruncator, Truncator<coeff_t>, LambdaTruncatorPtr>(m, "LambdaTruncator")
 		.def(py::init<LambdaPredicate_t>());
-	py::class_<RuntimeMultiTruncators<coeff_t>, Truncator<coeff_t>, std::shared_ptr<RuntimeMultiTruncators<coeff_t>>>(
-		m, "MultiTruncator")
+	py::class_<RuntimeMultiTruncators<coeff_t>, Truncator<coeff_t>,
+		   std::shared_ptr<RuntimeMultiTruncators<coeff_t>>>(m, "MultiTruncator")
 		.def(py::init<const std::vector<TruncatorPtr>&>());
 
+	py::enum_<OperationType>(m, "OperationType")
+		.value("BasicGate", OperationType::BasicGate)
+		.value("SplittingGate", OperationType::SplittingGate)
+		.value("Merge", OperationType::Merge)
+		.value("Truncate", OperationType::Truncate);
+
+	py::enum_<Timing>(m, "Timing").value("Before", Timing::Before).value("After", Timing::After);
+
+	py::class_<CompressionResult>(m, "CompressionResult")
+		.def_readonly("nb_terms_before", &CompressionResult::nb_terms_before)
+		.def_readonly("nb_terms_merged", &CompressionResult::nb_terms_merged)
+		.def("nb_terms_after", &CompressionResult::nb_terms_after)
+		.def("__repr__", [](const CompressionResult& cr) {
+			return "<CompressionResult: " + std::to_string(cr.nb_terms_before) + " -> " +
+			       std::to_string(cr.nb_terms_after()) + ">";
+		});
+
+	py::class_<SimulationState>(m, "SimulationState")
+		.def_property_readonly("nb_gates_applied", &SimulationState::get_nb_gates_applied)
+		.def_property_readonly("nb_splitting_gates_applied", &SimulationState::get_nb_splitting_gates_applied)
+		.def_property_readonly("nb_splitting_gates_left", &SimulationState::get_nb_splitting_gates_left)
+		// Add the history getters
+		.def_property_readonly("terms_history", &SimulationState::get_terms_history)
+		.def_property_readonly("merge_history", &SimulationState::get_merge_history)
+		.def_property_readonly("truncate_history", &SimulationState::get_truncate_history)
+		.def("__repr__", [](const SimulationState& s) {
+			return "<SimulationState: " + std::to_string(s.get_nb_gates_applied()) + " gates applied>";
+		});
 	// Scheduling Policies (using shared_ptr holder for polymorphism)
 	py::class_<SchedulingPolicy, SchedulingPolicyPtr>(m, "SchedulingPolicy");
 	py::class_<NeverPolicy, SchedulingPolicy, NeverPolicyPtr>(m, "NeverPolicy").def(py::init<>());
@@ -173,6 +214,8 @@ PYBIND11_MODULE(_core, m) {
 		.def(py::init<>());
 	py::class_<AlwaysAfterSplittingPolicy, SchedulingPolicy, AlwaysAfterPolicyPtr>(m, "AlwaysAfterSplittingPolicy")
 		.def(py::init<>());
+	py::class_<LambdaPolicy, SchedulingPolicy, std::shared_ptr<LambdaPolicy>>(m, "LambdaPolicy")
+		.def(py::init<LambdaPolicy::predicate_t>());
 
 	// Circuit class
 	py::class_<Circuit<coeff_t>>(m, "Circuit")

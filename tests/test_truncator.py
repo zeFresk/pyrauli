@@ -141,3 +141,32 @@ def test_circuit_set_truncator():
     
     # Assert that truncation has occurred
     assert len(obs_out_with_trunc) < 16
+
+def test_multi_truncator_in_circuit():
+    """Tests that a combined truncator works correctly within a Circuit."""
+    # Create individual truncators
+    weight_trunc = WeightTruncator(3) # Keep only weight 1 and 2 terms
+    coeff_trunc = CoefficientTruncator(0.2) # Keep only terms with |coeff| >= 0.2
+
+    # Combine them
+    combined_truncator = MultiTruncator([weight_trunc, coeff_trunc])
+    
+    qc = Circuit(
+        nb_qubits=5,
+        truncator=combined_truncator,
+        truncate_policy=AlwaysAfterSplittingPolicy()
+    )
+
+    # This circuit creates a mix of terms with different weights and coefficients
+    for i in range(4):
+        qc.add_operation("H", qubit=i)
+        qc.add_operation("Rz", qubit=i, param=0.4) # Angle chosen to produce varied coeffs
+
+    obs_in = Observable("IIZII")
+    obs_out = qc.run(obs_in)
+
+    # Verify that all remaining terms satisfy BOTH conditions
+    assert len(list(obs_out)) > 0 # Ensure we didn't truncate everything
+    for term in obs_out:
+        assert term.pauli_weight() < 3
+        assert abs(term.coefficient) >= 0.2
