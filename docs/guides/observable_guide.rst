@@ -1,3 +1,4 @@
+
 .. _observable_guide:
 
 Guide: Using the Observable Primitive
@@ -20,21 +21,12 @@ You can manually evolve an observable through a circuit by applying gates in
 reverse order. Let's evolve a ``Z`` observable on a two-qubit system through a
 Bell state preparation circuit.
 
-.. code-block:: python
+.. literalinclude:: ../../tests/snippets/test_observable_evolution.py
+   :language: python
+   :start-after: # [observable_manual_evolution]
+   :end-before: # [observable_manual_evolution]
 
-   from pyrauli import Observable, CliffordGate
-
-   # Start with a Z observable on the first of two qubits
-   obs = Observable("ZI")
-   print(f"Initial observable: {obs}")
-
-   # Evolve the observable backward through a CNOT gate
-   obs.apply_cx(0, 1)
-   print(f"After CX(0,1):      {obs}")
-
-   # Evolve backward through an H gate on qubit 0
-   obs.apply_clifford(CliffordGate.H, 0)
-   print(f"After H(0):         {obs}")
+The final observable is ``XX``. Its expectation value on the initial :math:`|00\rangle` state is 0.
 
 Splitting, Merging, and Truncating
 ----------------------------------
@@ -42,7 +34,7 @@ Splitting, Merging, and Truncating
 When working directly with an observable, you are responsible for managing its
 complexity.
 
-.. literalinclude:: ../../pyrauli/tests/test_observable.py
+.. literalinclude:: ../../tests/test_observable.py
    :language: python
    :start-after: def test_truncate():
    :end-before: assert obs.size() == 1
