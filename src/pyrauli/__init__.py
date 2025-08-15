@@ -63,8 +63,20 @@ try:
     from .backend import PBackend
     from . import converters
     from .converters import from_qiskit
+    from . import estimator
+    from .estimator import PyrauliEstimator
 
     __all__.extend(["backend", "PBackend", "converters", "from_qiskit"])
 except ImportError:
     # This will fail if qiskit is not installed, which is expected.
     pass
+
+from . import backend
+from .backend import PBackend
+from . import converters
+from .converters import from_qiskit
+from . import estimator
+from .estimator import PyrauliEstimator
+
+__all__.extend(["backend", "PBackend", "converters", "from_qiskit"])
+

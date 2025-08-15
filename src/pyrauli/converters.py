@@ -4,20 +4,21 @@ from qiskit.quantum_info import SparsePauliOp
 import pyrauli
 
 
-def from_qiskit(qiskit_obj: type[QuantumCircuit | SparsePauliOp]):
+def from_qiskit(qiskit_obj: type[QuantumCircuit | SparsePauliOp], noise_model : pyrauli.NoiseModel = None):
     if isinstance(qiskit_obj, QuantumCircuit):
-        return from_qiskit_qc(qiskit_obj)
+        return from_qiskit_qc(qiskit_obj, noise_model=noise_model)
     elif isinstance(qiskit_obj, SparsePauliOp):
         return from_qiskit_obs(qiskit_obj)
     else:
         raise ValueError(f"Can't convert object of type {type(qiskit_obj)} to pyrauli object.")
 
-def from_qiskit_qc(qiskit_circuit: QuantumCircuit) -> pyrauli.Circuit:
+def from_qiskit_qc(qiskit_circuit: QuantumCircuit, noise_model: pyrauli.NoiseModel = None) -> pyrauli.Circuit:
     """
     Translates a Qiskit QuantumCircuit into a pyrauli.Circuit.
     """
     num_qubits = qiskit_circuit.num_qubits
-    pyrauli_circuit = pyrauli.Circuit(num_qubits)
+    nm = noise_model if noise_model is not None else pyrauli.NoiseModel()
+    pyrauli_circuit = pyrauli.Circuit(num_qubits, noise_model=nm)
 
     for instruction in qiskit_circuit.data:
         op_name = instruction.operation.name.lower()
