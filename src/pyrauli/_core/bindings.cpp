@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
+#include <pybind11/functional.h>
 
 #include <sstream>
 #include <memory>
@@ -27,6 +28,10 @@ using NeverTruncatorPtr = std::shared_ptr<NeverTruncator>;
 using NeverPolicyPtr = std::shared_ptr<NeverPolicy>;
 using AlwaysBeforePolicyPtr = std::shared_ptr<AlwaysBeforeSplittingPolicy>;
 using AlwaysAfterPolicyPtr = std::shared_ptr<AlwaysAfterSplittingPolicy>;
+
+using LambdaPredicate_t = std::function<bool(PauliTerm<coeff_t> const&)>;
+using LambdaTruncator = PredicateTruncator<LambdaPredicate_t>;
+using LambdaTruncatorPtr = std::shared_ptr<LambdaTruncator>;
 
 PYBIND11_MODULE(_core, m) {
 	m.doc() = "Core C++ functionality for pyrauli, wrapped with pybind11";
@@ -121,7 +126,7 @@ PYBIND11_MODULE(_core, m) {
 		.def("expectation_value", &Observable<coeff_t>::expectation_value)
 		.def("merge", &Observable<coeff_t>::merge)
 		.def("size", &Observable<coeff_t>::size)
-		.def("truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { obs.truncate(*ptr); })
+		.def("truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { return obs.truncate(*ptr); })
 		.def(py::self == py::self)
 		.def(py::self != py::self)
 		.def("__getitem__", [](const Observable<coeff_t>& obs, size_t i) { return obs[i]; })
@@ -154,6 +159,11 @@ PYBIND11_MODULE(_core, m) {
 	py::class_<WeightTruncator, Truncator<coeff_t>, WeightTruncatorPtr>(m, "WeightTruncator")
 		.def(py::init<size_t>());
 	py::class_<NeverTruncator, Truncator<coeff_t>, NeverTruncatorPtr>(m, "NeverTruncator").def(py::init<>());
+	py::class_<LambdaTruncator, Truncator<coeff_t>, LambdaTruncatorPtr>(m, "LambdaTruncator")
+		.def(py::init<LambdaPredicate_t>());
+	py::class_<RuntimeMultiTruncators<coeff_t>, Truncator<coeff_t>, std::shared_ptr<RuntimeMultiTruncators<coeff_t>>>(
+		m, "MultiTruncator")
+		.def(py::init<const std::vector<TruncatorPtr>&>());
 
 	// Scheduling Policies (using shared_ptr holder for polymorphism)
 	py::class_<SchedulingPolicy, SchedulingPolicyPtr>(m, "SchedulingPolicy");
