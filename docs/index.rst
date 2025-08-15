@@ -3,15 +3,29 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Pyrauli documentation
-=====================
+Welcome to pyrauli's documentation!
+===================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+**pyrauli** is a high-performance Python package for quantum circuit simulation,
+powered by the C++ `propauli` library.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: User Guides
 
+   guides/observable_guide
+   guides/circuit_guide
+   guides/qiskit_integration_guide
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+
+   api
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
