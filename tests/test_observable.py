@@ -6,7 +6,6 @@ from pyrauli import (
     CliffordGate,
     CoefficientTruncator,
     UnitalNoise,
-    from_qiskit,
 )
 from math import pi
 
@@ -127,6 +126,7 @@ def test_len():
 
 # --- Optional Qiskit Integration Tests ---
 qiskit = pytest.importorskip("qiskit", reason="Qiskit extra not installed")
+from pyrauli import from_qiskit
 from qiskit.quantum_info import SparsePauliOp
 
 
