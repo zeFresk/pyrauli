@@ -93,10 +93,12 @@ def test_merge():
 
 
 def test_truncate():
+    # [test_truncate]
     obs = Observable([PauliTerm("II", 0.999), PauliTerm("ZZ", 0.001)])
     truncator = CoefficientTruncator(0.01)
     obs.truncate(truncator)
     assert obs.size() == 1
+    # [test_truncate]
     assert obs[0] == PauliTerm("II", 0.999)
 
 
