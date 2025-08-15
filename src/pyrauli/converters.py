@@ -1,10 +1,23 @@
+"""
+Conversion utilities between Qiskit and pyrauli objects.
+"""
+
 import logging
 from qiskit.circuit import QuantumCircuit
 from qiskit.quantum_info import SparsePauliOp
 import pyrauli
 
+def from_qiskit(qiskit_obj, noise_model: pyrauli.NoiseModel = None):
+    """
+    Converts a Qiskit object to its pyrauli equivalent.
 
-def from_qiskit(qiskit_obj: type[QuantumCircuit | SparsePauliOp], noise_model : pyrauli.NoiseModel = None):
+    Args:
+        qiskit_obj: The Qiskit object to convert (QuantumCircuit or SparsePauliOp).
+        noise_model: A pyrauli NoiseModel to apply to the circuit.
+
+    Returns:
+        The equivalent pyrauli object.
+    """
     if isinstance(qiskit_obj, QuantumCircuit):
         return from_qiskit_qc(qiskit_obj, noise_model=noise_model)
     elif isinstance(qiskit_obj, SparsePauliOp):
@@ -22,7 +35,6 @@ def from_qiskit_qc(qiskit_circuit: QuantumCircuit, noise_model: pyrauli.NoiseMod
 
     for instruction in qiskit_circuit.data:
         op_name = instruction.operation.name.lower()
-
         qubits = [qiskit_circuit.find_bit(q).index for q in instruction.qubits]
 
         if op_name == "h":
@@ -39,17 +51,14 @@ def from_qiskit_qc(qiskit_circuit: QuantumCircuit, noise_model: pyrauli.NoiseMod
 
     return pyrauli_circuit
 
-
-def from_qiskit_obs(qiskit_obs: SparsePauliOp):
+def from_qiskit_obs(qiskit_obs: SparsePauliOp) -> pyrauli.Observable:
     """
-    Translates a Qiskit observable to pyrauli observable
+    Translates a Qiskit SparsePauliOp to a pyrauli.Observable.
     """
     pts = []
     for pauli_string, coeff in zip(qiskit_obs.paulis, qiskit_obs.coeffs):
         if coeff.imag != 0.:
-            logging.warning("pyrauli observables doesn't support complex coefficient values for observables.")
+            logging.warning("pyrauli observables don't support complex coefficients.")
         pt = pyrauli.PauliTerm(pauli_string.to_label(), float(coeff.real))
-        pts += [pt]
-    pyrauli_obs = pyrauli.Observable(pts)
-    print(pyrauli_obs)
-    return pyrauli_obs
+        pts.append(pt)
+    return pyrauli.Observable(pts)
