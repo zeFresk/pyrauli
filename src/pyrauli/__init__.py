@@ -1,82 +1,36 @@
-# src/pyrauli/__init__.py
+"""
+pyrauli: A Python Wrapper for ProPauli
+
+This package provides a high-performance Python interface for quantum circuit
+simulation, powered by the C++ `propauli` library.
+"""
+
 from ._core import (
-    PauliEnum,
-    PauliGate,
-    CliffordGate,
-    UnitalNoise,
-    QGate,
-    Pauli,
-    PauliTerm,
-    Observable,
-    Noise,
-    NoiseModel,
-    Truncator,
-    CoefficientTruncator,
-    WeightTruncator,
-    NeverTruncator,
-    LambdaTruncator,
-    MultiTruncator,
-    SchedulingPolicy,
-    NeverPolicy,
-    AlwaysBeforeSplittingPolicy,
-    AlwaysAfterSplittingPolicy,
-    Circuit,
-    OperationType,
-    Timing,
-    SimulationState,
-    CompressionResult,
-    LambdaPolicy,
+    PauliEnum, PauliGate, CliffordGate, UnitalNoise, QGate, Pauli, PauliTerm,
+    Observable, Noise, NoiseModel, Truncator, CoefficientTruncator,
+    WeightTruncator, NeverTruncator, LambdaTruncator, MultiTruncator,
+    SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
+    AlwaysAfterSplittingPolicy, Circuit, OperationType, Timing,
+    SimulationState, CompressionResult, LambdaPolicy,
 )
 
 __all__ = [
-    "PauliEnum",
-    "PauliGate",
-    "CliffordGate",
-    "UnitalNoise",
-    "QGate",
-    "Pauli",
-    "PauliTerm",
-    "Observable",
-    "Noise",
-    "NoiseModel",
-    "Truncator",
-    "CoefficientTruncator",
-    "WeightTruncator",
-    "NeverTruncator",
-    "LambdaTruncator",
-    "MultiTruncator",
-    "SchedulingPolicy",
-    "NeverPolicy",
-    "AlwaysBeforeSplittingPolicy",
-    "AlwaysAfterSplittingPolicy",
-    "Circuit",
-    "OperationType",
-    "Timing",
-    "SimulationState",
-    "CompressionResult",
+    "PauliEnum", "PauliGate", "CliffordGate", "UnitalNoise", "QGate", "Pauli",
+    "PauliTerm", "Observable", "Noise", "NoiseModel", "Truncator",
+    "CoefficientTruncator", "WeightTruncator", "NeverTruncator",
+    "LambdaTruncator", "MultiTruncator", "SchedulingPolicy", "NeverPolicy",
+    "AlwaysBeforeSplittingPolicy", "AlwaysAfterSplittingPolicy", "Circuit",
+    "OperationType", "Timing", "SimulationState", "CompressionResult",
     "LambdaPolicy",
 ]
 
 # Conditionally import Qiskit-related functionality
 try:
-    from . import backend
     from .backend import PBackend
-    from . import converters
     from .converters import from_qiskit
-    from . import estimator
     from .estimator import PyrauliEstimator
 
-    __all__.extend(["backend", "PBackend", "converters", "from_qiskit"])
+    __all__.extend(["PBackend", "from_qiskit", "PyrauliEstimator"])
 except ImportError:
     # This will fail if qiskit is not installed, which is expected.
     pass
-
-from . import backend
-from .backend import PBackend
-from . import converters
-from .converters import from_qiskit
-from . import estimator
-from .estimator import PyrauliEstimator
-
-__all__.extend(["backend", "PBackend", "converters", "from_qiskit"])
-
