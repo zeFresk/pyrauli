@@ -36,19 +36,16 @@ PYBIND11_MODULE(_core, m) {
 		.value("I", Pauli_enum::I)
 		.value("X", Pauli_enum::X)
 		.value("Y", Pauli_enum::Y)
-		.value("Z", Pauli_enum::Z)
-		.export_values();
-	py::enum_<Pauli_gates>(m, "PauliGates")
+		.value("Z", Pauli_enum::Z);
+	py::enum_<Pauli_gates>(m, "PauliGate")
 		.value("I", Pauli_gates::I)
 		.value("X", Pauli_gates::X)
 		.value("Y", Pauli_gates::Y)
-		.value("Z", Pauli_gates::Z)
-		.export_values();
-	py::enum_<Clifford_Gates_1Q>(m, "CliffordGates1Q").value("H", Clifford_Gates_1Q::H).export_values();
+		.value("Z", Pauli_gates::Z);
+	py::enum_<Clifford_Gates_1Q>(m, "CliffordGate").value("H", Clifford_Gates_1Q::H);
 	py::enum_<UnitalNoise>(m, "UnitalNoise")
 		.value("Depolarizing", UnitalNoise::Depolarizing)
-		.value("Dephasing", UnitalNoise::Dephasing)
-		.export_values();
+		.value("Dephasing", UnitalNoise::Dephasing);
 	py::enum_<QGate>(m, "QGate")
 		.value("I", QGate::I)
 		.value("X", QGate::X)
@@ -59,8 +56,7 @@ PYBIND11_MODULE(_core, m) {
 		.value("Cx", QGate::Cx)
 		.value("AmplitudeDamping", QGate::AmplitudeDamping)
 		.value("Depolarizing", QGate::Depolarizing)
-		.value("Dephasing", QGate::Dephasing)
-		.export_values();
+		.value("Dephasing", QGate::Dephasing);
 
 	// Pauli class
 	py::class_<Pauli>(m, "Pauli")
@@ -171,8 +167,10 @@ PYBIND11_MODULE(_core, m) {
 	py::class_<Circuit<coeff_t>>(m, "Circuit")
 		.def(py::init<unsigned, std::shared_ptr<Truncator<coeff_t>>, const NoiseModel<coeff_t>&,
 			      std::shared_ptr<SchedulingPolicy>, std::shared_ptr<SchedulingPolicy>>(),
-		     py::arg("nb_qubits"), py::arg("truncator") = std::make_shared<NeverTruncator>(), py::arg("noise_model") = NoiseModel<coeff_t>(),
-		     py::arg("merge_policy") = std::make_shared<AlwaysAfterSplittingPolicy>(), py::arg("truncate_policy") = std::make_shared<AlwaysAfterSplittingPolicy>())
+		     py::arg("nb_qubits"), py::arg("truncator") = std::make_shared<NeverTruncator>(),
+		     py::arg("noise_model") = NoiseModel<coeff_t>(),
+		     py::arg("merge_policy") = std::make_shared<AlwaysAfterSplittingPolicy>(),
+		     py::arg("truncate_policy") = std::make_shared<AlwaysAfterSplittingPolicy>())
 		.def("nb_qubits", &Circuit<coeff_t>::nb_qubits)
 		// Use lambdas to resolve templated overloads
 		.def(

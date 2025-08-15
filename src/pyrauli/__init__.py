@@ -1,18 +1,46 @@
 # src/pyrauli/__init__.py
 from ._core import (
- #   PauliEnum, PauliGates, CliffordGates1Q, UnitalNoise, QGate,
-    Pauli, PauliTerm, Observable, Noise, NoiseModel, Truncator,
-    CoefficientTruncator, WeightTruncator, NeverTruncator,
-    SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
-    AlwaysAfterSplittingPolicy, Circuit,
+    PauliEnum,
+    PauliGate,
+    CliffordGate,
+    UnitalNoise,
+    QGate,
+    Pauli,
+    PauliTerm,
+    Observable,
+    Noise,
+    NoiseModel,
+    Truncator,
+    CoefficientTruncator,
+    WeightTruncator,
+    NeverTruncator,
+    SchedulingPolicy,
+    NeverPolicy,
+    AlwaysBeforeSplittingPolicy,
+    AlwaysAfterSplittingPolicy,
+    Circuit,
 )
 
 __all__ = [
- #    "PauliEnum", "PauliGates", "CliffordGates1Q", "UnitalNoise", "QGate",
-    "Pauli", "PauliTerm", "Observable", "Noise", "NoiseModel", "Truncator",
-    "CoefficientTruncator", "WeightTruncator", "NeverTruncator",
-    "SchedulingPolicy", "NeverPolicy", "AlwaysBeforeSplittingPolicy",
-    "AlwaysAfterSplittingPolicy", "Circuit",
+    "PauliEnum",
+    "PauliGate",
+    "CliffordGate",
+    "UnitalNoise",
+    "QGate",
+    "Pauli",
+    "PauliTerm",
+    "Observable",
+    "Noise",
+    "NoiseModel",
+    "Truncator",
+    "CoefficientTruncator",
+    "WeightTruncator",
+    "NeverTruncator",
+    "SchedulingPolicy",
+    "NeverPolicy",
+    "AlwaysBeforeSplittingPolicy",
+    "AlwaysAfterSplittingPolicy",
+    "Circuit",
 ]
 
 # Conditionally import Qiskit-related functionality
@@ -21,6 +49,7 @@ try:
     from .backend import PBackend
     from . import converters
     from .converters import from_qiskit
+
     __all__.extend(["backend", "PBackend", "converters", "from_qiskit"])
 except ImportError:
     # This will fail if qiskit is not installed, which is expected.
