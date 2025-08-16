@@ -1,4 +1,3 @@
-Of course. Here is the complete, final `pyrauli` repository, created using `FetchContent` as requested and incorporating all the features you've asked for. This summary provides all the code and configuration files you need to create the final repository.
 # pyrauli: A Python Wrapper for ProPauli
 
 **pyrauli** is a high-performance Python package for quantum circuit simulation, powered by the C++ `propauli` library. It uses Pauli back-propagation to efficiently calculate the expectation values of observables.
