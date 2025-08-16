@@ -21,6 +21,8 @@ You can install `pyrauli` directly from PyPI (once published) or from the source
 pip install pyrauli
 ```
 
+NOTE: Python >= 3.9 required.
+
 **Installation with Qiskit Support:**
 
 ```bash
