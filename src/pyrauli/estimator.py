@@ -17,7 +17,7 @@ from qiskit.primitives.primitive_job import PrimitiveJob
 from qiskit.primitives.containers import PubResult, PrimitiveResult, DataBin
 from qiskit.quantum_info import SparsePauliOp
 
-from . import Circuit, Observable, NoiseModel
+from . import Circuit, Observable, NoiseModel, Truncator, NeverTruncator, SchedulingPolicy, AlwaysAfterSplittingPolicy
 from .converters import from_qiskit
 
 class PyrauliEstimator(BaseEstimatorV2):
@@ -43,16 +43,23 @@ class PyrauliEstimator(BaseEstimatorV2):
         result = job.result()
         print(result[0].data.evs[0])
     """
-    def __init__(self, noise_model: NoiseModel = None):
+    def __init__(self, noise_model: NoiseModel = None, truncator: Truncator = NeverTruncator(), merge_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy(), truncate_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy()):
         """
         Initializes the PyrauliEstimator.
 
         Args:
             noise_model: A pyrauli.NoiseModel to apply during simulation.
+            truncator: A pyrauli.Truncator to apply to circuits.
+            merge_policy: A merge pyrauli.SchedulingPolicy to apply to circuits.
+            truncate_policy: A truncate pyrauli.SchedulingPolicy to apply to circuits.
         """
         super().__init__()
         self.name = "PyrauliEstimator"
         self._noise_model = noise_model or NoiseModel()
+        self._truncator = truncator or NeverTruncator()
+        self._merge_policy = merge_policy or AlwaysAfterSplittingPolicy()
+        self._truncate_policy = truncate_policy or AlwaysAfterSplittingPolicy()
+
         self._executor = ThreadPoolExecutor(max_workers=1)
 
 
@@ -63,17 +70,17 @@ class PyrauliEstimator(BaseEstimatorV2):
         Args:
             run_input: A list of pubs, where each pub is a tuple of
                       (circuit, observables, parameter_values).
-            **options: Not used in this implementation.
+            **options: Additional circuit options: "noise_model", "truncator", "truncate_policy", "merge_policy".
 
         Returns:
             A PJob object that represents the asynchronous execution.
         """
         pubs = run_input if isinstance(run_input, list) else [run_input]
-        job = PJob(backend=self, job_id=str(uuid.uuid4()), fn=self._run_job, pubs=pubs)
+        job = PJob(backend=self, job_id=str(uuid.uuid4()), fn=self._run_job, pubs=pubs, **options)
         job.submit()
         return job
 
-    def _run_job(self, job_id: str, pubs: List[Tuple]) -> Result:
+    def _run_job(self, job_id: str, pubs: List[Tuple], **options) -> Result:
         """
         The core simulation logic that is executed by the PJob.
 
@@ -84,6 +91,11 @@ class PyrauliEstimator(BaseEstimatorV2):
         Returns:
             A Qiskit Result object containing the simulation results.
         """
+        nm = self._noise_model if "noise_model" not in options else options.get("noise_model")
+        trunc = self._truncator if "truncator" not in options else options.get("truncator")
+        trunc_pol = self._truncate_policy if "truncate_policy" not in options else options.get("truncate_policy")
+        merge_pol = self._merge_policy if "merge_policy" not in options else options.get("merge_policy")
+
         results = []
         for pub in pubs:
             circuit, observables, parameter_values = self._unpack_pub(pub)
@@ -93,6 +105,9 @@ class PyrauliEstimator(BaseEstimatorV2):
             
             # Convert to pyrauli objects and simulate
             pyrauli_circuit = from_qiskit(bound_circuit, noise_model=self._noise_model)
+            pyrauli_circuit.set_truncator(trunc)
+            pyrauli_circuit.set_merge_policy(merge_pol)
+            pyrauli_circuit.set_truncate_policy(trunc_pol)
             exp_values = self._simulate_observables(pyrauli_circuit, observables)
             
             # Format the result for this pub
@@ -125,7 +140,7 @@ class PJob(JobV1):
     This class wraps the execution of the simulation in a manner consistent
     with Qiskit's job management system.
     """
-    def __init__(self, backend, job_id, fn, pubs):
+    def __init__(self, backend, job_id, fn, pubs, **options):
         """
         Initializes the PJob.
 
@@ -134,12 +149,14 @@ class PJob(JobV1):
             job_id: The unique ID for this job.
             fn: The function to execute for the job (typically `_run_job`).
             pubs: The list of pubs to be processed by the job.
+            **options: More options to pass to pyrauli.Circuit
         """
         super().__init__(backend, job_id)
         self._fn = fn
         self._pubs = pubs
         self._result = None
         self._status = JobStatus.INITIALIZING
+        self._options = options
 
     def submit(self):
         """
@@ -149,7 +166,7 @@ class PJob(JobV1):
         """
         self._status = JobStatus.RUNNING
         try:
-            self._result = self._fn(self.job_id(), self._pubs)
+            self._result = self._fn(self.job_id(), self._pubs, **self._options)
             self._status = JobStatus.DONE
         except Exception as e:
             self._status = JobStatus.ERROR
