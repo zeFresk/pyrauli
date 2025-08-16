@@ -94,38 +94,6 @@ it as a backend for your Qiskit circuits.</p>
 <h2><cite>from_qiskit</cite>: Converting Qiskit Objects<a class="headerlink" href="#from-qiskit-converting-qiskit-objects" title="Link to this heading"></a></h2>
 <p>The <cite>from_qiskit</cite> function converts Qiskit <cite>QuantumCircuit</cite> and <cite>SparsePauliOp</cite>
 objects to their <cite>pyrauli</cite> equivalents.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Tests the from_qiskit converter by comparing its output to a manually</span>
-<span class="sd">    constructed pyrauli circuit.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 1. Define a simple Qiskit circuit (Bell state)</span>
-    <span class="n">qc_qiskit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">qc_qiskit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_qiskit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="c1"># 2. Manually create the equivalent pyrauli circuit</span>
-    <span class="n">qc_manual</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">qc_manual</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="n">qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">qc_manual</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;CX&quot;</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="c1"># 3. Use the converter to create a pyrauli circuit from the Qiskit one</span>
-    <span class="n">qc_converted</span> <span class="o">=</span> <span class="n">from_qiskit</span><span class="p">(</span><span class="n">qc_qiskit</span><span class="p">)</span>
-
-    <span class="c1"># 4. Define an observable to test against</span>
-    <span class="n">observable</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)</span>
-
-    <span class="c1"># 5. Run the simulation on both pyrauli circuits</span>
-    <span class="n">result_manual</span> <span class="o">=</span> <span class="n">qc_manual</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
-    <span class="n">result_converted</span> <span class="o">=</span> <span class="n">qc_converted</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
-
-    <span class="c1"># 6. Assert that the results are identical</span>
-    <span class="c1"># For a Bell state, the expectation value of ZI is 0.</span>
-    <span class="n">expected_ev</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-    <span class="k">assert</span> <span class="n">result_manual</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">expected_ev</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">result_converted</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">expected_ev</span><span class="p">)</span>
-</pre></div>
-</div>
 </section>
 <section id="pbackend-the-qiskit-compatible-backend">
 <h2><cite>PBackend</cite>: The Qiskit-Compatible Backend<a class="headerlink" href="#pbackend-the-qiskit-compatible-backend" title="Link to this heading"></a></h2>
