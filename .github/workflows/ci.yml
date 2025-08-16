@@ -90,7 +90,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-         coverage run -m pytest 
+         coverage run -m pytest --cov=pyrauli tests/
          coverage xml
 
       - name: Upload coverage to Coveralls
