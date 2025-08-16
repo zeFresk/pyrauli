@@ -19,7 +19,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         python-version: ["3.9", "3.13"]
-        pip_params: ["[test]", "[qiskit, test]"]
+        pip_params: ["[test]", "[qiskit,test]"]
 
     steps:
       - name: Checkout repository
