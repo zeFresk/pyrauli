@@ -1,0 +1,55 @@
+name: Build and test package
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  build_and_test:
+    name: ${{ matrix.os }} / Py${{ matrix.python-version }} / ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.8", "3.11", "3.13"]
+        include:
+          - name: "Standard"
+            pip_install_extras: ""
+          - name: "With Qiskit"
+            pip_install_extras: "[qiskit,test]"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build pytest
+
+      - name: Build package from source
+        run: python -m build
+
+      - name: Install pyrauli and test dependencies
+        run: pip install .${{ matrix.pip_install_extras }}
+
+      - name: Run tests and generate report
+        run: pytest --junitxml=pytest-report-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.name }}.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2        
+        if: always()
+        with:
+          files: pytest-report-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.name }}.xml
