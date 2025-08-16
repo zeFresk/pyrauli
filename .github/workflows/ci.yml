@@ -22,7 +22,7 @@ jobs:
         include:
           - name: "Standard"
             pip_install_extras: ""
-          - name: "With Qiskit"
+          - name: "Qiskit"
             pip_install_extras: "[qiskit,test]"
 
     steps:
