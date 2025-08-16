@@ -18,6 +18,8 @@ from qiskit.circuit import QuantumCircuit, Parameter
 # Import the pyrauli components needed for the test
 from pyrauli import from_qiskit
 
+def p1_to_ev(p1):
+        return 1.0 - (2.0 * p1)
 
 def test_from_qiskit_bell_state():
     """
