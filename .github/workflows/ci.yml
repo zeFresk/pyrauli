@@ -72,6 +72,34 @@ jobs:
         with:
           files: "artifacts/**/*.xml"
 
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      - name: Install pyrauli and test dependencies
+        run: pip install .[qiskit,test]
+
+      - name: Run tests and generate coverage report
+        run: |
+         coverage run -m pytest 
+         coverage xml
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          format: cobertura
+          file: coverage.xml
+
   benchmark:
     name: Run Pytest benchmarks
     runs-on: ubuntu-latest
