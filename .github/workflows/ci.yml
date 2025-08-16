@@ -12,18 +12,14 @@ permissions:
 
 jobs:
   build_and_test:
-    name: ${{ matrix.os }} / Py${{ matrix.python-version }} / ${{ matrix.name }}
+    name: ${{ matrix.os }} / Py${{ matrix.python-version }} / ${{ matrix.pip_params }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ["3.9", "3.11", "3.13"]
-        include:
-          - name: "Standard"
-            pip_install_extras: ""
-          - name: "Qiskit"
-            pip_install_extras: "[qiskit,test]"
+        python-version: ["3.9", "3.13"]
+        pip_params: ["[test]", "[qiskit, test]"]
 
     steps:
       - name: Checkout repository
@@ -43,7 +39,7 @@ jobs:
         run: python -m build
 
       - name: Install pyrauli and test dependencies
-        run: pip install .${{ matrix.pip_install_extras }}
+        run: pip install .${{ matrix.pip_params }}
 
       - name: Run tests and generate report
         run: pytest --junitxml pytest.xml
@@ -52,7 +48,7 @@ jobs:
         if: (!cancelled())
         uses: actions/upload-artifact@v4
         with:
-          name: Test Results for ${{matrix.os}} - Python ${{ matrix.python-version }} (${{matrix.name}})
+          name: Test Results for ${{matrix.os}} - Python ${{ matrix.python-version }} ${{ matrix.pip_params }}
           path: pytest.xml
 
   publish-test-results:
