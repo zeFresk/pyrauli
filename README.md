@@ -1,5 +1,10 @@
 # pyrauli: A Python Wrapper for ProPauli
 
+[![Build and test package](https://github.com/zeFresk/pyrauli/actions/workflows/ci.yml/badge.svg)](https://github.com/zeFresk/pyrauli/actions/workflows/ci.yml)
+[![Documentation](https://img.shields.io/badge/Documentation-View-blue)](https://zefresk.github.io/pyrauli/)
+[![Coverage Status](https://coveralls.io/repos/github/zeFresk/pyrauli/badge.svg?branch=coverage)](https://coveralls.io/github/zeFresk/pyrauli?branch=coverage)
+[![Latest benchmarks](https://img.shields.io/badge/Benchmarks-View-blue)](https://zefresk.github.io/pyrauli/dev/bench)
+
 **pyrauli** is a high-performance Python package for quantum circuit simulation, powered by the C++ `propauli` library. It uses Pauli back-propagation to efficiently calculate the expectation values of observables.
 
 This package provides a clean Pythonic interface to the core C++ engine and includes an optional, fully-featured backend for **Qiskit**, allowing it to be used as a simulator within the Qiskit ecosystem.
