@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide: Building Quantum Circuits &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Guide: Qiskit Integration" href="qiskit_integration_guide.html" />
+    <link rel="prev" title="Guide: Using the Observable Primitive" href="observable_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="observable_guide.html">Guide: Using the Observable Primitive</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide: Building Quantum Circuits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-circuit-construction">Basic Circuit Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managing-complexity-with-truncators">Managing Complexity with Truncators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-truncators-with-lambdatruncator">Custom Truncators with <cite>LambdaTruncator</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controlling-optimization-with-scheduling-policies">Controlling Optimization with Scheduling Policies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_integration_guide.html">Guide: Qiskit Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide: Building Quantum Circuits</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/circuit_guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-building-quantum-circuits">
+<span id="circuit-guide"></span><h1>Guide: Building Quantum Circuits<a class="headerlink" href="#guide-building-quantum-circuits" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Circuit</span></code> class is the primary high-level interface for constructing
+and simulating quantum circuits.</p>
+<section id="basic-circuit-construction">
+<h2>Basic Circuit Construction<a class="headerlink" href="#basic-circuit-construction" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Create a 2-qubit circuit</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Add gates</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;CX&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Define an observable and run the circuit</span>
+    <span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)</span>
+    <span class="n">final_observable</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expectation value of ZI: </span><span class="si">{</span><span class="n">final_observable</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="managing-complexity-with-truncators">
+<h2>Managing Complexity with Truncators<a class="headerlink" href="#managing-complexity-with-truncators" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> provides built-in truncators to manage simulation complexity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that terms with small coefficients are removed.&quot;&quot;&quot;</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">([</span><span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">),</span> <span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)])</span>
+    <span class="n">truncator</span> <span class="o">=</span> <span class="n">CoefficientTruncator</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    
+    <span class="n">removed_count</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">truncator</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">removed_count</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-truncators-with-lambdatruncator">
+<h2>Custom Truncators with <cite>LambdaTruncator</cite><a class="headerlink" href="#custom-truncators-with-lambdatruncator" title="Link to this heading"></a></h2>
+<p>You can define custom truncation logic using <cite>LambdaTruncator</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests truncation based on a custom Python function.&quot;&quot;&quot;</span>
+    <span class="c1"># This predicate removes any term containing a &#39;Y&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_if_has_y</span><span class="p">(</span><span class="n">pauli_term</span><span class="p">:</span> <span class="n">PauliTerm</span><span class="p">):</span>
+        <span class="c1"># not optimized!</span>
+        <span class="k">return</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">pauli_term</span><span class="p">)</span>
+
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">([</span><span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;IXI&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;IZY&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+    <span class="n">truncator</span> <span class="o">=</span> <span class="n">LambdaTruncator</span><span class="p">(</span><span class="n">remove_if_has_y</span><span class="p">)</span>
+    
+    <span class="n">removed_count</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">truncator</span><span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">removed_count</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="controlling-optimization-with-scheduling-policies">
+<h2>Controlling Optimization with Scheduling Policies<a class="headerlink" href="#controlling-optimization-with-scheduling-policies" title="Link to this heading"></a></h2>
+<p>Scheduling Policies give you fine-grained control over <em>when</em> optimizations
+are applied.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tests a custom scheduling policy defined in Python.</span>
+<span class="sd">    </span>
+<span class="sd">    The policy will be to only merge terms *after* the 2nd splitting gate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># 1. Define the custom policy as a Python function</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">merge_after_second_split</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">SimulationState</span><span class="p">,</span> <span class="n">op_type</span><span class="p">:</span> <span class="n">OperationType</span><span class="p">,</span> <span class="n">timing</span><span class="p">:</span> <span class="n">Timing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This policy returns True only for a Merge event after 2 splitting gates have been applied.&quot;&quot;&quot;</span>
+        
+        <span class="c1"># We only care about the &#39;After&#39; timing for merges</span>
+        <span class="k">if</span> <span class="n">timing</span> <span class="o">!=</span> <span class="n">Timing</span><span class="o">.</span><span class="n">After</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+            
+        <span class="c1"># We only care about SplittingGate operations</span>
+        <span class="k">if</span> <span class="n">op_type</span> <span class="o">!=</span> <span class="n">OperationType</span><span class="o">.</span><span class="n">SplittingGate</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+            
+        <span class="c1"># The core logic: check the number of splitting gates already applied.</span>
+        <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">nb_splitting_gates_applied</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+            
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># 2. Create the LambdaPolicy from the Python function</span>
+    <span class="n">custom_merge_policy</span> <span class="o">=</span> <span class="n">LambdaPolicy</span><span class="p">(</span><span class="n">merge_after_second_split</span><span class="p">)</span>
+
+    <span class="c1"># 3. Create a circuit that uses this policy</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">(</span>
+        <span class="n">nb_qubits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">truncator</span><span class="o">=</span><span class="n">NeverTruncator</span><span class="p">(),</span>
+        <span class="n">merge_policy</span><span class="o">=</span><span class="n">custom_merge_policy</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 4. Build a circuit with two splitting gates (Rz)</span>
+    <span class="c1"># Each Rz gate will double the number of terms in the observable.</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;Rz&quot;</span><span class="p">,</span> <span class="n">qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># 1st splitting gate</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;Rz&quot;</span><span class="p">,</span> <span class="n">qubit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># 2nd splitting gate</span>
+    
+    <span class="c1"># 5. Run the simulation</span>
+    <span class="c1"># The &#39;X&#39; observable will split into 2 terms at the first Rz, and then 4 terms at the second.</span>
+    <span class="c1"># The merge policy should trigger *only* after the second Rz, merging the 4 terms back down.</span>
+    <span class="n">obs_in</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">obs_out</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">obs_in</span><span class="p">)</span>
+
+    <span class="c1"># 6. Assert the outcome</span>
+    <span class="c1"># Without merging, there would be 4 terms.</span>
+    <span class="c1"># Because our policy merges after the second split, the terms should be combined.</span>
+    <span class="c1"># For this specific sequence (Rz(0.5) then Rz(0.5)), the terms merge back to 2.</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="observable_guide.html" class="btn btn-neutral float-left" title="Guide: Using the Observable Primitive" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qiskit_integration_guide.html" class="btn btn-neutral float-right" title="Guide: Qiskit Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

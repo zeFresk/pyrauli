@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide: Using the Observable Primitive &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Guide: Building Quantum Circuits" href="circuit_guide.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide: Using the Observable Primitive</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-heisenberg-picture">The Heisenberg Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-evolution-example">Manual Evolution Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#splitting-merging-and-truncating">Splitting, Merging, and Truncating</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="circuit_guide.html">Guide: Building Quantum Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qiskit_integration_guide.html">Guide: Qiskit Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide: Using the Observable Primitive</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/observable_guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-using-the-observable-primitive">
+<span id="observable-guide"></span><h1>Guide: Using the Observable Primitive<a class="headerlink" href="#guide-using-the-observable-primitive" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Observable</span></code> class is the central data structure in <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>. It represents
+a quantum observable as a linear combination of Pauli strings.</p>
+<section id="the-heisenberg-picture">
+<h2>The Heisenberg Picture<a class="headerlink" href="#the-heisenberg-picture" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> works in the <strong>Heisenberg picture</strong>, where the quantum state is
+considered fixed (as the <span class="math notranslate nohighlight">\(|0\rangle^{\otimes n}\)</span> state) and the operators
+(observables) evolve.</p>
+</section>
+<section id="manual-evolution-example">
+<h2>Manual Evolution Example<a class="headerlink" href="#manual-evolution-example" title="Link to this heading"></a></h2>
+<p>You can manually evolve an observable through a circuit by applying gates in
+reverse order. Let’s evolve a <code class="docutils literal notranslate"><span class="pre">Z</span></code> observable on a two-qubit system through a
+Bell state preparation circuit.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Start with a simple Z observable on the first of two qubits</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initial observable: </span><span class="si">{</span><span class="n">obs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Evolve the observable backward through a CNOT gate</span>
+    <span class="c1"># Note: control and target are for the forward circuit, but applied in reverse</span>
+    <span class="n">obs</span><span class="o">.</span><span class="n">apply_cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After CX(0,1):      </span><span class="si">{</span><span class="n">obs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Evolve backward through an H gate on qubit 0</span>
+    <span class="n">obs</span><span class="o">.</span><span class="n">apply_clifford</span><span class="p">(</span><span class="n">CliffordGate</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After H(0):         </span><span class="si">{</span><span class="n">obs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The final observable is <code class="docutils literal notranslate"><span class="pre">XX</span></code>. Its expectation value on the initial <span class="math notranslate nohighlight">\(|00\rangle\)</span> state is 0.</p>
+</section>
+<section id="splitting-merging-and-truncating">
+<h2>Splitting, Merging, and Truncating<a class="headerlink" href="#splitting-merging-and-truncating" title="Link to this heading"></a></h2>
+<p>When working directly with an observable, you are responsible for managing its
+complexity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># [test_truncate]</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">([</span><span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;II&quot;</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;ZZ&quot;</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)])</span>
+    <span class="n">truncator</span> <span class="o">=</span> <span class="n">CoefficientTruncator</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">obs</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">truncator</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="circuit_guide.html" class="btn btn-neutral float-right" title="Guide: Building Quantum Circuits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
