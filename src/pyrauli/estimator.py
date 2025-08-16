@@ -76,7 +76,7 @@ class PyrauliEstimator(BaseEstimatorV2):
             A PJob object that represents the asynchronous execution.
         """
         pubs = run_input if isinstance(run_input, list) else [run_input]
-        job = PJob(backend=self, job_id=str(uuid.uuid4()), fn=self._run_job, pubs=pubs, **options)
+        job = PJob(backend=self, job_id=str(uuid.uuid4()), fn=self._run_job, pubs=pubs, options=options)
         job.submit()
         return job
 
@@ -95,6 +95,7 @@ class PyrauliEstimator(BaseEstimatorV2):
         trunc = self._truncator if "truncator" not in options else options.get("truncator")
         trunc_pol = self._truncate_policy if "truncate_policy" not in options else options.get("truncate_policy")
         merge_pol = self._merge_policy if "merge_policy" not in options else options.get("merge_policy")
+        print(nm, self._noise_model)
 
         results = []
         for pub in pubs:
@@ -104,7 +105,7 @@ class PyrauliEstimator(BaseEstimatorV2):
             bound_circuit = circuit.assign_parameters(parameter_values) if parameter_values is not None else circuit
             
             # Convert to pyrauli objects and simulate
-            pyrauli_circuit = from_qiskit(bound_circuit, noise_model=self._noise_model)
+            pyrauli_circuit = from_qiskit(bound_circuit, noise_model=nm)
             pyrauli_circuit.set_truncator(trunc)
             pyrauli_circuit.set_merge_policy(merge_pol)
             pyrauli_circuit.set_truncate_policy(trunc_pol)
@@ -166,7 +167,7 @@ class PJob(JobV1):
         """
         self._status = JobStatus.RUNNING
         try:
-            self._result = self._fn(self.job_id(), self._pubs, **self._options)
+            self._result = self._fn(self.job_id(), self._pubs, **self._options.get("options"))
             self._status = JobStatus.DONE
         except Exception as e:
             self._status = JobStatus.ERROR
