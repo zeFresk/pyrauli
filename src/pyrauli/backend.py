@@ -48,18 +48,24 @@ class PBackend(BackendV2):
 
     """
 
-    def __init__(self, num_qubits: int = 128, noise_model: pyrauli.NoiseModel = None, **kwargs):
+    def __init__(self, num_qubits: int = 128, noise_model: pyrauli.NoiseModel = None, truncator: pyrauli.Truncator = pyrauli.NeverTruncator(), merge_policy: pyrauli.SchedulingPolicy = pyrauli.AlwaysAfterSplittingPolicy(), truncate_policy: pyrauli.SchedulingPolicy = pyrauli.AlwaysAfterSplittingPolicy(), **kwargs):
         """
         Initializes the PBackend.
 
         Args:
             num_qubits: The maximum number of qubits the backend supports.
             noise_model: A pyrauli.NoiseModel to apply to circuits run on this backend.
+            truncator: A pyrauli.Truncator to apply to circuits.
+            merge_policy: A merge pyrauli.SchedulingPolicy to apply to circuits.
+            truncate_policy: A truncate pyrauli.SchedulingPolicy to apply to circuits.
             **kwargs: Additional arguments for the parent BackendV2 class.
         """
         super().__init__(name="pyrauli.PBackend", **kwargs)
         self._num_qubits = num_qubits
         self._noise_model = noise_model or pyrauli.NoiseModel()
+        self._truncator = truncator or pyrauli.NeverTruncator()
+        self._merge_policy = merge_policy or pyrauli.AlwaysAfterSplittingPolicy()
+        self._truncate_policy = truncate_policy or pyrauli.AlwaysAfterSplittingPolicy()
         self._target = Target(description="Pyrauli Backend Target", num_qubits=num_qubits)
 
         # Define the basis gates for the target
@@ -95,10 +101,10 @@ class PBackend(BackendV2):
 
         Args:
             run_input: A QuantumCircuit or a list of them to run.
-            **options: Runtime options for the execution.
+            **options: Runtime options for the execution. may include: "noise_model", "truncator", "merge_policy", "truncate_policy"
 
         Returns:
             A JobV1 object that represents the execution.
         """
-        pyest = PyrauliEstimator(noise_model=self._noise_model)
+        pyest = PyrauliEstimator(noise_model=self._noise_model, truncator=self._truncator, merge_policy=self._merge_policy, truncate_policy=self._truncate_policy)
         return pyest.run(run_input, **options)

@@ -92,3 +92,29 @@ def test_qiskit_pbackend_parameterized_zz_real_amp8x8(benchmark):
         job.result()
         
     benchmark(run_job)
+
+def test_qiskit_pbackend_parameterized_zz_real_amp8x8_truncate001_noisy(benchmark):
+    np.random.seed(42)
+    num_qubits_param = 8
+    feature_map = ZZFeatureMap(feature_dimension=num_qubits_param, reps=1)
+    ansatz = RealAmplitudes(num_qubits=8, reps=1)
+    param_qc = feature_map.compose(ansatz)
+    param_obs = SparsePauliOp("Z" * num_qubits_param)
+    param_vals = np.random.rand(param_qc.num_parameters)
+    backend = PBackend(num_qubits=8)
+    pm = generate_preset_pass_manager(backend=backend, optimization_level=0)
+    isa_qc = pm.run(param_qc)
+
+    nm = NoiseModel()
+    for g in [QGate.X, QGate.Y, QGate.Z, QGate.H, QGate.Rz]:
+        nm.add_unital_noise_on_gate(g,UnitalNoise.Depolarizing, 0.01)
+    nm.add_unital_noise_on_gate(QGate.Rz, UnitalNoise.Dephasing, 0.01)
+    nm.add_amplitude_damping_on_gate(QGate.Cx, 0.05)
+    
+    estimator = PyrauliEstimator(truncator=CoefficientTruncator(0.01), noise_model=nm)
+    
+    def run_job():
+        job = estimator.run([(isa_qc, param_obs, param_vals)])
+        job.result()
+        
+    benchmark(run_job)
