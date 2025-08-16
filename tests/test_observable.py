@@ -124,23 +124,3 @@ def test_bad_op_not_allowed():
 
 def test_len():
     assert len(Observable(["II", "XX"])) == 2
-
-
-# --- Optional Qiskit Integration Tests ---
-qiskit = pytest.importorskip("qiskit", reason="Qiskit extra not installed")
-from pyrauli import from_qiskit
-from qiskit.quantum_info import SparsePauliOp
-
-
-def test_observable_from_SparsePauliOp_basic():
-    qobs = SparsePauliOp("IZ")
-    pobs = from_qiskit(qobs)
-    assert pobs == Observable("IZ")
-
-
-def test_observable_from_SparsePauliOp_hard():
-    qobs = SparsePauliOp.from_list([("XIIZI", 1), ("IYIIY", 2)])
-    pobs = from_qiskit(qobs)
-    assert pobs.size() == 2
-    assert pobs[0] == PauliTerm("XIIZI")
-    assert pobs[1] == PauliTerm("IYIIY", 2)

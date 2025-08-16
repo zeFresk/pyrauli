@@ -89,7 +89,7 @@ class PyrauliEstimator(BaseEstimatorV2):
             circuit, observables, parameter_values = self._unpack_pub(pub)
 
             # Bind parameters if they exist
-            bound_circuit = circuit.assign_parameters(parameter_values) if parameter_values else circuit
+            bound_circuit = circuit.assign_parameters(parameter_values) if parameter_values is not None else circuit
             
             # Convert to pyrauli objects and simulate
             pyrauli_circuit = from_qiskit(bound_circuit, noise_model=self._noise_model)
