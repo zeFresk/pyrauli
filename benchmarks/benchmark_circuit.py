@@ -88,13 +88,15 @@ def benchmark_circuit_construction(benchmark):
     def build_circuit():
         qc = Circuit(num_qubits)
         for i in range(num_gates):
-            gate = np.random.choice(["H", "CX", "Rz"])
+            gate = np.random.choice(["H", "CX", "Rz", "P"])
             if gate == "H":
                 qc.add_operation("H", qubit=(i % num_qubits))
             elif gate == "CX":
                 qc.add_operation("CX", control=(i % num_qubits), target=((i + 1) % num_qubits))
-            else: # Rz
+            elif gate == "Rz": # Rz
                 qc.add_operation("Rz", qubit=(i % num_qubits), param=np.random.rand())
+            else:
+                qc.add_operation(np.random.choice(["I", "X", "Y", "Z"]), qubit=(i % num_qubits))
     
     benchmark(build_circuit)
 
