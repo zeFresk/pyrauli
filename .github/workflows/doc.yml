@@ -21,19 +21,11 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: Install dependencies
+      - name: Install dependencies and pyrauli
         run: |
           python -m pip install --upgrade pip
-          pip install build
-
-      - name: Install documentation dependencies
-        run: pip install -r docs/requirements.txt
-
-      - name: Build package from source
-        run: python -m build
-
-      - name: Install pyrauli
-        run: pip install '.[qiskit,test]'
+          pip install '.[qiskit,test]'
+          pip install -r docs/requirements.txt
 
       - name: Build documentation 
         working-directory: docs
