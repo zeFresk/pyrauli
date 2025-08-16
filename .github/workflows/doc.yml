@@ -27,6 +27,9 @@ jobs:
           pip install '.[qiskit,test]'
           pip install -r docs/requirements.txt
 
+      - name: DEBUG run tests
+        run: pytest -v
+
       - name: Build documentation 
         working-directory: docs
         run: make html
