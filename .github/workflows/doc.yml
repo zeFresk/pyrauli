@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
 
       - name: Install documentation dependencies
-        run: pip install -r doc/requirements.txt
+        run: pip install -r docs/requirements.txt
 
       - name: Install pyrauli
         run: pip install '.[qiskit,test]'
