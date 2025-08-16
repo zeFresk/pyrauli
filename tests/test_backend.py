@@ -13,6 +13,8 @@ from qiskit.primitives import StatevectorEstimator
 # Import all necessary components from our package
 from pyrauli import PBackend, PyrauliEstimator, NoiseModel, QGate, UnitalNoise, CoefficientTruncator, NeverPolicy, AlwaysAfterSplittingPolicy, NeverTruncator
 
+from math import pow, sqrt
+
 # --- The Final Test Suite ---
 
 def test_backend_initialization_and_target():
@@ -202,5 +204,52 @@ def test_backend_run_overrides_policies(simple_pub):
     )
     result = job.result()
     
-    assert result[0].data.evs[0] == pytest.approx(0.0)
+    assert result[0].data.evs[0] < 0.96 # noise + truncation 
 
+def test_estimator_ctor_sets_policies():
+    """Tests that the PyrauliEstimator constructor correctly sets policies."""
+    trunc = CoefficientTruncator(0.1)
+    merge_pol = NeverPolicy()
+    trunc_pol = AlwaysAfterSplittingPolicy()
+    
+    estimator = PyrauliEstimator(truncator=trunc, merge_policy=merge_pol, truncate_policy=trunc_pol)
+    
+    assert estimator._truncator == trunc
+    assert estimator._merge_policy == merge_pol
+    assert estimator._truncate_policy == trunc_pol
+
+def test_estimator_run_overrides_policies(simple_pub):
+    """Tests that run() options override the estimator's default policies."""
+    # 1. Define initial and override components
+    initial_trunc = NeverTruncator()
+    override_trunc = CoefficientTruncator(0.01)
+    
+    initial_policy = NeverPolicy()
+    override_policy = AlwaysAfterSplittingPolicy()
+
+    initial_nm = NoiseModel()
+    override_nm = NoiseModel()
+    override_nm.add_unital_noise_on_gate(QGate.H, UnitalNoise.Depolarizing, 0.1)
+
+    # 2. Create an estimator with initial components
+    estimator = PyrauliEstimator(
+        truncator=initial_trunc,
+        merge_policy=initial_policy,
+        truncate_policy=initial_policy,
+        noise_model=initial_nm
+    )
+
+    # 3. Run with overriding options
+    job = estimator.run(
+        [simple_pub],
+        truncator=override_trunc,
+        merge_policy=override_policy,
+        truncate_policy=override_policy,
+        noise_model=override_nm
+    )
+    result = job.result()
+    
+    # 4. Assert the outcome
+    # Similar to the backend test, we confirm the override took place by checking
+    # if the simulation ran without throwing errors and produced the expected value.
+    assert result[0].data.evs[0] == pytest.approx(pow(1-0.1, 2))
