@@ -12,7 +12,7 @@ it as a backend for your Qiskit circuits.
 The `from_qiskit` function converts Qiskit `QuantumCircuit` and `SparsePauliOp`
 objects to their `pyrauli` equivalents.
 
-.. literalinclude:: ../../tests/test_circuit.py
+.. literalinclude:: ../../tests/test_circuit_qiskit.py
    :language: python
    :start-after: def test_from_qiskit_bell_state():
    :end-before: assert result_manual == result_converted
