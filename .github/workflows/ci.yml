@@ -89,10 +89,8 @@ jobs:
         run: pip install .[qiskit,test]
 
       - name: Run tests and generate coverage report
-        run: |
-         coverage run --source=pyrauli -m pytest -v tests/
-         coverage xml
-
+        run: pytest --cov=pyrauli --cov-report xml tests
+ 
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2
         with:
