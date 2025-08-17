@@ -74,6 +74,7 @@ def test_estimator_multiple_observables_per_pub():
 
 def test_estimator_multiobs_multiparams():
     """Tests a single circuit against a list of observables in one PUB."""
+    # [estimator_complex]
     estimator = PyrauliEstimator()
     thetas = ParameterVector("theta", 2)
     qc = QuantumCircuit(2)
@@ -85,6 +86,7 @@ def test_estimator_multiobs_multiparams():
     
     job = estimator.run([(qc, observables, (np.pi/2, np.pi/3)), (qc, observables, (np.pi/3, np.pi/2))])
     result = job.result()
+    # [estimator_complex]
     
     assert result[0].data.evs == pytest.approx([p1_to_ev(0.5), p1_to_ev(0.25)], abs=1e-6)
     assert result[1].data.evs == pytest.approx([p1_to_ev(0.25), p1_to_ev(0.5)], abs=1e-6)
@@ -108,19 +110,28 @@ def test_noise_model_is_correctly_applied():
 
 def test_transpiler_pass_manager_compatibility():
     """Tests that PBackend's target can be used to create a valid pass manager."""
-    backend = PBackend()
+    # [qiskit_backend_transpilation]
+    backend = PBackend(num_qubits=2)
     pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
     
-    # Circuit with gates not in the basis set
+    # Circuit with gates not in the basis set of pyrauli backend
     qc = QuantumCircuit(2)
     qc.rx(np.pi / 2, 0)
     qc.sdg(1)
     
-    transpiled_qc = pm.run(qc)
-    
+    transpiled_qc = pm.run(qc) # Qiskit circuit compatible with pyrauli 
+    # [qiskit_backend_transpilation]
+
+    # [qiskit_backend_run]
+    result = backend.run([(transpiled_qc, SparsePauliOp("XI"))]).result()
+    ev = result[0].data.evs[0]
+    # [qiskit_backend_run]
+     
     # Check that the circuit was unrolled to the backend's basis gates
     for instruction in transpiled_qc.data:
         assert instruction.operation.name in backend.target
+
+    assert ev == pytest.approx(0.0, abs=1e-6)
 
 def test_random_circuits_match_aer_simulator():
     """Compares PyrauliEstimator against qiskit for many random circuits."""
@@ -195,6 +206,7 @@ def test_backend_run_overrides_policies(simple_pub):
     # We expect the result with the override_nm to be approx 0.0 (noiseless)
     # because HZH=X and <0|X|0> = 0.
     # The initial_nm would give a different result.
+    # [backend_override]
     job = backend.run(
         [simple_pub],
         truncator=override_trunc,
@@ -202,6 +214,7 @@ def test_backend_run_overrides_policies(simple_pub):
         truncate_policy=override_policy,
         noise_model=override_nm
     )
+    # [backend_override]
     result = job.result()
     
     assert result[0].data.evs[0] < 0.96 # noise + truncation 

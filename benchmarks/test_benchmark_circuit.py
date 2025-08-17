@@ -101,6 +101,23 @@ def test_circuit1024x1024_construction(benchmark):
     
     benchmark(build_circuit)
 
+def test_circuit1024x1024clifford_run(benchmark):
+    np.random.seed(42)
+    qc = Circuit(1024)
+    for _ in range(1024):
+        gate_type = np.random.choice(["pauli", "clifford", "cx"])
+        if gate_type == "pauli":
+            qc.add_operation(np.random.choice(["I", "X", "Y", "Z"]), np.random.randint(0, 1024))
+        elif gate_type == "clifford":
+            qc.add_operation("H", np.random.randint(0, 1024))
+        elif gate_type == "cx":
+            control, target = np.random.choice(range(1024), 2, replace=False)
+            qc.add_operation("cx", control=control, target=target)
+    
+    obs = Observable("".join(np.random.choice(["I", "X", "Y", "Z"], 1024)))
+
+    benchmark(qc.run, obs)
+
 def test_circuit16x32_run_without_truncator(circuit_for_run_benchmark, benchmark):
     """Times a circuit run with a combined truncator and merge policy."""
     qc, obs_in = circuit_for_run_benchmark

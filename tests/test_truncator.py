@@ -15,11 +15,12 @@ from pyrauli import (
 
 def test_coefficient_truncator_on_observable():
     """Tests that terms with small coefficients are removed."""
+    # [truncator_coeff]
     obs = Observable([PauliTerm("I", 0.99), PauliTerm("Y", 0.01)])
     truncator = CoefficientTruncator(0.1)
     
-    removed_count = obs.truncate(truncator)
-    
+    removed_count = obs.truncate(truncator) # 1
+    # [truncator_coeff]
     assert removed_count == 1
     assert len(obs) == 1
     assert obs[0] == PauliTerm("I", 0.99)
@@ -55,10 +56,12 @@ def test_lambda_truncator_on_observable_def():
 
 def test_lambda_truncator_on_observable_lbd():
     """Tests truncation based on a custom Python function."""
+    # [truncator_lambda]
     obs = Observable([PauliTerm("IXI", 0.5), PauliTerm("IZY", 0.5)])
     truncator = LambdaTruncator(lambda pt: 'Y' in repr(pt))
     
-    removed_count = obs.truncate(truncator)
+    removed_count = obs.truncate(truncator) # 1 (removed IZY)
+    # [truncator_lambda]
     
     assert removed_count == 1
     assert len(obs) == 1
@@ -85,13 +88,14 @@ def test_truncator_in_circuit():
     """
     Tests that a truncator is correctly applied by the circuit's scheduler.
     """
-    # Create a circuit that will generate many terms with small coefficients
+    # [truncator_coefficient]
     qc = Circuit(
         nb_qubits=4,
         truncator=CoefficientTruncator(0.1),
         # Crucially, the policy must be set to run the truncator
         truncate_policy=AlwaysAfterSplittingPolicy()
     )
+    # [truncator_coefficient]
 
     # This sequence of gates creates a large number of terms
     for i in range(4):
