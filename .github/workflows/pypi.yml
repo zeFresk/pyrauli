@@ -4,9 +4,6 @@ name: Publish Python Package to PyPI
 on:
   release:
     types: [published]
-  push:
-    branches:
-      - "main"
 
 jobs:
   deploy:
@@ -39,6 +36,5 @@ jobs:
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       with:
         verbose: true
