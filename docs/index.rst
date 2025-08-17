@@ -26,7 +26,7 @@ the library for the first time or need a specific technical detail.
    :maxdepth: 2
    :caption: How-To Guides
 
-   guides/how_to_circuits
+   guides/how_to_circuit
    guides/how_to_observables
    guides/how_to_complexity
    guides/how_to_qiskit
