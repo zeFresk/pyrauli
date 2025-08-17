@@ -3,16 +3,16 @@
 Manage Simulation Complexity
 ============================
 
-As a simulation progresses, the number of terms in an ``Observable`` can grow
+As a simulation progresses, the number of terms in an :py:class:`~pyrauli.Observable` can grow
 exponentially, making the simulation slow or memory-intensive. ``pyrauli``
-provides powerful tools (``Truncator`` and ``SchedulingPolicy`` objects) to
-manage this complexity automatically during a ``Circuit.run()`` call.
+provides powerful tools (:py:class:`~pyrauli.Truncator` and :py:class:`~pyrauli.SchedulingPolicy` objects) to
+manage this complexity automatically during a :py:class:`~pyrauli.Circuit.run()` call.
 
 
 Remove small coefficients
 -------------------------
 
-**Solution:** Use a ``CoefficientTruncator``.
+**Solution:** Use a :py:class:`~pyrauli.CoefficientTruncator`.
 
 This truncator removes any Pauli terms whose coefficient magnitude is below a
 given threshold.
@@ -26,7 +26,7 @@ given threshold.
 Using a custom Truncator with your own logic
 --------------------------------------------
 
-**Solution:** Use a ``LambdaTruncator``.
+**Solution:** Use a :py:class:`~pyrauli.LambdaTruncator`.
 
 This allows you to provide a custom Python function that filters the terms.
 
@@ -37,17 +37,17 @@ This allows you to provide a custom Python function that filters the terms.
    :dedent: 4
 
 .. NOTE::
-   This truncator removes ``PauliTerm`` containing :math:`Y`. However, this is not an efficient.
+   This truncator removes :py:class:`~pyrauli.PauliTerm` containing :math:`Y`. However, this is not an efficient.
 
 Controlling when truncation is applied
 --------------------------------------
 
-**Solution:** Use a ``SchedulingPolicy``.
+**Solution:** Use a :py:class:`~pyrauli.SchedulingPolicy`.
 
-Scheduling Policies give you fine-grained control over when a ``Truncator`` is
-applied during the simulation. It can query a ``SimulationState`` object and other information to make a decision.
+Scheduling Policies give you fine-grained control over when a :py:class:`~pyrauli.Truncator` is
+applied during the simulation. It can query a :py:class:`~pyrauli.SimulationState` object and other information to make a decision.
 
-The following example uses a ``LambdaPolicy``
+The following example uses a :py:class:`~pyrauli.LambdaPolicy`
 to apply a truncator only at specific depths.
 
 .. literalinclude:: /../tests/test_policies.py
@@ -57,5 +57,5 @@ to apply a truncator only at specific depths.
    :dedent: 4
 
 .. NOTE::
-   See ``SimulationState``, ``OperationType``, ``Timing`` and ``LambdaPolicy`` for more information.
+   See :py:class:`~pyrauli.SimulationState`, :py:class:`~pyrauli.OperationType`, :py:class:`~pyrauli.Timing` and :py:class:`~pyrauli.LambdaPolicy` for more information.
 

@@ -57,7 +57,7 @@ and successively applying the conjugation for each gate **in reverse order**
 The key insight is that if :math:`O_i` is a Pauli string, then for many common
 quantum gates :math:`G_{i+1}`, the result
 :math:`G_{i+1}^\dagger O_i G_{i+1}` is also a simple combination of one or two
-Pauli strings. ``pyrauli``'s C++ backend, `ProPauli`, is highly optimized to
+Pauli strings. ``pyrauli``'s C++ backend, `ProPauli`_, is highly optimized to
 perform these Pauli algebra transformations very quickly.
 
 Without any merge or truncation, the number terms in the observable can grow exponentially with the number of `Rz` gates, which is
@@ -69,7 +69,7 @@ The `pyrauli` + `ProPauli` Architecture
 The library is composed of two distinct parts that work together:
 
 - `pyrauli`_ **(Python Frontend)**: This is the library you interact with. It
-  provides the user-facing API (``Circuit``, ``Observable``), handles
+  provides the user-facing API (:py:class:`~pyrauli.Circuit`, :py:class:`~pyrauli.Observable`), handles
   integration with the Python ecosystem (e.g., Qiskit), and orchestrates the
   simulation logic.
 
