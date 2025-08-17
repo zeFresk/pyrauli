@@ -15,7 +15,7 @@ def test_lambda_policy_in_circuit():
     
     The policy will be to only merge terms *after* the 2nd splitting gate.
     """
-    
+    # [policy_lambda]
     # 1. Define the custom policy as a Python function
     def merge_after_second_split(state: SimulationState, op_type: OperationType, timing: Timing) -> bool:
         """This policy returns True only for a Merge event after 2 splitting gates have been applied."""
@@ -54,6 +54,7 @@ def test_lambda_policy_in_circuit():
     # The merge policy should trigger *only* after the second Rz, merging the 4 terms back down.
     obs_in = Observable("X")
     obs_out = qc.run(obs_in)
+    # [policy_lambda]
 
     # 6. Assert the outcome
     # Without merging, there would be 4 terms.
