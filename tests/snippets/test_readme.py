@@ -27,12 +27,14 @@ def test_readme_quick_start():
     assert final_observable == pyrauli.Observable("XI", 1.0)
     assert expectation_value == pytest.approx(0)
 
-def test_readme_qiskit():
-    from qiskit.circuit import QuantumCircuit, Parameter
-    from qiskit.transpiler import generate_preset_pass_manager
-    from qiskit.quantum_info import SparsePauliOp
-    from pyrauli import PBackend
 
+qiskit = pytest.importorskip("qiskit", reason="Qiskit extra not installed")
+from qiskit.circuit import QuantumCircuit, Parameter
+from qiskit.transpiler import generate_preset_pass_manager
+from qiskit.quantum_info import SparsePauliOp
+from pyrauli import PBackend
+
+def test_readme_qiskit():
     # Create a parameterized Qiskit circuit
     theta = Parameter('theta')
     qc = QuantumCircuit(2)
