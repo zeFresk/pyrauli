@@ -7,33 +7,41 @@ Welcome to pyrauli's documentation!
 ===================================
 
 **pyrauli** is a high-performance Python package for quantum circuit simulation,
-powered by the C++ `propauli`_ library. It uses Pauli back-propagation to
+powered by the C++ `propauli`_ library.
+It uses Pauli back-propagation to
 efficiently calculate the expectation values of observables.
 
-This documentation provides tutorials, guides, and a complete API reference to
-help you get the most out of the library.
+This documentation is structured to help you succeed, whether you are learning
+the library for the first time or need a specific technical detail.
 
 .. _propauli: https://github.com/zeFresk/ProPauli
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started
+   :caption: Tutorials
 
-   getting_started
+   tutorials/getting_started
 
 .. toctree::
    :maxdepth: 2
-   :caption: User Guides
+   :caption: How-To Guides
 
-   guides/observable_guide
-   guides/circuit_guide
-   guides/qiskit_integration_guide
+   guides/how_to_circuits
+   guides/how_to_observables
+   guides/how_to_complexity
+   guides/how_to_qiskit
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Explanation
+
+   explanation/theory
 
 .. toctree::
    :maxdepth: 2
    :caption: API Reference
 
-   api
+   reference/api
 
 Indices and tables
 ==================
