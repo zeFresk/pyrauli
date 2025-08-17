@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting started: Your First Simulation &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Build and Run Circuits" href="../guides/how_to_circuit.html" />
+    <link rel="prev" title="Welcome to pyrauli’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started: Your First Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simulating-a-bell-state">Simulating a Bell State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_circuit.html">Build and Run Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_observables.html">Work with Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/theory.html">Core Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting started: Your First Simulation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started-your-first-simulation">
+<span id="getting-started"></span><h1>Getting started: Your First Simulation<a class="headerlink" href="#getting-started-your-first-simulation" title="Link to this heading"></a></h1>
+<p>In this tutorial, you will learn the complete, end-to-end workflow for
+simulating a quantum circuit with <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>. We will build a Bell state, one
+of the most fundamental entangled states in quantum computing, and measure a
+property of it.</p>
+<p>By the end, you will understand how to construct circuits, define observables,
+and interpret the results of a simulation that uses the Heisenberg picture.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> requires Python 3.9 or later. You can install it directly from PyPI
+using pip.</p>
+<p><strong>Standard Installation</strong></p>
+<p>For core functionality, install the package as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pyrauli
+</pre></div>
+</div>
+<p><strong>Installation with Qiskit Support</strong></p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a Qiskit backend, install it with the <code class="docutils literal notranslate"><span class="pre">[qiskit]</span></code> extra:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;pyrauli[qiskit]&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="simulating-a-bell-state">
+<h2>Simulating a Bell State<a class="headerlink" href="#simulating-a-bell-state" title="Link to this heading"></a></h2>
+<p>Let’s simulate a 2-qubit circuit that prepares a Bell state. This circuit first
+applies a Hadamard gate to create a superposition, then entangles the qubits
+with a CNOT gate. Finally, we will calculate the expectation value of the
+<span class="math notranslate nohighlight">\(Z \otimes I\)</span> observable.</p>
+<p>This example demonstrates the complete basic workflow:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialize a</strong> <a class="reference internal" href="../reference/api.html#pyrauli.Circuit" title="pyrauli.Circuit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></a>: We start by defining the number of qubits our
+circuit will have.</p></li>
+<li><p><strong>Add quantum operations</strong>: We add gates to the circuit in the order they
+should be applied.</p></li>
+<li><p><strong>Define an</strong> <a class="reference internal" href="../reference/api.html#pyrauli.Observable" title="pyrauli.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a>: We specify the physical quantity we want to
+measure at the end of the computation.</p></li>
+<li><p><strong>Run the simulation</strong>: This is where <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>’s unique approach comes
+into play. Instead of evolving the state, we evolve the observable.</p></li>
+<li><p><strong>Retrieve the final expectation value</strong>: We calculate the expectation
+value of the <em>final, evolved observable</em> with respect to the initial
+<span class="math notranslate nohighlight">\(|00...0\rangle\)</span> state.</p></li>
+</ol>
+<p>Here is the complete code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2-qubit circuit</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Add gates</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;CX&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Define an observable and run the circuit</span>
+<span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)</span>
+<span class="n">final_observable</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expectation value of ZI: </span><span class="si">{</span><span class="n">final_observable</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Dissecting the Simulation</strong></p>
+<p>Let’s look at the key lines more closely.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we define the physical quantity we want to measure. The string <code class="docutils literal notranslate"><span class="pre">&quot;ZI&quot;</span></code> tells <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> that we are interested in the Pauli-Z operator acting on qubit 0 and the identity operator acting on all other qubits (in this case, qubit 1).</p>
+<p>In the standard Schrödinger picture, this would be the measurement we perform at the <em>end</em> of the circuit. In the Heisenberg picture used by <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>, this observable is our starting point.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_observable</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the core of the <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> simulation. Instead of evolving a state vector forward through the circuit, the <code class="xref py py-class docutils literal notranslate"><span class="pre">run()</span></code> method evolves our <em>observable</em> backward.
+The <code class="xref py py-class docutils literal notranslate"><span class="pre">final_observable</span></code> represents what our initial observable <code class="docutils literal notranslate"><span class="pre">ZI</span></code> becomes after being transformed by all the gates in the circuit.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">expectation_value</span> <span class="o">=</span> <span class="n">final_observable</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The final step is to calculate the expectation value of this transformed
+observable with respect to the simple, known initial state of all qubits in
+the <span class="math notranslate nohighlight">\(|0\rangle\)</span> state. The result, <code class="docutils literal notranslate"><span class="pre">0.0</span></code>, is the same value you would
+get from a statevector simulation.</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>You now have a foundational understanding of the <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> workflow. To learn
+how to solve specific problems, head to our <a class="reference internal" href="../guides/how_to_circuit.html"><span class="doc">Build and Run Circuits</span></a>.
+To understand the theory behind the Heisenberg picture and Pauli
+back-propagation, see our <a class="reference internal" href="../explanation/theory.html"><span class="doc">Core Concepts</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to pyrauli’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../guides/how_to_circuit.html" class="btn btn-neutral float-right" title="Build and Run Circuits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Concepts &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../reference/api.html" />
+    <link rel="prev" title="Simulate Noisy Circuits" href="../guides/how_to_noise.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/getting_started.html">Getting started: Your First Simulation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_circuit.html">Build and Run Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_observables.html">Work with Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-heisenberg-picture-vs-the-schrodinger-picture">The Heisenberg Picture vs. The Schrödinger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pauli-back-propagation">Pauli Back-Propagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-pyrauli-propauli-architecture">The <cite>pyrauli</cite> + <cite>ProPauli</cite> Architecture</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Core Concepts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/explanation/theory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="core-concepts">
+<span id="explanation-theory"></span><h1>Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this heading"></a></h1>
+<p>This section explains the theoretical foundations of <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>. Understanding
+these concepts will help you use the library more effectively and decide when
+it is the right tool for your problem.</p>
+<section id="the-heisenberg-picture-vs-the-schrodinger-picture">
+<h2>The Heisenberg Picture vs. The Schrödinger Picture<a class="headerlink" href="#the-heisenberg-picture-vs-the-schrodinger-picture" title="Link to this heading"></a></h2>
+<p>Most quantum circuit simulators operate in the <strong>Schrödinger picture</strong>. In this
+view, the quantum state (a state vector <span class="math notranslate nohighlight">\(|\psi\rangle\)</span> of size
+<span class="math notranslate nohighlight">\(2^N\)</span>) evolves in time, while the operators (like observables <span class="math notranslate nohighlight">\(O\)</span>)
+are typically fixed.</p>
+<ul class="simple">
+<li><p><strong>Schrödinger Picture</strong>: State evolves, operator is fixed.
+- State evolution: <span class="math notranslate nohighlight">\(|\psi(t)\rangle = U(t) |\psi(0)\rangle\)</span>
+- Expectation value: <span class="math notranslate nohighlight">\(\langle \psi(t) | O | \psi(t) \rangle\)</span></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> operates in the <strong>Heisenberg picture</strong>. Here, the roles are
+reversed: the state is considered fixed at its initial value
+(<span class="math notranslate nohighlight">\(|\psi(0)\rangle\)</span>), and the operators evolve instead.</p>
+<ul class="simple">
+<li><p><strong>Heisenberg Picture</strong>: State is fixed, operator evolves.
+- Operator evolution: <span class="math notranslate nohighlight">\(O(t) = U^\dagger(t) O U(t)\)</span>
+- Expectation value: <span class="math notranslate nohighlight">\(\langle \psi(0) | O(t) | \psi(0) \rangle\)</span></p></li>
+</ul>
+<p>The two pictures are mathematically equivalent, but they can have vastly
+different computational costs. <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> is optimized for the common case
+where the initial state is <span class="math notranslate nohighlight">\(|0\rangle^{\otimes N}\)</span>, making the
+Heisenberg calculation particularly efficient.</p>
+</section>
+<section id="pauli-back-propagation">
+<h2>Pauli Back-Propagation<a class="headerlink" href="#pauli-back-propagation" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> implements the Heisenberg evolution using a technique called
+<strong>Pauli back-propagation</strong>.</p>
+<p>An observable <span class="math notranslate nohighlight">\(O\)</span> is represented as a linear combination of Pauli strings
+(e.g., <span class="math notranslate nohighlight">\(c_1 IXYZ + c_2 ZIZI + \dots\)</span>). A circuit <span class="math notranslate nohighlight">\(U\)</span> is a sequence
+of gates <span class="math notranslate nohighlight">\(U = G_k \dots G_2 G_1\)</span>.</p>
+<p>The evolved observable is <span class="math notranslate nohighlight">\(O' = U^\dagger O U = G_1^\dagger G_2^\dagger \dots G_k^\dagger O G_k \dots G_2 G_1\)</span>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> calculates this by starting with the initial observable <span class="math notranslate nohighlight">\(O\)</span>
+and successively applying the conjugation for each gate <strong>in reverse order</strong>
+(hence “back-propagation”):</p>
+<ol class="arabic simple">
+<li><p>Start with <span class="math notranslate nohighlight">\(O_k = O\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(O_{k-1} = G_k^\dagger O_k G_k\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(O_{k-2} = G_{k-1}^\dagger O_{k-1} G_{k-1}\)</span>.</p></li>
+<li><p>…and so on, until…</p></li>
+<li><p>The final observable is <span class="math notranslate nohighlight">\(O_0 = G_1^\dagger O_1 G_1\)</span>.</p></li>
+</ol>
+<p>The key insight is that if <span class="math notranslate nohighlight">\(O_i\)</span> is a Pauli string, then for many common
+quantum gates <span class="math notranslate nohighlight">\(G_{i+1}\)</span>, the result
+<span class="math notranslate nohighlight">\(G_{i+1}^\dagger O_i G_{i+1}\)</span> is also a simple combination of one or two
+Pauli strings. <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>’s C++ backend, <a class="reference external" href="https://github.com/zeFresk/ProPauli">ProPauli</a>, is highly optimized to
+perform these Pauli algebra transformations very quickly.</p>
+<p>Without any merge or truncation, the number terms in the observable can grow exponentially with the number of <cite>Rz</cite> gates, which is
+why complexity management via truncators is an important feature.</p>
+</section>
+<section id="the-pyrauli-propauli-architecture">
+<h2>The <cite>pyrauli</cite> + <cite>ProPauli</cite> Architecture<a class="headerlink" href="#the-pyrauli-propauli-architecture" title="Link to this heading"></a></h2>
+<p>The library is composed of two distinct parts that work together:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/zeFresk/pyrauli">pyrauli</a> <strong>(Python Frontend)</strong>: This is the library you interact with. It
+provides the user-facing API (<a class="reference internal" href="../reference/api.html#pyrauli.Circuit" title="pyrauli.Circuit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></a>, <a class="reference internal" href="../reference/api.html#pyrauli.Observable" title="pyrauli.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a>), handles
+integration with the Python ecosystem (e.g., Qiskit), and orchestrates the
+simulation logic.</p></li>
+<li><p><a class="reference external" href="https://github.com/zeFresk/ProPauli">ProPauli</a> <strong>(C++ Backend)</strong>: This is the high-performance engine. It
+implements the core data structures for representing Pauli strings
+efficiently, contains the optimized C++ routines for applying gate
+conjugations, and manages the computationally intensive work.</p></li>
+</ul>
+<p>This separation of concerns allows <a class="reference external" href="https://github.com/zeFresk/pyrauli">pyrauli</a> to offer both a high-level,
+easy-to-use Python interface and the raw performance of compiled C++ code.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../guides/how_to_noise.html" class="btn btn-neutral float-left" title="Simulate Noisy Circuits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../reference/api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

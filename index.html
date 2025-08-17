@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting Started" href="getting_started.html" /> 
+    <link rel="next" title="Getting started: Your First Simulation" href="tutorials/getting_started.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,19 +41,29 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/getting_started.html">Getting started: Your First Simulation</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="guides/observable_guide.html">Guide: Using the Observable Primitive</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guides/circuit_guide.html">Guide: Building Quantum Circuits</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guides/qiskit_integration_guide.html">Guide: Qiskit Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_circuit.html">Build and Run Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_observables.html">Work with Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="explanation/theory.html">Core Concepts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/api.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
 </ul>
 
         </div>
@@ -83,40 +93,61 @@
   <section id="welcome-to-pyrauli-s-documentation">
 <h1>Welcome to pyrauli’s documentation!<a class="headerlink" href="#welcome-to-pyrauli-s-documentation" title="Link to this heading"></a></h1>
 <p><strong>pyrauli</strong> is a high-performance Python package for quantum circuit simulation,
-powered by the C++ <a class="reference external" href="https://github.com/zeFresk/ProPauli">propauli</a> library. It uses Pauli back-propagation to
+powered by the C++ <a class="reference external" href="https://github.com/zeFresk/ProPauli">ProPauli</a> library.
+It uses Pauli back-propagation to
 efficiently calculate the expectation values of observables.</p>
-<p>This documentation provides tutorials, guides, and a complete API reference to
-help you get the most out of the library.</p>
+<p>This documentation is structured to help you succeed, whether you are learning
+the library for the first time or need a specific technical detail.</p>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#your-first-simulation">Your First Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/getting_started.html">Getting started: Your First Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/getting_started.html#simulating-a-bell-state">Simulating a Bell State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/getting_started.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="guides/observable_guide.html">Guide: Using the Observable Primitive</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guides/observable_guide.html#the-heisenberg-picture">The Heisenberg Picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/observable_guide.html#manual-evolution-example">Manual Evolution Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/observable_guide.html#splitting-merging-and-truncating">Splitting, Merging, and Truncating</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_circuit.html">Build and Run Circuits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_circuit.html#construct-a-basic-circuit">Construct a Basic Circuit</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="guides/circuit_guide.html">Guide: Building Quantum Circuits</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guides/circuit_guide.html#basic-circuit-construction">Basic Circuit Construction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/circuit_guide.html#managing-complexity-with-truncators">Managing Complexity with Truncators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/circuit_guide.html#custom-truncators-with-lambdatruncator">Custom Truncators with <cite>LambdaTruncator</cite></a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/circuit_guide.html#controlling-optimization-with-scheduling-policies">Controlling Optimization with Scheduling Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_observables.html">Work with Observables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_observables.html#manually-evolve-an-observable">Manually Evolve an Observable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_observables.html#manage-observable-complexity">Manage Observable Complexity</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="guides/qiskit_integration_guide.html">Guide: Qiskit Integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guides/qiskit_integration_guide.html#from-qiskit-converting-qiskit-objects"><cite>from_qiskit</cite>: Converting Qiskit Objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/qiskit_integration_guide.html#pbackend-the-qiskit-compatible-backend"><cite>PBackend</cite>: The Qiskit-Compatible Backend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/qiskit_integration_guide.html#pyrauliestimator-a-qiskit-primitive"><cite>PyrauliEstimator</cite>: A Qiskit Primitive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_complexity.html">Manage Simulation Complexity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_complexity.html#remove-small-coefficients">Remove small coefficients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_complexity.html#using-a-custom-truncator-with-your-own-logic">Using a custom Truncator with your own logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_complexity.html#controlling-when-truncation-is-applied">Controlling when truncation is applied</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_qiskit.html">Integrate with Qiskit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_qiskit.html#convert-qiskit-objects-to-pyrauli-objects">Convert Qiskit objects to <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_qiskit.html#use-pyrauli-as-a-qiskit-compatible-backend">Use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a Qiskit-compatible backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_qiskit.html#use-the-pyrauliestimator-qiskit-primitive">Use the <code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code> Qiskit Primitive</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_noise.html">Simulate Noisy Circuits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_noise.html#apply-noise-to-a-pyrauli-circuit">Apply Noise to a <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> Circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_noise.html#the-importance-of-truncation-with-noise">The Importance of Truncation with Noise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_noise.html#use-noise-models-with-qiskit-backends">Use Noise Models with Qiskit Backends</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="explanation/theory.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="explanation/theory.html#the-heisenberg-picture-vs-the-schrodinger-picture">The Heisenberg Picture vs. The Schrödinger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explanation/theory.html#pauli-back-propagation">Pauli Back-Propagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explanation/theory.html#the-pyrauli-propauli-architecture">The <cite>pyrauli</cite> + <cite>ProPauli</cite> Architecture</a></li>
 </ul>
 </li>
 </ul>
@@ -124,38 +155,44 @@ help you get the most out of the library.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.AlwaysAfterSplittingPolicy"><code class="docutils literal notranslate"><span class="pre">AlwaysAfterSplittingPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.AlwaysBeforeSplittingPolicy"><code class="docutils literal notranslate"><span class="pre">AlwaysBeforeSplittingPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.Circuit"><code class="docutils literal notranslate"><span class="pre">Circuit</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.CliffordGate"><code class="docutils literal notranslate"><span class="pre">CliffordGate</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.CoefficientTruncator"><code class="docutils literal notranslate"><span class="pre">CoefficientTruncator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.CompressionResult"><code class="docutils literal notranslate"><span class="pre">CompressionResult</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.LambdaPolicy"><code class="docutils literal notranslate"><span class="pre">LambdaPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.LambdaTruncator"><code class="docutils literal notranslate"><span class="pre">LambdaTruncator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.MultiTruncator"><code class="docutils literal notranslate"><span class="pre">MultiTruncator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.NeverPolicy"><code class="docutils literal notranslate"><span class="pre">NeverPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.NeverTruncator"><code class="docutils literal notranslate"><span class="pre">NeverTruncator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.Noise"><code class="docutils literal notranslate"><span class="pre">Noise</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.NoiseModel"><code class="docutils literal notranslate"><span class="pre">NoiseModel</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.Observable"><code class="docutils literal notranslate"><span class="pre">Observable</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.OperationType"><code class="docutils literal notranslate"><span class="pre">OperationType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.PBackend"><code class="docutils literal notranslate"><span class="pre">PBackend</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.Pauli"><code class="docutils literal notranslate"><span class="pre">Pauli</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.PauliEnum"><code class="docutils literal notranslate"><span class="pre">PauliEnum</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.PauliGate"><code class="docutils literal notranslate"><span class="pre">PauliGate</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.PauliTerm"><code class="docutils literal notranslate"><span class="pre">PauliTerm</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.PyrauliEstimator"><code class="docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.QGate"><code class="docutils literal notranslate"><span class="pre">QGate</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.SchedulingPolicy"><code class="docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.SimulationState"><code class="docutils literal notranslate"><span class="pre">SimulationState</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.Timing"><code class="docutils literal notranslate"><span class="pre">Timing</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.Truncator"><code class="docutils literal notranslate"><span class="pre">Truncator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.UnitalNoise"><code class="docutils literal notranslate"><span class="pre">UnitalNoise</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.WeightTruncator"><code class="docutils literal notranslate"><span class="pre">WeightTruncator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pyrauli.from_qiskit"><code class="docutils literal notranslate"><span class="pre">from_qiskit()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.AlwaysAfterSplittingPolicy"><code class="docutils literal notranslate"><span class="pre">AlwaysAfterSplittingPolicy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.AlwaysBeforeSplittingPolicy"><code class="docutils literal notranslate"><span class="pre">AlwaysBeforeSplittingPolicy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Circuit"><code class="docutils literal notranslate"><span class="pre">Circuit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.CliffordGate"><code class="docutils literal notranslate"><span class="pre">CliffordGate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.CoefficientTruncator"><code class="docutils literal notranslate"><span class="pre">CoefficientTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.CompressionResult"><code class="docutils literal notranslate"><span class="pre">CompressionResult</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.LambdaPolicy"><code class="docutils literal notranslate"><span class="pre">LambdaPolicy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.LambdaTruncator"><code class="docutils literal notranslate"><span class="pre">LambdaTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.MultiTruncator"><code class="docutils literal notranslate"><span class="pre">MultiTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.NeverPolicy"><code class="docutils literal notranslate"><span class="pre">NeverPolicy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.NeverTruncator"><code class="docutils literal notranslate"><span class="pre">NeverTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Noise"><code class="docutils literal notranslate"><span class="pre">Noise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.NoiseModel"><code class="docutils literal notranslate"><span class="pre">NoiseModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Observable"><code class="docutils literal notranslate"><span class="pre">Observable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.OperationType"><code class="docutils literal notranslate"><span class="pre">OperationType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.PBackend"><code class="docutils literal notranslate"><span class="pre">PBackend</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Pauli"><code class="docutils literal notranslate"><span class="pre">Pauli</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.PauliEnum"><code class="docutils literal notranslate"><span class="pre">PauliEnum</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.PauliGate"><code class="docutils literal notranslate"><span class="pre">PauliGate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.PauliTerm"><code class="docutils literal notranslate"><span class="pre">PauliTerm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.PyrauliEstimator"><code class="docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.QGate"><code class="docutils literal notranslate"><span class="pre">QGate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SchedulingPolicy"><code class="docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SimulationState"><code class="docutils literal notranslate"><span class="pre">SimulationState</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Timing"><code class="docutils literal notranslate"><span class="pre">Timing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Truncator"><code class="docutils literal notranslate"><span class="pre">Truncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.UnitalNoise"><code class="docutils literal notranslate"><span class="pre">UnitalNoise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.WeightTruncator"><code class="docutils literal notranslate"><span class="pre">WeightTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.from_qiskit"><code class="docutils literal notranslate"><span class="pre">from_qiskit()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
 </ul>
 </div>
 </section>
@@ -172,7 +209,7 @@ help you get the most out of the library.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorials/getting_started.html" class="btn btn-neutral float-right" title="Getting started: Your First Simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

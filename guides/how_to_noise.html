@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulate Noisy Circuits &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Core Concepts" href="../explanation/theory.html" />
+    <link rel="prev" title="Integrate with Qiskit" href="how_to_qiskit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/getting_started.html">Getting started: Your First Simulation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="how_to_circuit.html">Build and Run Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_observables.html">Work with Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_qiskit.html">Integrate with Qiskit</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulate Noisy Circuits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#apply-noise-to-a-pyrauli-circuit">Apply Noise to a <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> Circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-importance-of-truncation-with-noise">The Importance of Truncation with Noise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-noise-models-with-qiskit-backends">Use Noise Models with Qiskit Backends</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/theory.html">Core Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Simulate Noisy Circuits</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/how_to_noise.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="simulate-noisy-circuits">
+<span id="how-to-noise"></span><h1>Simulate Noisy Circuits<a class="headerlink" href="#simulate-noisy-circuits" title="Link to this heading"></a></h1>
+<p>Quantum computations are susceptible to noise from the environment, which can introduce errors and alter results. <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> provides a comprehensive <a class="reference internal" href="../reference/api.html#pyrauli.NoiseModel" title="pyrauli.NoiseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseModel</span></code></a> class to simulate the effects of various noise channels on your quantum circuits. This guide demonstrates how to apply noise models when working with <a class="reference internal" href="../reference/api.html#pyrauli.Circuit" title="pyrauli.Circuit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></a> objects directly, or when using <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a backend within Qiskit via <a class="reference internal" href="../reference/api.html#pyrauli.PBackend" title="pyrauli.PBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">PBackend</span></code></a> and <a class="reference internal" href="../reference/api.html#pyrauli.PyrauliEstimator" title="pyrauli.PyrauliEstimator"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code></a>.</p>
+<section id="apply-noise-to-a-pyrauli-circuit">
+<h2>Apply Noise to a <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> Circuit<a class="headerlink" href="#apply-noise-to-a-pyrauli-circuit" title="Link to this heading"></a></h2>
+<p>You can introduce noise into a simulation by creating a <a class="reference internal" href="../reference/api.html#pyrauli.NoiseModel" title="pyrauli.NoiseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseModel</span></code></a> and associating it with a <a class="reference internal" href="../reference/api.html#pyrauli.Circuit" title="pyrauli.Circuit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></a>. The noise model is applied automatically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Create a Noise Model that adds depolarizing noise after every H gate and amplitude damping noise after each X gate</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># Noise strength</span>
+<span class="n">noise_model</span> <span class="o">=</span> <span class="n">NoiseModel</span><span class="p">()</span>
+<span class="n">noise_model</span><span class="o">.</span><span class="n">add_unital_noise_on_gate</span><span class="p">(</span><span class="n">QGate</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">UnitalNoise</span><span class="o">.</span><span class="n">Depolarizing</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">noise_model</span><span class="o">.</span><span class="n">add_amplitude_damping_on_gate</span><span class="p">(</span><span class="n">QGate</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+<span class="c1"># 2. Create a noisy circuit using the noise model</span>
+<span class="n">qc_noisy</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">noise_model</span><span class="o">=</span><span class="n">noise_model</span><span class="p">)</span>
+<span class="n">qc_noisy</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 3. Run, everything is taken care of automatically</span>
+<span class="n">res_noisy</span> <span class="o">=</span> <span class="n">qc_noisy</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="the-importance-of-truncation-with-noise">
+<h2>The Importance of Truncation with Noise<a class="headerlink" href="#the-importance-of-truncation-with-noise" title="Link to this heading"></a></h2>
+<p>Noise models, especially those that split a single Pauli term into multiple terms (like amplitude damping), can cause the number of terms in an <a class="reference internal" href="../reference/api.html#pyrauli.Observable" title="pyrauli.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a> to grow rapidly. Without management, this can quickly make the simulation intractable.</p>
+<p>To counteract this, it is crucial to use a <a class="reference internal" href="../reference/api.html#pyrauli.Truncator" title="pyrauli.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a> with an appropriate <a class="reference internal" href="../reference/api.html#pyrauli.SchedulingPolicy" title="pyrauli.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a> when running noisy simulations. This will prune terms that are unlikely to contribute significantly to the final expectation value, keeping the simulation feasible.</p>
+<p>The example below shows how to configure a circuit to apply a <a class="reference internal" href="../reference/api.html#pyrauli.CoefficientTruncator" title="pyrauli.CoefficientTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoefficientTruncator</span></code></a> after every gate that splits the observable, ensuring the complexity remains under control.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">qc</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">(</span>
+    <span class="n">nb_qubits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">truncator</span><span class="o">=</span><span class="n">CoefficientTruncator</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span>
+    <span class="c1"># Crucially, the policy must be set to run the truncator</span>
+    <span class="n">truncate_policy</span><span class="o">=</span><span class="n">AlwaysAfterSplittingPolicy</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference internal" href="how_to_complexity.html#how-to-complexity"><span class="std std-ref">Manage Simulation Complexity</span></a> for more information on using <code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code>.</p>
+</div>
+</section>
+<section id="use-noise-models-with-qiskit-backends">
+<h2>Use Noise Models with Qiskit Backends<a class="headerlink" href="#use-noise-models-with-qiskit-backends" title="Link to this heading"></a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a backend within the Qiskit ecosystem, you can specify noise models at two levels: either when initializing the backend for a default noise setting, or on a per-run basis for specific experiments.</p>
+<p><strong>With</strong> <a class="reference internal" href="../reference/api.html#pyrauli.PBackend" title="pyrauli.PBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">PBackend</span></code></a></p>
+<p>You can initialize a <a class="reference internal" href="../reference/api.html#pyrauli.PBackend" title="pyrauli.PBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">PBackend</span></code></a> with a default noise model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a default noise model</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">default_noise</span> <span class="o">=</span> <span class="n">NoiseModel</span><span class="p">()</span>
+<span class="n">default_noise</span><span class="o">.</span><span class="n">add_unital_noise_on_gate</span><span class="p">(</span><span class="n">QGate</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">UnitalNoise</span><span class="o">.</span><span class="n">Depolarizing</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+<span class="c1"># Initialize the backend with this model</span>
+<span class="n">backend</span> <span class="o">=</span> <span class="n">PBackend</span><span class="p">(</span><span class="n">noise_model</span><span class="o">=</span><span class="n">default_noise</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, you can easily override this default by passing a different <a class="reference internal" href="../reference/api.html#pyrauli.NoiseModel" title="pyrauli.NoiseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseModel</span></code></a> directly to the <a class="reference internal" href="../reference/api.html#pyrauli.PBackend.run" title="pyrauli.PBackend.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method. This provides the flexibility to compare different noise scenarios without creating multiple backend instances.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">simple_pub</span><span class="p">],</span>
+    <span class="n">truncator</span><span class="o">=</span><span class="n">override_trunc</span><span class="p">,</span>
+    <span class="n">merge_policy</span><span class="o">=</span><span class="n">override_policy</span><span class="p">,</span>
+    <span class="n">truncate_policy</span><span class="o">=</span><span class="n">override_policy</span><span class="p">,</span>
+    <span class="n">noise_model</span><span class="o">=</span><span class="n">override_nm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>With</strong> <a class="reference internal" href="../reference/api.html#pyrauli.PyrauliEstimator" title="pyrauli.PyrauliEstimator"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code></a></p>
+<p>The same principle applies to the <a class="reference internal" href="../reference/api.html#pyrauli.PyrauliEstimator" title="pyrauli.PyrauliEstimator"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code></a>. You can configure a default noise model during initialization or override it in the <a class="reference internal" href="../reference/api.html#pyrauli.PyrauliEstimator.run" title="pyrauli.PyrauliEstimator.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> call for specific Program-Backend-Unification (PUB) executions.</p>
+<p>This example demonstrates how to set an initial <a class="reference internal" href="../reference/api.html#pyrauli.NoiseModel" title="pyrauli.NoiseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NoiseModel</span></code></a> on the estimator and then override it in a <a class="reference internal" href="../reference/api.html#pyrauli.PyrauliEstimator.run" title="pyrauli.PyrauliEstimator.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> call to apply a different noise channel for a specific job.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">PyrauliEstimator</span><span class="p">(</span>
+    <span class="n">truncator</span><span class="o">=</span><span class="n">initial_trunc</span><span class="p">,</span>
+    <span class="n">merge_policy</span><span class="o">=</span><span class="n">initial_policy</span><span class="p">,</span>
+    <span class="n">truncate_policy</span><span class="o">=</span><span class="n">initial_policy</span><span class="p">,</span>
+    <span class="n">noise_model</span><span class="o">=</span><span class="n">initial_nm</span>
+<span class="p">)</span>
+
+<span class="c1"># 3. Run with overriding options</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">simple_pub</span><span class="p">],</span>
+    <span class="n">truncator</span><span class="o">=</span><span class="n">override_trunc</span><span class="p">,</span>
+    <span class="n">merge_policy</span><span class="o">=</span><span class="n">override_policy</span><span class="p">,</span>
+    <span class="n">truncate_policy</span><span class="o">=</span><span class="n">override_policy</span><span class="p">,</span>
+    <span class="n">noise_model</span><span class="o">=</span><span class="n">override_nm</span>
+<span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="how_to_qiskit.html" class="btn btn-neutral float-left" title="Integrate with Qiskit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../explanation/theory.html" class="btn btn-neutral float-right" title="Core Concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
