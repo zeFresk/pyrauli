@@ -88,13 +88,14 @@ def test_truncator_in_circuit():
     """
     Tests that a truncator is correctly applied by the circuit's scheduler.
     """
-    # Create a circuit that will generate many terms with small coefficients
+    # [truncator_coefficient]
     qc = Circuit(
         nb_qubits=4,
         truncator=CoefficientTruncator(0.1),
         # Crucially, the policy must be set to run the truncator
         truncate_policy=AlwaysAfterSplittingPolicy()
     )
+    # [truncator_coefficient]
 
     # This sequence of gates creates a large number of terms
     for i in range(4):

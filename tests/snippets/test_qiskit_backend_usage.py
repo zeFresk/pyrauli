@@ -5,7 +5,7 @@ qiskit = pytest.importorskip("qiskit", reason="Qiskit extra not installed")
 
 from qiskit.circuit import QuantumCircuit
 from qiskit.quantum_info import SparsePauliOp
-from pyrauli import PBackend
+from pyrauli import PBackend, NoiseModel, QGate, UnitalNoise
 
 def test_qiskit_backend_snippet():
     # [qiskit_backend_usage]
@@ -25,3 +25,15 @@ def test_qiskit_backend_snippet():
 
     print(f"Expectation value from Qiskit backend: {ev}")
     # [qiskit_backend_usage]
+
+
+def test_backend_noise1():
+    # [backend_noise]
+    # Define a default noise model
+    p = 0.1
+    default_noise = NoiseModel()
+    default_noise.add_unital_noise_on_gate(QGate.H, UnitalNoise.Depolarizing, p)
+
+    # Initialize the backend with this model
+    backend = PBackend(noise_model=default_noise)
+    # [backend_noise]

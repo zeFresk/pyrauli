@@ -206,6 +206,7 @@ def test_backend_run_overrides_policies(simple_pub):
     # We expect the result with the override_nm to be approx 0.0 (noiseless)
     # because HZH=X and <0|X|0> = 0.
     # The initial_nm would give a different result.
+    # [backend_override]
     job = backend.run(
         [simple_pub],
         truncator=override_trunc,
@@ -213,6 +214,7 @@ def test_backend_run_overrides_policies(simple_pub):
         truncate_policy=override_policy,
         noise_model=override_nm
     )
+    # [backend_override]
     result = job.result()
     
     assert result[0].data.evs[0] < 0.96 # noise + truncation 

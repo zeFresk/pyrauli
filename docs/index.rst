@@ -30,6 +30,7 @@ the library for the first time or need a specific technical detail.
    guides/how_to_observables
    guides/how_to_complexity
    guides/how_to_qiskit
+   guides/how_to_noise
 
 .. toctree::
    :maxdepth: 2
@@ -42,6 +43,12 @@ the library for the first time or need a specific technical detail.
    :caption: API Reference
 
    reference/api
+
+.. toctree::
+   :maxdepth: 2 
+   :caption: Performance 
+
+   Benchmarks <https://zefresk.github.io/pyrauli/dev/bench/>
 
 Indices and tables
 ==================
