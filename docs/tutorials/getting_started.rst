@@ -1,6 +1,6 @@
 .. _getting_started:
 
-Tutorial: Your First Simulation
+Getting started: Your First Simulation
 ===============================
 
 In this tutorial, you will learn the complete, end-to-end workflow for
@@ -74,9 +74,9 @@ Let's look at the key lines more closely.
 
 .. code-block:: python
 
-   observable = pyrauli.Observable.from_string("Z_0")
+   observable = pyrauli.Observable.from_string("ZI")
 
-Here, we define the physical quantity we want to measure. The string ``"Z_0"``
+Here, we define the physical quantity we want to measure. The string ``"ZI"``
 tells ``pyrauli`` that we are interested in the Pauli-Z operator acting on
 qubit 0 and the identity operator acting on all other qubits (in this case,
 qubit 1). In the standard Schrödinger picture, this would be the measurement
@@ -90,12 +90,12 @@ we perform at the *end* of the circuit. In the Heisenberg picture used by
 This is the core of the ``pyrauli`` simulation. Instead of evolving a state
 vector forward through the circuit, the ``.run()`` method evolves our
 *observable* backward. The ``final_observable`` represents what our initial
-observable ``Z_0`` becomes after being transformed by all the gates in the
+observable ``ZI`` becomes after being transformed by all the gates in the
 circuit.
 
 .. code-block:: python
 
-   expectation_value = final_observable.get_expectation_value()
+   expectation_value = final_observable.expectation_value()
 
 The final step is to calculate the expectation value of this transformed
 observable with respect to the simple, known initial state of all qubits in
