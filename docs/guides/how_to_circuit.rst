@@ -1,7 +1,7 @@
 .. _how_to_circuits:
 
-How-To: Build and Run Circuits
-==============================
+Build and Run Circuits
+======================
 
 This guide provides recipes for the primary workflow in ``pyrauli``: building a
 ``Circuit`` object and using it to evolve an ``Observable``.

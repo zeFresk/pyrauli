@@ -1,7 +1,7 @@
 .. _how_to_observables:
 
-How-To: Work with Observables
-=============================
+Work with Observables
+=====================
 
 This guide covers direct manipulation of ``Observable`` objects.
 

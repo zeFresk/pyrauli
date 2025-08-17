@@ -1,7 +1,7 @@
 .. _explanation_theory:
 
-Explanation: Core Concepts
-==========================
+Core Concepts
+=============
 
 This section explains the theoretical foundations of ``pyrauli``. Understanding
 these concepts will help you use the library more effectively and decide when

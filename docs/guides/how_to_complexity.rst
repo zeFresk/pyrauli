@@ -1,7 +1,7 @@
 .. _how_to_complexity:
 
-How-To: Manage Simulation Complexity
-====================================
+Manage Simulation Complexity
+============================
 
 As a simulation progresses, the number of terms in an ``Observable`` can grow
 exponentially, making the simulation slow or memory-intensive. ``pyrauli``

@@ -1,7 +1,7 @@
 .. _how_to_qiskit:
 
-How-To: Integrate with Qiskit
-=============================
+Integrate with Qiskit
+=====================
 
 ``pyrauli`` offers seamless integration with Qiskit. This guide provides
 recipes for common integration tasks.
@@ -35,6 +35,7 @@ Here is an example of transpilation to `PBackend` relying on Qiskit `PassManager
    :start-after: # [qiskit_backend_transpilation]
    :end-before: # [qiskit_backend_transpilation]
    :dedent: 4
+
 And how to run it on the backend:
 
 .. literalinclude:: /../tests/test_backend.py
