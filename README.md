@@ -106,7 +106,7 @@ For comprehensive information, including tutorials, how-to guides, and the full 
 
 ## benchmarks
 
-**pyrauli** latest benchmarks results are available here: **https://zefresk.github.io/dev/bench/**
+**pyrauli** latest benchmarks results are available here: **https://zefresk.github.io/pyrauli/dev/bench/**
 
 ## References
 
