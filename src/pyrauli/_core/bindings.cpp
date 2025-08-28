@@ -1,3 +1,4 @@
+#include "pauli_term_container.hpp"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
@@ -5,6 +6,7 @@
 
 #include <sstream>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "circuit.hpp"
@@ -16,6 +18,8 @@
 #include "truncate.hpp"
 
 namespace py = pybind11;
+
+using PTC = PauliTermContainer<coeff_t>;
 
 // Define alias for our holder types for clarity
 using TruncatorPtr = std::shared_ptr<Truncator<coeff_t>>;
@@ -29,7 +33,7 @@ using NeverPolicyPtr = std::shared_ptr<NeverPolicy>;
 using AlwaysBeforePolicyPtr = std::shared_ptr<AlwaysBeforeSplittingPolicy>;
 using AlwaysAfterPolicyPtr = std::shared_ptr<AlwaysAfterSplittingPolicy>;
 
-using LambdaPredicate_t = std::function<bool(PauliTerm<coeff_t> const&)>;
+using LambdaPredicate_t = std::function<bool(PauliTermContainer<coeff_t>::NonOwningPauliTermPacked const&)>;
 using LambdaTruncator = PredicateTruncator<LambdaPredicate_t>;
 using LambdaTruncatorPtr = std::shared_ptr<LambdaTruncator>;
 
@@ -305,4 +309,70 @@ PYBIND11_MODULE(_core, m) {
 		     "Sets a new policy for when to merge Pauli terms.")
 		.def("set_truncate_policy", &Circuit<coeff_t>::set_truncate_policy,
 		     "Sets a new policy for when to truncate the observable.");
+
+	py::class_<PTC::ReadOnlyNonOwningPauliTermPacked>(m, "ReadOnlyPackedPauliTermView",
+							  "A read-only, non-owning view of a packed Pauli term.")
+		.def_property_readonly("coefficient", &PTC::ReadOnlyNonOwningPauliTermPacked::coefficient,
+				       "The coefficient of the term.")
+		.def_property_readonly("nb_qubits", &PTC::ReadOnlyNonOwningPauliTermPacked::size,
+				       "The number of qubits in the term.")
+		.def("pauli_weight", &PTC::ReadOnlyNonOwningPauliTermPacked::pauli_weight,
+		     "Calculates the Pauli weight (number of non-identity operators).")
+		.def("expectation_value", &PTC::ReadOnlyNonOwningPauliTermPacked::expectation_value,
+		     "Calculates the expectation value of this single term.")
+		.def(
+			"to_pauli_term",
+			[](const PTC::ReadOnlyNonOwningPauliTermPacked& self) {
+				return static_cast<PauliTerm<coeff_t>>(self);
+			},
+			"Creates an owning PauliTerm copy from this view.")
+		.def("__len__", &PTC::ReadOnlyNonOwningPauliTermPacked::size)
+		.def("__getitem__", &PTC::ReadOnlyNonOwningPauliTermPacked::get_pauli,
+		     "Gets the Pauli operator at a specific qubit index.")
+		.def(py::self == py::self)
+		.def(
+			"__eq__",
+			[](const PTC::ReadOnlyNonOwningPauliTermPacked& self, const PauliTerm<coeff_t>& other) {
+				return self == other;
+			},
+			"Compares this view with an owning PauliTerm object.")
+		.def("__repr__", [](const PTC::ReadOnlyNonOwningPauliTermPacked& pt) {
+			std::stringstream ss;
+			ss << pt;
+			return ss.str();
+		});
+
+	py::class_<PTC::NonOwningPauliTermPacked>(m, "PackedPauliTermView",
+						  "A mutable, non-owning view of a packed Pauli term.")
+		.def_property("coefficient", &PTC::NonOwningPauliTermPacked::coefficient,
+			      &PTC::NonOwningPauliTermPacked::set_coefficient,
+			      "The coefficient of the term (read/write).")
+		.def_property_readonly("nb_qubits", &PTC::NonOwningPauliTermPacked::size,
+				       "The number of qubits in the term.")
+		.def("pauli_weight", &PTC::NonOwningPauliTermPacked::pauli_weight,
+		     "Calculates the Pauli weight (number of non-identity operators).")
+		.def("expectation_value", &PTC::NonOwningPauliTermPacked::expectation_value,
+		     "Calculates the expectation value of this single term.")
+		.def(
+			"to_pauli_term",
+			[](const PTC::NonOwningPauliTermPacked& self) { return static_cast<PauliTerm<coeff_t>>(self); },
+			"Creates an owning PauliTerm copy from this view.")
+		.def("add_coeff", &PTC::NonOwningPauliTermPacked::add_coeff, "Adds a value to the term's coefficient.")
+		.def("__len__", &PTC::NonOwningPauliTermPacked::size)
+		.def("__getitem__", &PTC::NonOwningPauliTermPacked::get_pauli,
+		     "Gets the Pauli operator at a specific qubit index.")
+		.def("__setitem__", &PTC::NonOwningPauliTermPacked::set_pauli,
+		     "Sets the Pauli operator at a specific qubit index.")
+		.def(py::self == py::self)
+		.def(
+			"__eq__",
+			[](const PTC::NonOwningPauliTermPacked& self, const PauliTerm<coeff_t>& other) {
+				return self == other;
+			},
+			"Compares this view with an owning PauliTerm object.")
+		.def("__repr__", [](const PTC::NonOwningPauliTermPacked& pt) {
+			std::stringstream ss;
+			ss << pt;
+			return ss.str();
+		});
 }
