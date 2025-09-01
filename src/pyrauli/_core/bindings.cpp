@@ -29,7 +29,7 @@ using SchedulingPolicyPtr = std::shared_ptr<SchedulingPolicy>;
 using CoeffTruncatorPtr = std::shared_ptr<CoefficientTruncator<coeff_t>>;
 using WeightTruncatorPtr = std::shared_ptr<WeightTruncator>;
 using NeverTruncatorPtr = std::shared_ptr<NeverTruncator>;
-using KeepNTruncatorPtr = std::shared_ptr<KeepNTruncator>;
+using KeepNTruncatorPtr = std::shared_ptr<KeepNTruncator<coeff_t>>;
 using NeverPolicyPtr = std::shared_ptr<NeverPolicy>;
 using AlwaysBeforePolicyPtr = std::shared_ptr<AlwaysBeforeSplittingPolicy>;
 using AlwaysAfterPolicyPtr = std::shared_ptr<AlwaysAfterSplittingPolicy>;
@@ -212,10 +212,10 @@ PYBIND11_MODULE(_core, m) {
 	py::class_<NeverTruncator, Truncator<coeff_t>, NeverTruncatorPtr>(m, "NeverTruncator",
 									  "A truncator that never removes any terms.")
 		.def(py::init<>());
-	py::class_<KeepNTruncator, KeepNTruncator<coeff_t>, KeepNTruncatorPtr>(
+	py::class_<KeepNTruncator<coeff_t>, Truncator<coeff_t>, KeepNTruncatorPtr>(
 		m, "KeepNTruncator",
 		"A truncator that removes least significant Pauli Terms, when their numbers is above a threshold.")
-		.def(py::init<>());
+		.def(py::init<std::size_t>());
 	py::class_<LambdaTruncator, Truncator<coeff_t>, LambdaTruncatorPtr>(
 		m, "LambdaTruncator", "A truncator that uses a Python function as a predicate.")
 		.def(py::init<LambdaPredicate_t>());
