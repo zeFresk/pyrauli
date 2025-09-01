@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1756418341011,
+  "lastUpdate": 1756718502637,
   "repoUrl": "https://github.com/zeFresk/pyrauli",
   "entries": {
     "Pytest benchmarks": [
@@ -1521,6 +1521,163 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.00013318168260368493",
             "extra": "mean: 2.2308166185818683 msec\nrounds: 409"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "8807862+zeFresk@users.noreply.github.com",
+            "name": "zeFresk",
+            "username": "zeFresk"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "124fb959ffcbf6b02b812ed6fd8201a01991cc2c",
+          "message": "Merge pull request #7 from zeFresk/upgrade-minimum-Qiskit-version-required\n\nbump minimum qiskit version to 2.0.0",
+          "timestamp": "2025-09-01T11:20:21+02:00",
+          "tree_id": "63fad0a2fecb23255ace216ff904c92e59422e2c",
+          "url": "https://github.com/zeFresk/pyrauli/commit/124fb959ffcbf6b02b812ed6fd8201a01991cc2c"
+        },
+        "date": 1756718501230,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmarks/test_benchmark_circuit.py::test_circuit1024x1024_construction",
+            "value": 64.29281019725084,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00015644403128918538",
+            "extra": "mean: 15.553838709678303 msec\nrounds: 62"
+          },
+          {
+            "name": "benchmarks/test_benchmark_circuit.py::test_circuit1024x1024clifford_run",
+            "value": 47623.67594656812,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0000014008460204548254",
+            "extra": "mean: 20.99795910592791 usec\nrounds: 29760"
+          },
+          {
+            "name": "benchmarks/test_benchmark_circuit.py::test_circuit16x32_run_without_truncator",
+            "value": 125495.14402524299,
+            "unit": "iter/sec",
+            "range": "stddev: 8.343324911124499e-7",
+            "extra": "mean: 7.968435812933549 usec\nrounds: 51747"
+          },
+          {
+            "name": "benchmarks/test_benchmark_circuit.py::test_circuit16x32_run_with_truncator",
+            "value": 126948.70295154338,
+            "unit": "iter/sec",
+            "range": "stddev: 8.645022307661555e-7",
+            "extra": "mean: 7.87719745653252 usec\nrounds: 61725"
+          },
+          {
+            "name": "benchmarks/test_benchmark_circuit.py::test_circuit16x32_run_with_noise_model_and_truncators",
+            "value": 8397.851917543487,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000004951440718185956",
+            "extra": "mean: 119.07807018017971 usec\nrounds: 7495"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_1024observable_apply_1024pauli",
+            "value": 1326.2679498749103,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000013066273670028567",
+            "extra": "mean: 753.9954502363697 usec\nrounds: 1266"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_1024observable_apply_1024clifford",
+            "value": 1270.2278475324688,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000010810981684235382",
+            "extra": "mean: 787.2603343900777 usec\nrounds: 1262"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_1024observable_apply_1024cx",
+            "value": 1213.8401131131418,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00008375303463497387",
+            "extra": "mean: 823.8317297286336 usec\nrounds: 1147"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_1024observable_apply_1024unital_noise",
+            "value": 1340.1323100963075,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000015899507359850287",
+            "extra": "mean: 746.1949782616135 usec\nrounds: 1334"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_1024observable_apply_8rz",
+            "value": 82970.62405204705,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000001135113105742839",
+            "extra": "mean: 12.052458462560258 usec\nrounds: 30960"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_1024observable_apply_8amplitude_damping",
+            "value": 149908.91648206578,
+            "unit": "iter/sec",
+            "range": "stddev: 7.739392724639509e-7",
+            "extra": "mean: 6.670717282648321 usec\nrounds: 52869"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_observable_merge",
+            "value": 3231992.037327784,
+            "unit": "iter/sec",
+            "range": "stddev: 3.519841614262908e-8",
+            "extra": "mean: 309.4067028787613 nsec\nrounds: 150331"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_observable_truncate_coefficient",
+            "value": 3110930.7005864917,
+            "unit": "iter/sec",
+            "range": "stddev: 3.740744488568216e-8",
+            "extra": "mean: 321.4472118621845 nsec\nrounds: 143411"
+          },
+          {
+            "name": "benchmarks/test_benchmark_observable.py::test_observable_truncate_lambda",
+            "value": 887468.7720453549,
+            "unit": "iter/sec",
+            "range": "stddev: 3.3011684066717515e-7",
+            "extra": "mean: 1.1268002114545324 usec\nrounds: 117289"
+          },
+          {
+            "name": "benchmarks/test_benchmark_qiskit.py::test_qiskit_1024observable_conversion",
+            "value": 650.994026333709,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0000747060653962607",
+            "extra": "mean: 1.5361124058723472 msec\nrounds: 579"
+          },
+          {
+            "name": "benchmarks/test_benchmark_qiskit.py::test_qiskit_32x32circuit_conversion",
+            "value": 422.6911983914967,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000022116761626436692",
+            "extra": "mean: 2.3657932878786836 msec\nrounds: 396"
+          },
+          {
+            "name": "benchmarks/test_benchmark_qiskit.py::test_qiskit_pbackend_run8x8",
+            "value": 4.1434668021446335,
+            "unit": "iter/sec",
+            "range": "stddev: 0.003490738299742435",
+            "extra": "mean: 241.3437943999952 msec\nrounds: 5"
+          },
+          {
+            "name": "benchmarks/test_benchmark_qiskit.py::test_qiskit_pbackend_parameterized_zz_real_amp8x8",
+            "value": 6.23321962180591,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0005318085170695423",
+            "extra": "mean: 160.43073414285962 msec\nrounds: 7"
+          },
+          {
+            "name": "benchmarks/test_benchmark_qiskit.py::test_qiskit_pbackend_parameterized_zz_real_amp8x8_truncate001_noisy",
+            "value": 448.66996298439835,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00012519088284399283",
+            "extra": "mean: 2.228809776674917 msec\nrounds: 403"
           }
         ]
       }
