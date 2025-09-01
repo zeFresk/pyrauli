@@ -55,6 +55,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#convert-qiskit-objects-to-pyrauli-objects">Convert Qiskit objects to <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-pyrauli-as-a-qiskit-compatible-backend">Use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a Qiskit-compatible backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-the-pyrauliestimator-qiskit-primitive">Use the <code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code> Qiskit Primitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qiskit-and-reverse-qubit-ordering">Qiskit and reverse qubit ordering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="how_to_noise.html">Simulate Noisy Circuits</a></li>
@@ -122,6 +123,10 @@ recipes for common integration tasks.</p>
 <p>The <a class="reference internal" href="../reference/api.html#pyrauli.PBackend" title="pyrauli.PBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">PBackend</span></code></a> class allows you to use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a backend within the
 Qiskit ecosystem, enabling you to <strong>transpile</strong> and run circuits defined in Qiskit on the
 <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> simulator.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If your Qiskit circuit uses unsupported gates, you need to transpile it, as you would for any other backend.</p>
+</div>
 <p>Here is an example of transpilation to <a class="reference internal" href="../reference/api.html#pyrauli.PBackend" title="pyrauli.PBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">PBackend</span></code></a>, relying on Qiskit <code class="docutils literal notranslate"><span class="pre">PassManager</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">PBackend</span><span class="p">(</span><span class="n">num_qubits</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">pm</span> <span class="o">=</span> <span class="n">generate_preset_pass_manager</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -152,11 +157,20 @@ the hood.</p>
 <span class="n">qc</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">),</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;IZ&quot;</span><span class="p">)]</span>
+<span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;IZ&quot;</span><span class="p">),</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)]</span>
 
 <span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">qc</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">)),</span> <span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">))])</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
+</div>
+</section>
+<section id="qiskit-and-reverse-qubit-ordering">
+<h2>Qiskit and reverse qubit ordering<a class="headerlink" href="#qiskit-and-reverse-qubit-ordering" title="Link to this heading"></a></h2>
+<p>Qiskit uses reverse qubit ordering, while <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> use normal ordering. <a class="reference internal" href="../reference/api.html#pyrauli.from_qiskit" title="pyrauli.from_qiskit"><code class="xref py py-class docutils literal notranslate"><span class="pre">from_qiskit</span></code></a> will not reverse the order of the qubit or Observable unless the <cite>reverse=True</cite> parameter is used.</p>
+<p>However, when a qiskit observable is passed to the <cite>.run</cite> method, it will be reversed so that the output result match the output you would get on any other qiskit backend.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You don’t need to do anything different if using the qiskit compatible backend and qiskit observable. However, you may need to reverse the observable ordering when using <a class="reference internal" href="../reference/api.html#pyrauli.Circuit" title="pyrauli.Circuit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></a> and <a class="reference internal" href="../reference/api.html#pyrauli.from_qiskit" title="pyrauli.from_qiskit"><code class="xref py py-class docutils literal notranslate"><span class="pre">from_qiskit</span></code></a> directly.</p>
 </div>
 </section>
 </section>

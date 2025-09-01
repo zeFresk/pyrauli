@@ -16,6 +16,7 @@
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -115,6 +116,14 @@ number of qubits and then add gates sequentially. Finally, you run the circuit o
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expectation value of ZI: </span><span class="si">{</span><span class="n">final_observable</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="../reference/api.html#pyrauli.Circuit" title="pyrauli.Circuit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></a> supports all Pauli gates (I, X, Y, Z), the Hadamard gate (H), the CNOT gate (CX) and the RZ(<span class="math notranslate nohighlight">\(\theta\)</span>) gate.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For more complex gates, you may use the Qiskit transpiler on <code class="xref py py-class docutils literal notranslate"><span class="pre">Pbackend</span></code>. See <a class="reference internal" href="how_to_qiskit.html"><span class="doc">Integrate with Qiskit</span></a>.</p>
 </div>
 </section>
 </section>

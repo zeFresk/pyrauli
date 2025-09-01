@@ -53,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="how_to_observables.html">Work with Observables</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Manage Simulation Complexity</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#remove-small-coefficients">Remove small coefficients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#available-truncators">Available truncators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-a-custom-truncator-with-your-own-logic">Using a custom Truncator with your own logic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controlling-when-truncation-is-applied">Controlling when truncation is applied</a></li>
 </ul>
@@ -105,7 +106,7 @@ provides powerful tools (<a class="reference internal" href="../reference/api.ht
 manage this complexity automatically during a <a class="reference internal" href="../reference/api.html#pyrauli.Circuit.run" title="pyrauli.Circuit.run"><code class="xref py py-class docutils literal notranslate"><span class="pre">run()</span></code></a> call.</p>
 <section id="remove-small-coefficients">
 <h2>Remove small coefficients<a class="headerlink" href="#remove-small-coefficients" title="Link to this heading"></a></h2>
-<p><strong>Solution:</strong> Use a <a class="reference internal" href="../reference/api.html#pyrauli.CoefficientTruncator" title="pyrauli.CoefficientTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoefficientTruncator</span></code></a>.</p>
+<p>Use a <a class="reference internal" href="../reference/api.html#pyrauli.CoefficientTruncator" title="pyrauli.CoefficientTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoefficientTruncator</span></code></a>.</p>
 <p>This truncator removes any Pauli terms whose coefficient magnitude is below a
 given threshold.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">obs</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">([</span><span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">),</span> <span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)])</span>
@@ -115,9 +116,20 @@ given threshold.</p>
 </pre></div>
 </div>
 </section>
+<section id="available-truncators">
+<h2>Available truncators<a class="headerlink" href="#available-truncators" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.NeverTruncator" title="pyrauli.NeverTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeverTruncator</span></code></a>: never truncate observable.</p></li>
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.CoefficientTruncator" title="pyrauli.CoefficientTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoefficientTruncator</span></code></a>: truncate terms with absolute coefficient value below set threshold.</p></li>
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.WeightTruncator" title="pyrauli.WeightTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightTruncator</span></code></a>: truncate terms with Pauli weight above set threshold.</p></li>
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.LambdaTruncator" title="pyrauli.LambdaTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">LambdaTruncator</span></code></a>: truncate terms if they match a predicate (Python function or lambda).</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">KeepNTruncator</span></code>: truncate least significant terms if their number exceed a threshold. (Keep at most N different terms)</p></li>
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.MultiTruncator" title="pyrauli.MultiTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiTruncator</span></code></a>: Combine a list of truncators into one.</p></li>
+</ul>
+</section>
 <section id="using-a-custom-truncator-with-your-own-logic">
 <h2>Using a custom Truncator with your own logic<a class="headerlink" href="#using-a-custom-truncator-with-your-own-logic" title="Link to this heading"></a></h2>
-<p><strong>Solution:</strong> Use a <a class="reference internal" href="../reference/api.html#pyrauli.LambdaTruncator" title="pyrauli.LambdaTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">LambdaTruncator</span></code></a>.</p>
+<p>Use a <a class="reference internal" href="../reference/api.html#pyrauli.LambdaTruncator" title="pyrauli.LambdaTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">LambdaTruncator</span></code></a>.</p>
 <p>This allows you to provide a custom Python function that filters the terms.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">obs</span> <span class="o">=</span> <span class="n">Observable</span><span class="p">([</span><span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;IXI&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">PauliTerm</span><span class="p">(</span><span class="s2">&quot;IZY&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
 <span class="n">truncator</span> <span class="o">=</span> <span class="n">LambdaTruncator</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pt</span><span class="p">:</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">pt</span><span class="p">))</span>
@@ -127,12 +139,12 @@ given threshold.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This truncator removes <a class="reference internal" href="../reference/api.html#pyrauli.PauliTerm" title="pyrauli.PauliTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">PauliTerm</span></code></a> containing <span class="math notranslate nohighlight">\(Y\)</span>. However, this is not an efficient.</p>
+<p>This truncator removes <a class="reference internal" href="../reference/api.html#pyrauli.PauliTerm" title="pyrauli.PauliTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">PauliTerm</span></code></a> containing <span class="math notranslate nohighlight">\(Y\)</span>. However, this is not very efficient.</p>
 </div>
 </section>
 <section id="controlling-when-truncation-is-applied">
 <h2>Controlling when truncation is applied<a class="headerlink" href="#controlling-when-truncation-is-applied" title="Link to this heading"></a></h2>
-<p><strong>Solution:</strong> Use a <a class="reference internal" href="../reference/api.html#pyrauli.SchedulingPolicy" title="pyrauli.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a>.</p>
+<p>Use a <a class="reference internal" href="../reference/api.html#pyrauli.SchedulingPolicy" title="pyrauli.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a>.</p>
 <p>Scheduling Policies give you fine-grained control over when a <a class="reference internal" href="../reference/api.html#pyrauli.Truncator" title="pyrauli.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a> is
 applied during the simulation. It can query a <a class="reference internal" href="../reference/api.html#pyrauli.SimulationState" title="pyrauli.SimulationState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationState</span></code></a> object and other information to make a decision.</p>
 <p>The following example uses a <a class="reference internal" href="../reference/api.html#pyrauli.LambdaPolicy" title="pyrauli.LambdaPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">LambdaPolicy</span></code></a>

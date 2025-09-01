@@ -12,7 +12,7 @@ manage this complexity automatically during a :py:class:`~pyrauli.Circuit.run()`
 Remove small coefficients
 -------------------------
 
-**Solution:** Use a :py:class:`~pyrauli.CoefficientTruncator`.
+Use a :py:class:`~pyrauli.CoefficientTruncator`.
 
 This truncator removes any Pauli terms whose coefficient magnitude is below a
 given threshold.
@@ -23,10 +23,21 @@ given threshold.
    :end-before: # [truncator_coeff]
    :dedent: 4
 
+Available truncators
+--------------------
+
+* :py:class:`~pyrauli.NeverTruncator`: never truncate observable.
+* :py:class:`~pyrauli.CoefficientTruncator`: truncate terms with absolute coefficient value below set threshold.
+* :py:class:`~pyrauli.WeightTruncator`: truncate terms with Pauli weight above set threshold.
+* :py:class:`~pyrauli.LambdaTruncator`: truncate terms if they match a predicate (Python function or lambda).
+* :py:class:`~pyrauli.KeepNTruncator`: truncate least significant terms if their number exceed a threshold. (Keep at most N different terms)
+* :py:class:`~pyrauli.MultiTruncator`: Combine a list of truncators into one.
+
+
 Using a custom Truncator with your own logic
 --------------------------------------------
 
-**Solution:** Use a :py:class:`~pyrauli.LambdaTruncator`.
+Use a :py:class:`~pyrauli.LambdaTruncator`.
 
 This allows you to provide a custom Python function that filters the terms.
 
@@ -37,12 +48,12 @@ This allows you to provide a custom Python function that filters the terms.
    :dedent: 4
 
 .. NOTE::
-   This truncator removes :py:class:`~pyrauli.PauliTerm` containing :math:`Y`. However, this is not an efficient.
+   This truncator removes :py:class:`~pyrauli.PauliTerm` containing :math:`Y`. However, this is not very efficient.
 
 Controlling when truncation is applied
 --------------------------------------
 
-**Solution:** Use a :py:class:`~pyrauli.SchedulingPolicy`.
+Use a :py:class:`~pyrauli.SchedulingPolicy`.
 
 Scheduling Policies give you fine-grained control over when a :py:class:`~pyrauli.Truncator` is
 applied during the simulation. It can query a :py:class:`~pyrauli.SimulationState` object and other information to make a decision.
