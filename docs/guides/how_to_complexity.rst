@@ -30,6 +30,7 @@ Available truncators
 * :py:class:`~pyrauli.CoefficientTruncator`: truncate terms with absolute coefficient value below set threshold.
 * :py:class:`~pyrauli.WeightTruncator`: truncate terms with Pauli weight above set threshold.
 * :py:class:`~pyrauli.LambdaTruncator`: truncate terms if they match a predicate (Python function or lambda).
+* :py:class:`~pyrauli.KeepNTruncator`: truncate least significant terms if their number exceed a threshold. (Keep at most N different terms)
 * :py:class:`~pyrauli.MultiTruncator`: Combine a list of truncators into one.
 
 
