@@ -7,7 +7,7 @@ from qiskit.circuit import QuantumCircuit
 from qiskit.quantum_info import SparsePauliOp
 import pyrauli
 
-def from_qiskit(qiskit_obj, noise_model: pyrauli.NoiseModel = None):
+def from_qiskit(qiskit_obj, noise_model: pyrauli.NoiseModel = None, reverse=False):
     """
     Converts a Qiskit object to its pyrauli equivalent.
 
@@ -21,7 +21,7 @@ def from_qiskit(qiskit_obj, noise_model: pyrauli.NoiseModel = None):
     if isinstance(qiskit_obj, QuantumCircuit):
         return from_qiskit_qc(qiskit_obj, noise_model=noise_model)
     elif isinstance(qiskit_obj, SparsePauliOp):
-        return from_qiskit_obs(qiskit_obj)
+        return from_qiskit_obs(qiskit_obj, reverse=reverse)
     else:
         raise ValueError(f"Can't convert object of type {type(qiskit_obj)} to pyrauli object.")
 
@@ -51,7 +51,7 @@ def from_qiskit_qc(qiskit_circuit: QuantumCircuit, noise_model: pyrauli.NoiseMod
 
     return pyrauli_circuit
 
-def from_qiskit_obs(qiskit_obs: SparsePauliOp) -> pyrauli.Observable:
+def from_qiskit_obs(qiskit_obs: SparsePauliOp, reverse=False) -> pyrauli.Observable:
     """
     Translates a Qiskit SparsePauliOp to a pyrauli.Observable.
     """
@@ -59,6 +59,11 @@ def from_qiskit_obs(qiskit_obs: SparsePauliOp) -> pyrauli.Observable:
     for pauli_string, coeff in zip(qiskit_obs.paulis, qiskit_obs.coeffs):
         if coeff.imag != 0.:
             logging.warning("pyrauli observables don't support complex coefficients.")
-        pt = pyrauli.PauliTerm(pauli_string.to_label(), float(coeff.real))
+
+        ps = pauli_string.to_label()
+        if reverse:
+            ps = ps[::-1]
+
+        pt = pyrauli.PauliTerm(ps, float(coeff.real))
         pts.append(pt)
     return pyrauli.Observable(pts)

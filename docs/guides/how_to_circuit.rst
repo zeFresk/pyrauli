@@ -19,3 +19,9 @@ number of qubits and then add gates sequentially. Finally, you run the circuit o
    :dedent: 4
 
 
+.. NOTE::
+        :py:class:`~pyrauli.Circuit` supports all Pauli gates (I, X, Y, Z), the Hadamard gate (H), the CNOT gate (CX) and the RZ(:math:`\theta`) gate. 
+
+
+.. TIP::
+        For more complex gates, you may use the Qiskit transpiler on :py:class:`~Pbackend`. See :doc:`../guides/how_to_qiskit`.

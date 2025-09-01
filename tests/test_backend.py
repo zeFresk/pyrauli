@@ -1,3 +1,4 @@
+from dataclasses import replace
 import pytest
 import numpy as np
 
@@ -63,7 +64,7 @@ def test_estimator_multiple_observables_per_pub():
     qc.rz(np.pi/2, 0)
     qc.rz(np.pi/3, 1)
     qc.h([0, 1])
-    observables = [SparsePauliOp("ZI"), SparsePauliOp("IZ")]
+    observables = [SparsePauliOp("IZ"), SparsePauliOp("ZI")]
     
     job = estimator.run([(qc, observables)])
     result = job.result()
@@ -82,7 +83,7 @@ def test_estimator_multiobs_multiparams():
     qc.rz(thetas[0], 0)
     qc.rz(thetas[1], 1)
     qc.h([0, 1])
-    observables = [SparsePauliOp("ZI"), SparsePauliOp("IZ")]
+    observables = [SparsePauliOp("IZ"), SparsePauliOp("ZI")]
     
     job = estimator.run([(qc, observables, (np.pi/2, np.pi/3)), (qc, observables, (np.pi/3, np.pi/2))])
     result = job.result()
@@ -145,6 +146,31 @@ def test_random_circuits_match_aer_simulator():
     for i in range(8):
         qc = random_circuit(num_qubits=4, depth=8, seed=i, max_operands=2)
         obs = SparsePauliOp("Z" * 4)
+        transpiled_qc = pm.run(qc)
+        
+        # Run on pyrauli
+        pyrauli_job = pyrauli_estimator.run([(transpiled_qc, obs)])
+        pyrauli_result = pyrauli_job.result()[0].data.evs[0]
+        
+        # Run on Aer
+        qiskit_job = qiskit_estimator.run([(transpiled_qc, obs)])
+        qiskit_result = qiskit_job.result()
+        qiskit_ev = qiskit_result[0].data.evs #.... 
+        
+        assert pyrauli_result == pytest.approx(qiskit_ev, abs=1e-6)
+
+def test_random_circuits_random_obs_match_aer_simulator():
+    """Compares PyrauliEstimator against qiskit for many random circuits."""
+    pyrauli_estimator = PyrauliEstimator()
+    qiskit_estimator = StatevectorEstimator()
+    
+    transpilation_backend = PBackend(num_qubits=4)
+    pm = generate_preset_pass_manager(backend=transpilation_backend, optimization_level=0)
+
+    np.random.seed(42) # for reproducibility
+    for i in range(8):
+        qc = random_circuit(num_qubits=4, depth=8, seed=i, max_operands=2)
+        obs = SparsePauliOp("".join(np.random.choice(["I", "X", "Y", "Z"], replace=True, size=4)))
         transpiled_qc = pm.run(qc)
         
         # Run on pyrauli

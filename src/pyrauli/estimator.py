@@ -122,7 +122,7 @@ class PyrauliEstimator(BaseEstimatorV2):
         """
         exp_values = []
         for obs in observables:
-                pyrauli_obs = from_qiskit(obs)
+                pyrauli_obs = from_qiskit(obs, reverse=True)
                 final_observable = pyrauli_circuit.run(pyrauli_obs)
                 exp_values.append(final_observable.expectation_value())
         return exp_values
