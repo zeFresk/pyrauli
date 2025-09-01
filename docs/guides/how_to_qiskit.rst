@@ -27,6 +27,9 @@ The :py:class:`~pyrauli.PBackend` class allows you to use ``pyrauli`` as a backe
 Qiskit ecosystem, enabling you to **transpile** and run circuits defined in Qiskit on the
 ``pyrauli`` simulator.
 
+.. IMPORTANT::
+   If your Qiskit circuit uses unsupported gates, you need to transpile it, as you would for any other backend.
+
 Here is an example of transpilation to :py:class:`~pyrauli.PBackend`, relying on Qiskit ``PassManager``:
 
 .. literalinclude:: /../tests/test_backend.py
@@ -56,3 +59,13 @@ the hood.
    :start-after: # [estimator_complex]
    :end-before: # [estimator_complex]
    :dedent: 4
+
+Qiskit and reverse qubit ordering
+---------------------------------
+
+Qiskit uses reverse qubit ordering, while ``pyrauli`` use normal ordering. :py:class:`~pyrauli.from_qiskit` will not reverse the order of the qubit or Observable unless the `reverse=True` parameter is used.
+
+However, when a qiskit observable is passed to the `.run` method, it will be reversed so that the output result match the output you would get on any other qiskit backend.
+
+.. IMPORTANT::
+   You don't need to do anything different if using the qiskit compatible backend and qiskit observable. However, you may need to reverse the observable ordering when using :py:class:`~pyrauli.Circuit` and :py:class:`~pyrauli.from_qiskit` directly.
