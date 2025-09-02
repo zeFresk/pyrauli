@@ -85,6 +85,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.CompressionResult.nb_terms_merged"><code class="docutils literal notranslate"><span class="pre">CompressionResult.nb_terms_merged</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#pyrauli.KeepNTruncator"><code class="docutils literal notranslate"><span class="pre">KeepNTruncator</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.LambdaPolicy"><code class="docutils literal notranslate"><span class="pre">LambdaPolicy</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.LambdaTruncator"><code class="docutils literal notranslate"><span class="pre">LambdaTruncator</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.MultiTruncator"><code class="docutils literal notranslate"><span class="pre">MultiTruncator</span></code></a></li>
@@ -384,6 +385,13 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 <dd><p>Number of terms removed/merged.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrauli.KeepNTruncator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">KeepNTruncator</span></span><a class="headerlink" href="#pyrauli.KeepNTruncator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
+<p>A truncator that removes least significant Pauli Terms, when their numbers is above a threshold.</p>
 </dd></dl>
 
 <dl class="py class">
