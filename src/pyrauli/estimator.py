@@ -16,6 +16,7 @@ from qiskit.result import Result
 from qiskit.primitives.primitive_job import PrimitiveJob
 from qiskit.primitives.containers import PubResult, PrimitiveResult, DataBin
 from qiskit.quantum_info import SparsePauliOp
+from qiskit.circuit import ParameterVector
 
 from . import Circuit, Observable, NoiseModel, Truncator, NeverTruncator, SchedulingPolicy, AlwaysAfterSplittingPolicy
 from .converters import from_qiskit
@@ -95,37 +96,43 @@ class PyrauliEstimator(BaseEstimatorV2):
         trunc = self._truncator if "truncator" not in options else options.get("truncator")
         trunc_pol = self._truncate_policy if "truncate_policy" not in options else options.get("truncate_policy")
         merge_pol = self._merge_policy if "merge_policy" not in options else options.get("merge_policy")
-        print(nm, self._noise_model)
 
         results = []
         for pub in pubs:
             circuit, observables, parameter_values = self._unpack_pub(pub)
 
             # Bind parameters if they exist
-            bound_circuit = circuit.assign_parameters(parameter_values) if parameter_values is not None else circuit
+            bound_circuits = self._assign_parameters(circuit, parameter_values)
             
             # Convert to pyrauli objects and simulate
-            pyrauli_circuit = from_qiskit(bound_circuit, noise_model=nm)
-            pyrauli_circuit.set_truncator(trunc)
-            pyrauli_circuit.set_merge_policy(merge_pol)
-            pyrauli_circuit.set_truncate_policy(trunc_pol)
-            exp_values = self._simulate_observables(pyrauli_circuit, observables)
+            pyrauli_circuits = [from_qiskit(bqc, noise_model=nm) for bqc in bound_circuits]
+            for pyrauli_circuit in pyrauli_circuits:
+                pyrauli_circuit.set_truncator(trunc)
+                pyrauli_circuit.set_merge_policy(merge_pol)
+                pyrauli_circuit.set_truncate_policy(trunc_pol)
+
+
+            exp_values = self._simulate_observables(pyrauli_circuits, observables, trunc, merge_pol, trunc_pol) 
             
             # Format the result for this pub
-            results.append({"success": True, "data": {"evs": exp_values}, "metadata": {}, 'shots': 1})
+            results.append({"success": True, "data": {"evs": np.atleast_1d(np.squeeze(np.array(exp_values)))}, "metadata": {}, 'shots': 1})
             
         return Result.from_dict({"job_id": job_id, "results": results, "success": True, "backend_name": self.name})
 
-    def _simulate_observables(self, pyrauli_circuit: Circuit, observables: List[SparsePauliOp]) -> List[float]:
+    def _simulate_observables(self, pyrauli_circuits: List[Circuit], observables: List[SparsePauliOp], trunc = None, merge_pol = None, trunc_pol = None) -> List[float]:
         """
         Simulates a list of observables for a given pyrauli circuit.
         """
-        exp_values = []
-        for obs in observables:
+        ret = []
+        for olist in observables:
+            exp_values = []
+            for obs in olist:
                 pyrauli_obs = from_qiskit(obs, reverse=True)
-                final_observable = pyrauli_circuit.run(pyrauli_obs)
-                exp_values.append(final_observable.expectation_value())
-        return exp_values
+                for pqc in pyrauli_circuits: 
+                    final_observable = pqc.run(pyrauli_obs)
+                    exp_values.append(final_observable.expectation_value())
+            ret += [exp_values]
+        return ret
 
     def _unpack_pub(self, pub: Tuple) -> Tuple:
         """
@@ -133,6 +140,16 @@ class PyrauliEstimator(BaseEstimatorV2):
         """
         circuit, observables, params = (pub[0], pub[1], pub[2] if len(pub) > 2 else None)
         return circuit, observables if isinstance(observables, list) else [observables], params
+
+    def _assign_parameters(self, circuit, params):
+        if params is None:
+            return [circuit]
+        elif (hasattr(params, 'ndim') and params.ndim == 2) or ((isinstance(params, list) or hasattr(params, 'ndim')) and len(params) > 0 and isinstance(params[0], (list, tuple, dict, ParameterVector))):
+            return [circuit.assign_parameters(e) for e in params]
+        else:
+            return [circuit.assign_parameters(params)]
+
+
 
 class PJob(JobV1):
     """
