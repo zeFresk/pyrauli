@@ -72,8 +72,7 @@ class PyrauliEstimator(BaseEstimatorV2):
         Run a list of pubs (Primitive Unified Blocs) on the estimator.
 
         Args:
-            run_input: A list of pubs, where each pub is a tuple of
-                       (circuit, observables, parameter_values).
+            run_input: A list of pubs, where each pub is a tuple of (circuit, observables, parameter_values). See qiskit documentation on PUBs
             **options: Additional circuit options: "noise_model", "truncator", 
                        "truncate_policy", "merge_policy".
 
