@@ -7,9 +7,10 @@ managing simulation jobs.
 """
 import uuid
 import numpy as np
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional, Any, Callable, Dict
 from concurrent.futures import ThreadPoolExecutor
 
+from qiskit import QuantumCircuit
 from qiskit.primitives import BaseEstimatorV2
 from qiskit.providers import BackendV2, JobV1, Options, JobStatus
 from qiskit.result import Result
@@ -44,7 +45,11 @@ class PyrauliEstimator(BaseEstimatorV2):
         result = job.result()
         print(result[0].data.evs[0])
     """
-    def __init__(self, noise_model: NoiseModel = None, truncator: Truncator = NeverTruncator(), merge_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy(), truncate_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy()):
+    def __init__(self, 
+                 noise_model: Optional[NoiseModel] = None, 
+                 truncator: Truncator = NeverTruncator(), 
+                 merge_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy(), 
+                 truncate_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy()) -> None:
         """
         Initializes the PyrauliEstimator.
 
@@ -60,18 +65,17 @@ class PyrauliEstimator(BaseEstimatorV2):
         self._truncator = truncator or NeverTruncator()
         self._merge_policy = merge_policy or AlwaysAfterSplittingPolicy()
         self._truncate_policy = truncate_policy or AlwaysAfterSplittingPolicy()
-
         self._executor = ThreadPoolExecutor(max_workers=1)
 
-
-    def run(self, run_input: List[Tuple], **options) -> 'PJob':
+    def run(self, run_input: Union[List[Tuple], Tuple], **options: Any) -> 'PJob':
         """
         Run a list of pubs (Primitive Unified Blocs) on the estimator.
 
         Args:
             run_input: A list of pubs, where each pub is a tuple of
-                      (circuit, observables, parameter_values).
-            **options: Additional circuit options: "noise_model", "truncator", "truncate_policy", "merge_policy".
+                       (circuit, observables, parameter_values).
+            **options: Additional circuit options: "noise_model", "truncator", 
+                       "truncate_policy", "merge_policy".
 
         Returns:
             A PJob object that represents the asynchronous execution.
@@ -81,13 +85,14 @@ class PyrauliEstimator(BaseEstimatorV2):
         job.submit()
         return job
 
-    def _run_job(self, job_id: str, pubs: List[Tuple], **options) -> Result:
+    def _run_job(self, job_id: str, pubs: List[Tuple], **options: Any) -> Result:
         """
         The core simulation logic that is executed by the PJob.
 
         Args:
             job_id: The ID for the job.
             pubs: The list of pubs to execute.
+            **options: Runtime options passed to the run method.
 
         Returns:
             A Qiskit Result object containing the simulation results.
@@ -111,15 +116,19 @@ class PyrauliEstimator(BaseEstimatorV2):
                 pyrauli_circuit.set_merge_policy(merge_pol)
                 pyrauli_circuit.set_truncate_policy(trunc_pol)
 
-
-            exp_values = self._simulate_observables(pyrauli_circuits, observables) 
+            exp_values = self._simulate_observables(pyrauli_circuits, observables, trunc, merge_pol, trunc_pol) 
             
             # Format the result for this pub
             results.append({"success": True, "data": {"evs": np.atleast_1d(np.squeeze(np.array(exp_values)))}, "metadata": {}, 'shots': 1})
             
         return Result.from_dict({"job_id": job_id, "results": results, "success": True, "backend_name": self.name})
 
-    def _simulate_observables(self, pyrauli_circuits: List[Circuit], observables: List[SparsePauliOp]) -> List[float]:
+    def _simulate_observables(self, 
+                              pyrauli_circuits: List[Circuit], 
+                              observables: List[SparsePauliOp], 
+                              trunc: Optional[Truncator] = None, 
+                              merge_pol: Optional[SchedulingPolicy] = None, 
+                              trunc_pol: Optional[SchedulingPolicy] = None) -> List[List[float]]:
         """
         Simulates a list of observables for a given pyrauli circuit.
         """
@@ -134,22 +143,35 @@ class PyrauliEstimator(BaseEstimatorV2):
             ret += [exp_values]
         return ret
 
-    def _unpack_pub(self, pub: Tuple) -> Tuple:
+    def _unpack_pub(self, pub: Tuple) -> Tuple[QuantumCircuit, List[SparsePauliOp], Optional[Any]]:
         """
         Unpacks a pub into its components, ensuring observables are always a list.
         """
         circuit, observables, params = (pub[0], pub[1], pub[2] if len(pub) > 2 else None)
         return circuit, observables if isinstance(observables, list) else [observables], params
 
-    def _assign_parameters(self, circuit, params):
+    def _assign_parameters(self, circuit: QuantumCircuit, params: Optional[Any]) -> List[QuantumCircuit]:
+        """
+        Assigns parameter values to a circuit.
+
+        This method handles different shapes for the parameter values, including
+        no parameters, a single set of parameters, or multiple sets for
+        parameter sweeping.
+
+        Args:
+            circuit: The circuit with unbound parameters.
+            params: The parameter values to bind. Can be a 1D array for a single
+                binding or a 2D array for multiple bindings.
+
+        Returns:
+            A list of circuits with bound parameters.
+        """
         if params is None:
             return [circuit]
         elif (hasattr(params, 'ndim') and params.ndim == 2) or ((isinstance(params, list) or hasattr(params, 'ndim')) and len(params) > 0 and isinstance(params[0], (list, tuple, dict, ParameterVector))):
             return [circuit.assign_parameters(e) for e in params]
         else:
             return [circuit.assign_parameters(params)]
-
-
 
 class PJob(JobV1):
     """
@@ -158,7 +180,12 @@ class PJob(JobV1):
     This class wraps the execution of the simulation in a manner consistent
     with Qiskit's job management system.
     """
-    def __init__(self, backend, job_id, fn, pubs, **options):
+    def __init__(self, 
+                 backend: BackendV2, 
+                 job_id: str, 
+                 fn: Callable[..., Result], 
+                 pubs: List[Tuple], 
+                 **options: Any) -> None:
         """
         Initializes the PJob.
 
@@ -172,11 +199,11 @@ class PJob(JobV1):
         super().__init__(backend, job_id)
         self._fn = fn
         self._pubs = pubs
-        self._result = None
+        self._result: Optional[Result] = None
         self._status = JobStatus.INITIALIZING
         self._options = options
 
-    def submit(self):
+    def submit(self) -> None:
         """
         Submit the job for execution.
         
@@ -190,7 +217,7 @@ class PJob(JobV1):
             self._status = JobStatus.ERROR
             raise e
 
-    def result(self) -> Result:
+    def result(self) -> Optional[List[Result]]:
         """Return the result of the job."""
         return self._result.results if self._result is not None else None
 
@@ -199,17 +226,38 @@ class PJob(JobV1):
         return self._status
 
     def running(self) -> bool:
-        """Return whether the job is actively running."""
+        """
+        Return whether the job is actively running.
+
+        Returns:
+            True if the job's status is 'RUNNING', False otherwise.
+        """
         return self._status == JobStatus.RUNNING
 
     def cancelled(self) -> bool:
-        """Return whether the job has been cancelled."""
+        """
+        Return whether the job has been cancelled.
+
+        Returns:
+            True if the job's status is 'CANCELLED', False otherwise.
+        """
         return self._status == JobStatus.CANCELLED
 
     def done(self) -> bool:
-        """Return whether the job has successfully run."""
+        """
+        Return whether the job has successfully run.
+
+        Returns:
+            True if the job's status is 'DONE', False otherwise.
+        """
         return self._status == JobStatus.DONE
 
     def in_final_state(self) -> bool:
-        """Return whether the job is in a final job state."""
+        """
+        Return whether the job is in a final job state.
+
+        Returns:
+            True if the job is in a final state (DONE, ERROR, or
+            CANCELLED), False otherwise.
+        """
         return self._status in {JobStatus.DONE, JobStatus.ERROR, JobStatus.CANCELLED}
