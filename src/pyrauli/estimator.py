@@ -112,14 +112,14 @@ class PyrauliEstimator(BaseEstimatorV2):
                 pyrauli_circuit.set_truncate_policy(trunc_pol)
 
 
-            exp_values = self._simulate_observables(pyrauli_circuits, observables, trunc, merge_pol, trunc_pol) 
+            exp_values = self._simulate_observables(pyrauli_circuits, observables) 
             
             # Format the result for this pub
             results.append({"success": True, "data": {"evs": np.atleast_1d(np.squeeze(np.array(exp_values)))}, "metadata": {}, 'shots': 1})
             
         return Result.from_dict({"job_id": job_id, "results": results, "success": True, "backend_name": self.name})
 
-    def _simulate_observables(self, pyrauli_circuits: List[Circuit], observables: List[SparsePauliOp], trunc = None, merge_pol = None, trunc_pol = None) -> List[float]:
+    def _simulate_observables(self, pyrauli_circuits: List[Circuit], observables: List[SparsePauliOp]) -> List[float]:
         """
         Simulates a list of observables for a given pyrauli circuit.
         """
