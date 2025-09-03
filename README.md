@@ -58,7 +58,7 @@ final_observable = circuit.run(observable)
 
 # 5. Retrieve the final expectation value
 # The expectation value is calculated with respect to the initial |00...0> state
-expectation_value = final_observable.get_expectation_value()
+expectation_value = final_observable.expectation_value()
 
 print(f"Final observable: {final_observable}")
 print(f"Expectation value: {expectation_value}")

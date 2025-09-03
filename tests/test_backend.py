@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 
 # Conditional imports for Qiskit and Aer
-qiskit = pytest.importorskip("qiskit", minversion="1.0", reason="Qiskit >= 1.0 is required")
+qiskit = pytest.importorskip("qiskit", minversion="2.0", reason="Qiskit >= 2.0 is required")
 
 from qiskit.circuit import QuantumCircuit, Parameter, ParameterVector
 from qiskit.circuit.random import random_circuit
@@ -68,7 +68,11 @@ def test_estimator_multiple_observables_per_pub():
     
     job = estimator.run([(qc, observables)])
     result = job.result()
-    
+
+    jobq = StatevectorEstimator().run([(qc, observables)])
+    resultq = jobq.result()[0]
+    assert resultq.data.evs.shape == result[0].data.evs.shape
+
     expected_evs = [p1_to_ev(0.5), p1_to_ev(0.25)]
     assert result[0].data.evs == pytest.approx(expected_evs, abs=1e-6)
 
@@ -92,6 +96,48 @@ def test_estimator_multiobs_multiparams():
     assert result[0].data.evs == pytest.approx([p1_to_ev(0.5), p1_to_ev(0.25)], abs=1e-6)
     assert result[1].data.evs == pytest.approx([p1_to_ev(0.25), p1_to_ev(0.5)], abs=1e-6)
 
+def test_backend_transpile_batch_params_from_doc():
+    """Tests a single circuit against a list of observables in one PUB."""
+    # [qiskit_multiparameters]
+    backend = PBackend(num_qubits=2)
+    pm = generate_preset_pass_manager(optimization_level=1, backend=backend)
+
+    circuit = QuantumCircuit(2)
+    circuit.h(0)
+    circuit.cx(0, 1)
+    circuit.ry(Parameter("a"), 0)
+    circuit.rz(Parameter("b"), 0)
+    circuit.cx(0, 1)
+    circuit.h(0)
+
+    transpiled_circuit = pm.run(circuit)
+
+    params = np.vstack(
+    [
+        np.linspace(-np.pi, np.pi, 100),
+        np.linspace(-4 * np.pi, 4 * np.pi, 100),
+    ]
+    ).T
+
+    observables = [
+        [SparsePauliOp(["XX", "IY"], [0.5, 0.5])],
+        [SparsePauliOp("XX")],
+        [SparsePauliOp("IY")],
+    ]    
+
+    estimator_pub = (transpiled_circuit, observables, params)
+
+    job = backend.run([estimator_pub])
+    result = job.result()
+    # [qiskit_multiparameters]
+
+    jobq = StatevectorEstimator().run([estimator_pub])
+    resultq = jobq.result()[0]
+    assert resultq.data.evs.shape == result[0].data.evs.shape
+
+
+    assert result[0].data.evs == pytest.approx(resultq.data.evs, abs=1e-4)
+    
 def test_noise_model_is_correctly_applied():
     """Confirms the noise model passed to the estimator alters the result."""
     p = 0.1

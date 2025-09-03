@@ -93,14 +93,14 @@ class PBackend(BackendV2):
         """Default options for the backend."""
         return Options()
 
-    def run(self, run_input: Union[QuantumCircuit, List[QuantumCircuit]], **options) -> JobV1:
+    def run(self, run_input: Union[List[Tuple], Tuple], **options) -> JobV1:
         """
         Run a circuit or a list of circuits on the backend.
 
         This backend uses a PyrauliEstimator to execute the circuits.
 
         Args:
-            run_input: A QuantumCircuit or a list of them to run.
+            run_input: A list of pubs, where each pub is a tuple of (circuit, observables, parameter_values) or any other PUBs structure.
             **options: Runtime options for the execution. may include: "noise_model", "truncator", "merge_policy", "truncate_policy"
 
         Returns:
