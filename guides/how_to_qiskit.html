@@ -55,6 +55,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#convert-qiskit-objects-to-pyrauli-objects">Convert Qiskit objects to <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-pyrauli-as-a-qiskit-compatible-backend">Use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a Qiskit-compatible backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-the-pyrauliestimator-qiskit-primitive">Use the <code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code> Qiskit Primitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-pubs-support">Full PUBs support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#qiskit-and-reverse-qubit-ordering">Qiskit and reverse qubit ordering</a></li>
 </ul>
 </li>
@@ -160,6 +161,43 @@ the hood.</p>
 <span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;IZ&quot;</span><span class="p">),</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">)]</span>
 
 <span class="n">job</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">qc</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">)),</span> <span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">))])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="full-pubs-support">
+<h2>Full PUBs support<a class="headerlink" href="#full-pubs-support" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> intends to be fully compatible with Qiskit and the provided backends and estimators should be able to be swapped with any other qiskit backend. Therefore, <a class="reference internal" href="../reference/api.html#pyrauli.PyrauliEstimator" title="pyrauli.PyrauliEstimator"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyrauliEstimator</span></code></a> and <a class="reference internal" href="../reference/api.html#pyrauli.PBackend" title="pyrauli.PBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">PBackend</span></code></a> <cite>.run</cite> methods allows for any PUB (see <cite>Qiskit documentation on PUBs https://qiskit.qotlabs.org/docs/guides/primitive-input-output</cite>).</p>
+<p>Below is an example of what is possible:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">PBackend</span><span class="p">(</span><span class="n">num_qubits</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pm</span> <span class="o">=</span> <span class="n">generate_preset_pass_manager</span><span class="p">(</span><span class="n">optimization_level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">ry</span><span class="p">(</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">transpiled_circuit</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
+<span class="p">[</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">observables</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">([</span><span class="s2">&quot;XX&quot;</span><span class="p">,</span> <span class="s2">&quot;IY&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])],</span>
+    <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;XX&quot;</span><span class="p">)],</span>
+    <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;IY&quot;</span><span class="p">)],</span>
+<span class="p">]</span>    
+
+<span class="n">estimator_pub</span> <span class="o">=</span> <span class="p">(</span><span class="n">transpiled_circuit</span><span class="p">,</span> <span class="n">observables</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">estimator_pub</span><span class="p">])</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
 </div>

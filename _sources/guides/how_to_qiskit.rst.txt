@@ -60,6 +60,20 @@ the hood.
    :end-before: # [estimator_complex]
    :dedent: 4
 
+Full PUBs support
+-----------------
+
+``pyrauli`` intends to be fully compatible with Qiskit and the provided backends and estimators should be able to be swapped with any other qiskit backend. Therefore, :py:class:`~pyrauli.PyrauliEstimator` and :py:class:`~pyrauli.PBackend` `.run` methods allows for any PUB (see `Qiskit documentation on PUBs https://qiskit.qotlabs.org/docs/guides/primitive-input-output`).
+
+Below is an example of what is possible:
+
+.. literalinclude:: /../tests/test_backend.py
+   :language: python
+   :start-after: # [qiskit_multiparameters]
+   :end-before: # [qiskit_multiparameters]
+   :dedent: 4
+
+
 Qiskit and reverse qubit ordering
 ---------------------------------
 
