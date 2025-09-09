@@ -206,54 +206,6 @@ PYBIND11_MODULE(_core, m) {
 			return ss.str();
 		});
 
-	py::class_<SymbolicObs_t>(m, "SymbolicObservable",
-					"Represents a quantum observable symbolically, as a linear combination of Pauli strings.")
-		.def(py::init<std::string_view, SymbolicCoeff_t>(), py::arg("pauli_string"), py::arg("coeff") = 1.0,
-		     "Constructs an observable from a single Pauli string.")
-		.def(py::init<std::initializer_list<std::string_view>>(),
-		     "Constructs an observable from an initializer_list of Pauli strings.")
-		// Use a lambda to correctly initialize from a list of PauliTerm objects
-		.def(py::init([](const std::vector<PauliTerm<SymbolicCoeff_t>>& paulis) {
-			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
-		     }),
-		     "Constructs an observable from a list of PauliTerm objects.")
-		.def(py::init([](const std::vector<std::string>& paulis) {
-			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
-		     }),
-		     "Constructs an observable from a list of Pauli strings.")
-		.def("apply_pauli", &Observable<SymbolicCoeff_t>::apply_pauli,
-		     "Applies a single-qubit Pauli gate to the observable.")
-		.def("apply_clifford", &Observable<SymbolicCoeff_t>::apply_clifford,
-		     "Applies a single-qubit Clifford gate to the observable.")
-		.def("apply_unital_noise", &Observable<SymbolicCoeff_t>::apply_unital_noise,
-		     "Applies a single-qubit unital noise channel.")
-		.def("apply_cx", &Observable<SymbolicCoeff_t>::apply_cx, "Applies a CNOT (CX) gate to the observable.")
-		.def("apply_rz", &Observable<SymbolicCoeff_t>::apply_rz,
-		     "Applies a single-qubit Rz rotation gate to the observable.")
-		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping,
-		     "Applies an amplitude damping noise channel.")
-		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value,
-		     "Calculates the expectation value of the observable.")
-		.def("merge", &Observable<SymbolicCoeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
-		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
-		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, "Simplify the observable coefficient and replace variables.")
-		.def(
-			"truncate", [](Observable<SymbolicCoeff_t>& obs, SymbolicTruncatorPtr ptr) { return obs.truncate(*ptr); },
-			"Truncates the observable based on a given truncation strategy.")
-		.def(py::self == py::self)
-		.def(py::self != py::self)
-		.def("__getitem__", [](const Observable<SymbolicCoeff_t>& obs, size_t i) { return obs[i]; })
-		.def("__len__", &Observable<SymbolicCoeff_t>::size)
-		.def(
-			"__iter__",
-			[](const Observable<SymbolicCoeff_t>& obs) { return py::make_iterator(obs.begin(), obs.end()); },
-			py::keep_alive<0, 1>())
-		.def("__repr__", [](const Observable<SymbolicCoeff_t>& obs) {
-			std::stringstream ss;
-			ss << obs;
-			return ss.str();
-		});
-
 
 	// NoiseModel class
 	py::class_<Noise<coeff_t>>(m, "Noise", "Defines the strengths of different noise channels.")
@@ -267,19 +219,6 @@ PYBIND11_MODULE(_core, m) {
 		     "Adds a unital noise channel to be applied after a specific gate type.")
 		.def("add_amplitude_damping_on_gate", &NoiseModel<coeff_t>::add_amplitude_damping_on_gate,
 		     "Adds an amplitude damping channel to be applied after a specific gate type.");
-
-	py::class_<Noise<SymbolicCoeff_t>>(m, "Noise", "Defines the strengths of different noise channels.")
-		.def(py::init<>())
-		.def_readwrite("depolarizing_strength", &Noise<SymbolicCoeff_t>::depolarizing_strength)
-		.def_readwrite("dephasing_strength", &Noise<SymbolicCoeff_t>::dephasing_strength)
-		.def_readwrite("amplitude_damping_strength", &Noise<SymbolicCoeff_t>::amplitude_damping_strength);
-	py::class_<NoiseModel<SymbolicCoeff_t>>(m, "NoiseModel", "A model for applying noise to quantum gates.")
-		.def(py::init<>())
-		.def("add_unital_noise_on_gate", &NoiseModel<SymbolicCoeff_t>::add_unital_noise_on_gate,
-		     "Adds a unital noise channel to be applied after a specific gate type.")
-		.def("add_amplitude_damping_on_gate", &NoiseModel<SymbolicCoeff_t>::add_amplitude_damping_on_gate,
-		     "Adds an amplitude damping channel to be applied after a specific gate type.");
-
 
 	// Truncators (using shared_ptr holder for polymorphism)
 	py::class_<Truncator<coeff_t>, TruncatorPtr>(m, "Truncator",
@@ -304,24 +243,6 @@ PYBIND11_MODULE(_core, m) {
 		   std::shared_ptr<RuntimeMultiTruncators<coeff_t>>>(
 		m, "MultiTruncator", "A truncator that combines multiple truncators at runtime.")
 		.def(py::init<const std::vector<TruncatorPtr>&>());
-
-	// symbolic truncators
-	py::class_<Truncator<SymbolicCoeff_t>, SymbolicTruncatorPtr>(m, "SymbolicTruncator",
-						     "Abstract base class for defining truncation strategies.");
-	py::class_<WeightTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, SymbolicWeightTruncatorPtr>(
-		m, "SymbolicWeightTruncator", "Truncator that removes Pauli terms with high Pauli weight.")
-		.def(py::init<size_t>());
-	py::class_<NeverTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, SymbolicNeverTruncatorPtr>(
-		m, "SymbolicNeverTruncator", "A truncator that never removes any terms.")
-		.def(py::init<>());
-	/*py::class_<PredicateTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, std::shared_ptr<PredicateTruncator<SymbolicLambdaPredicate_t>>>(
-		m, "SymbolicLambdaTruncator", "A truncator that uses a Python function as a predicate.")
-		.def(py::init<SymbolicLambdaPredicate_t>());*/
-	py::class_<RuntimeMultiTruncators<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>,
-		   std::shared_ptr<RuntimeMultiTruncators<SymbolicCoeff_t>>>(
-		m, "SymbolicMultiTruncator", "A truncator that combines multiple truncators at runtime.")
-		.def(py::init<const std::vector<SymbolicTruncatorPtr>&>());
-
 
 	py::enum_<OperationType>(m, "OperationType", "Type of operation in the simulation.")
 		.value("BasicGate", OperationType::BasicGate)
@@ -480,6 +401,118 @@ PYBIND11_MODULE(_core, m) {
 			return ss.str();
 		});
 
+	// Symbolic 
+	py::class_<SymbolicCoeff_t>(m, "SymbolicCoefficient", "An easy to use symbolic coefficient.")
+		.def(py::init<coeff_t>(), "Construct from a constant value.")
+		.def(py::init<Variable>(), "Construct from a variable.")
+		.def("to_string", &SymbolicCoeff_t::to_string, "Convert to string using a formatting for real.", py::arg("format") = "{:.3f}")
+		.def("evaluate", &SymbolicCoeff_t::evaluate, "Evaluate into a real by replacing variables.", py::arg("variables") = std::unordered_map<std::string, SymbolicCoeff_t>{})
+		.def("symbolic_evaluate", &SymbolicCoeff_t::symbolic_evaluate, "Evaluate into another symbolic coefficient by replacing some variables.", py::arg("variables") = std::unordered_map<std::string, SymbolicCoeff_t>{})
+		.def("simplified", &SymbolicCoeff_t::simplified, "Returns simplified symbolic coefficient using arithmetic rules.")
+       		.def("__repr__", [](SymbolicCoeff_t const& coeff) { return coeff.to_string(); })
+	      	.def(py::self *= py::self)
+	      	.def(py::self += py::self)
+	      	.def(py::self /= py::self)
+	      	.def(py::self -= py::self)
+	     	.def(-py::self)
+	    	.def(py::self + py::self)
+	    	.def(py::self * py::self)
+	    	.def(py::self / py::self)
+	    	.def(py::self - py::self)
+		.def(py::self *= float())
+	      	.def(py::self += float())
+	      	.def(py::self /= float())
+	      	.def(py::self -= float())
+	     	.def(-py::self)
+	    	.def(py::self + float())
+	    	.def(py::self * float())
+	    	.def(py::self / float())
+	    	.def(py::self - float())
+
+	   	.def("cos", &SymbolicCoeff_t::cos, "Apply cosinus")
+	   	.def("sin", &SymbolicCoeff_t::sin, "Apply sinus")
+	   	.def("sqrt", &SymbolicCoeff_t::sqrt, "Apply sqrt");
+	
+	py::class_<SymbolicObs_t>(m, "SymbolicObservable",
+					"Represents a quantum observable symbolically, as a linear combination of Pauli strings.")
+		.def(py::init<std::string_view, SymbolicCoeff_t>(), py::arg("pauli_string"), py::arg("coeff") = 1.0,
+		     "Constructs an observable from a single Pauli string.")
+		.def(py::init<std::initializer_list<std::string_view>>(),
+		     "Constructs an observable from an initializer_list of Pauli strings.")
+		// Use a lambda to correctly initialize from a list of PauliTerm objects
+		.def(py::init([](const std::vector<PauliTerm<SymbolicCoeff_t>>& paulis) {
+			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
+		     }),
+		     "Constructs an observable from a list of PauliTerm objects.")
+		.def(py::init([](const std::vector<std::string>& paulis) {
+			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
+		     }),
+		     "Constructs an observable from a list of Pauli strings.")
+		.def("apply_pauli", &Observable<SymbolicCoeff_t>::apply_pauli,
+		     "Applies a single-qubit Pauli gate to the observable.")
+		.def("apply_clifford", &Observable<SymbolicCoeff_t>::apply_clifford,
+		     "Applies a single-qubit Clifford gate to the observable.")
+		.def("apply_unital_noise", &Observable<SymbolicCoeff_t>::apply_unital_noise,
+		     "Applies a single-qubit unital noise channel.")
+		.def("apply_cx", &Observable<SymbolicCoeff_t>::apply_cx, "Applies a CNOT (CX) gate to the observable.")
+		.def("apply_rz", &Observable<SymbolicCoeff_t>::apply_rz,
+		     "Applies a single-qubit Rz rotation gate to the observable.")
+		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping,
+		     "Applies an amplitude damping noise channel.")
+		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value,
+		     "Calculates the expectation value of the observable.")
+		.def("merge", &Observable<SymbolicCoeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
+		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
+		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, "Simplify the observable coefficient and replace variables.")
+		.def(
+			"truncate", [](Observable<SymbolicCoeff_t>& obs, SymbolicTruncatorPtr ptr) { return obs.truncate(*ptr); },
+			"Truncates the observable based on a given truncation strategy.")
+		.def(py::self == py::self)
+		.def(py::self != py::self)
+		.def("__getitem__", [](const Observable<SymbolicCoeff_t>& obs, size_t i) { return obs[i]; })
+		.def("__len__", &Observable<SymbolicCoeff_t>::size)
+		.def(
+			"__iter__",
+			[](const Observable<SymbolicCoeff_t>& obs) { return py::make_iterator(obs.begin(), obs.end()); },
+			py::keep_alive<0, 1>())
+		.def("__repr__", [](const Observable<SymbolicCoeff_t>& obs) {
+			std::stringstream ss;
+			ss << obs;
+			return ss.str();
+		});
+
+
+	py::class_<Noise<SymbolicCoeff_t>>(m, "SymbolicNoise", "Defines the strengths of different noise channels.")
+		.def(py::init<>())
+		.def_readwrite("depolarizing_strength", &Noise<SymbolicCoeff_t>::depolarizing_strength)
+		.def_readwrite("dephasing_strength", &Noise<SymbolicCoeff_t>::dephasing_strength)
+		.def_readwrite("amplitude_damping_strength", &Noise<SymbolicCoeff_t>::amplitude_damping_strength);
+
+	py::class_<NoiseModel<SymbolicCoeff_t>>(m, "SymbolicNoiseModel", "A model for applying noise to quantum gates.")
+		.def(py::init<>())
+		.def("add_unital_noise_on_gate", &NoiseModel<SymbolicCoeff_t>::add_unital_noise_on_gate,
+		     "Adds a unital noise channel to be applied after a specific gate type.")
+		.def("add_amplitude_damping_on_gate", &NoiseModel<SymbolicCoeff_t>::add_amplitude_damping_on_gate,
+		     "Adds an amplitude damping channel to be applied after a specific gate type.");
+
+
+	// symbolic truncators
+	py::class_<Truncator<SymbolicCoeff_t>, SymbolicTruncatorPtr>(m, "SymbolicTruncator",
+						     "Abstract base class for defining truncation strategies.");
+	py::class_<WeightTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, SymbolicWeightTruncatorPtr>(
+		m, "SymbolicWeightTruncator", "Truncator that removes Pauli terms with high Pauli weight.")
+		.def(py::init<size_t>());
+	py::class_<NeverTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, SymbolicNeverTruncatorPtr>(
+		m, "SymbolicNeverTruncator", "A truncator that never removes any terms.")
+		.def(py::init<>());
+	//py::class_<PredicateTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, std::shared_ptr<PredicateTruncator<SymbolicLambdaPredicate_t>>>(
+	//	m, "SymbolicLambdaTruncator", "A truncator that uses a Python function as a predicate.")
+	//	.def(py::init<SymbolicLambdaPredicate_t>());
+	py::class_<RuntimeMultiTruncators<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>,
+		   std::shared_ptr<RuntimeMultiTruncators<SymbolicCoeff_t>>>(
+		m, "SymbolicMultiTruncator", "A truncator that combines multiple truncators at runtime.")
+		.def(py::init<const std::vector<SymbolicTruncatorPtr>&>());
+
 	py::class_<Circuit<SymbolicCoeff_t>>(m, "SymbolicCircuit",
 				     "Represents a quantum circuit and provides a high-level simulation interface.")
 		.def(py::init<unsigned, std::shared_ptr<Truncator<SymbolicCoeff_t>>, const NoiseModel<SymbolicCoeff_t>&,
@@ -579,26 +612,5 @@ PYBIND11_MODULE(_core, m) {
 			std::stringstream ss;
 			ss << pt;
 			return ss.str();
-		});
-
-	py::class_<SymbolicCoeff_t>(m, "SymbolicCoefficient", "An easy to use symbolic coefficient.")
-		.def(py::init<coeff_t>(), "Construct from a constant value.")
-		.def(py::init<Variable>(), "Construct from a variable.")
-		.def("to_string", &SymbolicCoeff_t::to_string, "Convert to string using a formatting for real.")
-		.def("evaluate", &SymbolicCoeff_t::evaluate, "Evaluate into a real by replacing variables.")
-		.def("symbolic_evaluate", &SymbolicCoeff_t::symbolic_evaluate, "Evaluate into another symbolic coefficient by replacing some variables.")
-		.def("simplified", &SymbolicCoeff_t::simplified, "Returns simplified symbolic coefficient using arithmetic rules.")
-       		.def("__repr__", [](SymbolicCoeff_t const& coeff) { return coeff.to_string(); })
-	      	.def(py::self *= py::self)
-	      	.def(py::self += py::self)
-	      	.def(py::self /= py::self)
-	      	.def(py::self -= py::self)
-	     	.def(-py::self)
-	    	.def(py::self + py::self)
-	    	.def(py::self * py::self)
-	    	.def(py::self / py::self)
-	    	.def(py::self - py::self)
-	   	.def("cos", &SymbolicCoeff_t::cos, "Apply cosinus")
-	   	.def("sin", &SymbolicCoeff_t::sin, "Apply sinus")
-	   	.def("sqrt", &SymbolicCoeff_t::sqrt, "Apply sqrt");
+		});	
 }

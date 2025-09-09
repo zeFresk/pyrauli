@@ -12,6 +12,7 @@ from ._core import (
     SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
     AlwaysAfterSplittingPolicy, Circuit, OperationType, Timing,
     SimulationState, CompressionResult, LambdaPolicy,
+    SymbolicCoefficient, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit
 )
 
 __all__ = [
@@ -22,6 +23,8 @@ __all__ = [
     "AlwaysBeforeSplittingPolicy", "AlwaysAfterSplittingPolicy", "Circuit",
     "OperationType", "Timing", "SimulationState", "CompressionResult",
     "LambdaPolicy",
+    "SymbolicCoefficient", "SymbolicObservable", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit"
+
 ]
 
 # Conditionally import Qiskit-related functionality
