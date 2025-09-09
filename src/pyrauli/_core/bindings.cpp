@@ -27,8 +27,8 @@ using SchedulingPolicyPtr = std::shared_ptr<SchedulingPolicy>;
 
 // Concrete holder types
 using CoeffTruncatorPtr = std::shared_ptr<CoefficientTruncator<coeff_t>>;
-using WeightTruncatorPtr = std::shared_ptr<WeightTruncator>;
-using NeverTruncatorPtr = std::shared_ptr<NeverTruncator>;
+using WeightTruncatorPtr = std::shared_ptr<WeightTruncator<coeff_t>>;
+using NeverTruncatorPtr = std::shared_ptr<NeverTruncator<coeff_t>>;
 using KeepNTruncatorPtr = std::shared_ptr<KeepNTruncator<coeff_t>>;
 using NeverPolicyPtr = std::shared_ptr<NeverPolicy>;
 using AlwaysBeforePolicyPtr = std::shared_ptr<AlwaysBeforeSplittingPolicy>;
@@ -37,6 +37,18 @@ using AlwaysAfterPolicyPtr = std::shared_ptr<AlwaysAfterSplittingPolicy>;
 using LambdaPredicate_t = std::function<bool(PauliTermContainer<coeff_t>::NonOwningPauliTermPacked const&)>;
 using LambdaTruncator = PredicateTruncator<LambdaPredicate_t>;
 using LambdaTruncatorPtr = std::shared_ptr<LambdaTruncator>;
+
+// Symbolic
+using SymbolicCoeff_t = SymbolicCoefficient<coeff_t>;
+using SymbolicObs_t = Observable<SymbolicCoeff_t>;
+using SymbolicCircuit_t = Circuit<SymbolicCoeff_t>;
+using SymbolicTruncatorPtr = std::shared_ptr<Truncator<SymbolicCoeff_t>>;
+using SymbolicWeightTruncatorPtr = std::shared_ptr<WeightTruncator<SymbolicCoeff_t>>;
+using SymbolicNeverTruncatorPtr = std::shared_ptr<NeverTruncator<SymbolicCoeff_t>>;
+using SymbolicLambdaPredicate_t = std::function<bool(PauliTermContainer<SymbolicCoeff_t>::NonOwningPauliTermPacked const&)>;
+using SymbolicLambdaTruncator = PredicateTruncator<SymbolicLambdaPredicate_t>;
+using SymbolicLambdaTruncatorPtr = std::shared_ptr<SymbolicLambdaTruncator>;
+using sPTC = PauliTermContainer<SymbolicCoeff_t>;
 
 struct LambdaPolicy : public SchedulingPolicy {
     public:
@@ -50,6 +62,11 @@ struct LambdaPolicy : public SchedulingPolicy {
     private:
 	predicate_t predicate;
 };
+
+// very very slow. That's why it's not in propauli.
+bool operator==(SymbolicCoeff_t const& lhs, SymbolicCoeff_t const& rhs) {
+	return lhs.to_string() == rhs.to_string();
+}
 
 PYBIND11_MODULE(_core, m) {
 	m.doc() = "Core C++ functionality for pyrauli, wrapped with pybind11";
@@ -91,7 +108,9 @@ PYBIND11_MODULE(_core, m) {
 		.def("weight", &Pauli::weight, "Calculates the Pauli weight (1 if not Identity, 0 otherwise).")
 		.def("apply_pauli", &Pauli::apply_pauli,
 		     "Applies a Pauli gate to this operator (in the Heisenberg picture).")
-		.def("apply_unital_noise", &Pauli::apply_unital_noise,
+		.def("apply_unital_noise", &Pauli::apply_unital_noise<coeff_t>,
+		     "Applies a unital noise channel to this operator.")
+		.def("apply_unital_noise", &Pauli::apply_unital_noise<SymbolicCoeff_t>,
 		     "Applies a unital noise channel to this operator.")
 		.def("apply_clifford", &Pauli::apply_clifford,
 		     "Applies a single-qubit Clifford gate to this operator, modifying it in place.")
@@ -187,6 +206,55 @@ PYBIND11_MODULE(_core, m) {
 			return ss.str();
 		});
 
+	py::class_<SymbolicObs_t>(m, "SymbolicObservable",
+					"Represents a quantum observable symbolically, as a linear combination of Pauli strings.")
+		.def(py::init<std::string_view, SymbolicCoeff_t>(), py::arg("pauli_string"), py::arg("coeff") = 1.0,
+		     "Constructs an observable from a single Pauli string.")
+		.def(py::init<std::initializer_list<std::string_view>>(),
+		     "Constructs an observable from an initializer_list of Pauli strings.")
+		// Use a lambda to correctly initialize from a list of PauliTerm objects
+		.def(py::init([](const std::vector<PauliTerm<SymbolicCoeff_t>>& paulis) {
+			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
+		     }),
+		     "Constructs an observable from a list of PauliTerm objects.")
+		.def(py::init([](const std::vector<std::string>& paulis) {
+			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
+		     }),
+		     "Constructs an observable from a list of Pauli strings.")
+		.def("apply_pauli", &Observable<SymbolicCoeff_t>::apply_pauli,
+		     "Applies a single-qubit Pauli gate to the observable.")
+		.def("apply_clifford", &Observable<SymbolicCoeff_t>::apply_clifford,
+		     "Applies a single-qubit Clifford gate to the observable.")
+		.def("apply_unital_noise", &Observable<SymbolicCoeff_t>::apply_unital_noise,
+		     "Applies a single-qubit unital noise channel.")
+		.def("apply_cx", &Observable<SymbolicCoeff_t>::apply_cx, "Applies a CNOT (CX) gate to the observable.")
+		.def("apply_rz", &Observable<SymbolicCoeff_t>::apply_rz,
+		     "Applies a single-qubit Rz rotation gate to the observable.")
+		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping,
+		     "Applies an amplitude damping noise channel.")
+		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value,
+		     "Calculates the expectation value of the observable.")
+		.def("merge", &Observable<SymbolicCoeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
+		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
+		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, "Simplify the observable coefficient and replace variables.")
+		.def(
+			"truncate", [](Observable<SymbolicCoeff_t>& obs, SymbolicTruncatorPtr ptr) { return obs.truncate(*ptr); },
+			"Truncates the observable based on a given truncation strategy.")
+		.def(py::self == py::self)
+		.def(py::self != py::self)
+		.def("__getitem__", [](const Observable<SymbolicCoeff_t>& obs, size_t i) { return obs[i]; })
+		.def("__len__", &Observable<SymbolicCoeff_t>::size)
+		.def(
+			"__iter__",
+			[](const Observable<SymbolicCoeff_t>& obs) { return py::make_iterator(obs.begin(), obs.end()); },
+			py::keep_alive<0, 1>())
+		.def("__repr__", [](const Observable<SymbolicCoeff_t>& obs) {
+			std::stringstream ss;
+			ss << obs;
+			return ss.str();
+		});
+
+
 	// NoiseModel class
 	py::class_<Noise<coeff_t>>(m, "Noise", "Defines the strengths of different noise channels.")
 		.def(py::init<>())
@@ -200,17 +268,30 @@ PYBIND11_MODULE(_core, m) {
 		.def("add_amplitude_damping_on_gate", &NoiseModel<coeff_t>::add_amplitude_damping_on_gate,
 		     "Adds an amplitude damping channel to be applied after a specific gate type.");
 
+	py::class_<Noise<SymbolicCoeff_t>>(m, "Noise", "Defines the strengths of different noise channels.")
+		.def(py::init<>())
+		.def_readwrite("depolarizing_strength", &Noise<SymbolicCoeff_t>::depolarizing_strength)
+		.def_readwrite("dephasing_strength", &Noise<SymbolicCoeff_t>::dephasing_strength)
+		.def_readwrite("amplitude_damping_strength", &Noise<SymbolicCoeff_t>::amplitude_damping_strength);
+	py::class_<NoiseModel<SymbolicCoeff_t>>(m, "NoiseModel", "A model for applying noise to quantum gates.")
+		.def(py::init<>())
+		.def("add_unital_noise_on_gate", &NoiseModel<SymbolicCoeff_t>::add_unital_noise_on_gate,
+		     "Adds a unital noise channel to be applied after a specific gate type.")
+		.def("add_amplitude_damping_on_gate", &NoiseModel<SymbolicCoeff_t>::add_amplitude_damping_on_gate,
+		     "Adds an amplitude damping channel to be applied after a specific gate type.");
+
+
 	// Truncators (using shared_ptr holder for polymorphism)
 	py::class_<Truncator<coeff_t>, TruncatorPtr>(m, "Truncator",
 						     "Abstract base class for defining truncation strategies.");
 	py::class_<CoefficientTruncator<coeff_t>, Truncator<coeff_t>, CoeffTruncatorPtr>(
 		m, "CoefficientTruncator", "Truncator that removes Pauli terms with small coefficients.")
 		.def(py::init<coeff_t>());
-	py::class_<WeightTruncator, Truncator<coeff_t>, WeightTruncatorPtr>(
+	py::class_<WeightTruncator<coeff_t>, Truncator<coeff_t>, WeightTruncatorPtr>(
 		m, "WeightTruncator", "Truncator that removes Pauli terms with high Pauli weight.")
 		.def(py::init<size_t>());
-	py::class_<NeverTruncator, Truncator<coeff_t>, NeverTruncatorPtr>(m, "NeverTruncator",
-									  "A truncator that never removes any terms.")
+	py::class_<NeverTruncator<coeff_t>, Truncator<coeff_t>, NeverTruncatorPtr>(
+		m, "NeverTruncator", "A truncator that never removes any terms.")
 		.def(py::init<>());
 	py::class_<KeepNTruncator<coeff_t>, Truncator<coeff_t>, KeepNTruncatorPtr>(
 		m, "KeepNTruncator",
@@ -223,6 +304,24 @@ PYBIND11_MODULE(_core, m) {
 		   std::shared_ptr<RuntimeMultiTruncators<coeff_t>>>(
 		m, "MultiTruncator", "A truncator that combines multiple truncators at runtime.")
 		.def(py::init<const std::vector<TruncatorPtr>&>());
+
+	// symbolic truncators
+	py::class_<Truncator<SymbolicCoeff_t>, SymbolicTruncatorPtr>(m, "SymbolicTruncator",
+						     "Abstract base class for defining truncation strategies.");
+	py::class_<WeightTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, SymbolicWeightTruncatorPtr>(
+		m, "SymbolicWeightTruncator", "Truncator that removes Pauli terms with high Pauli weight.")
+		.def(py::init<size_t>());
+	py::class_<NeverTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, SymbolicNeverTruncatorPtr>(
+		m, "SymbolicNeverTruncator", "A truncator that never removes any terms.")
+		.def(py::init<>());
+	/*py::class_<PredicateTruncator<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>, std::shared_ptr<PredicateTruncator<SymbolicLambdaPredicate_t>>>(
+		m, "SymbolicLambdaTruncator", "A truncator that uses a Python function as a predicate.")
+		.def(py::init<SymbolicLambdaPredicate_t>());*/
+	py::class_<RuntimeMultiTruncators<SymbolicCoeff_t>, Truncator<SymbolicCoeff_t>,
+		   std::shared_ptr<RuntimeMultiTruncators<SymbolicCoeff_t>>>(
+		m, "SymbolicMultiTruncator", "A truncator that combines multiple truncators at runtime.")
+		.def(py::init<const std::vector<SymbolicTruncatorPtr>&>());
+
 
 	py::enum_<OperationType>(m, "OperationType", "Type of operation in the simulation.")
 		.value("BasicGate", OperationType::BasicGate)
@@ -285,7 +384,7 @@ PYBIND11_MODULE(_core, m) {
 				     "Represents a quantum circuit and provides a high-level simulation interface.")
 		.def(py::init<unsigned, std::shared_ptr<Truncator<coeff_t>>, const NoiseModel<coeff_t>&,
 			      std::shared_ptr<SchedulingPolicy>, std::shared_ptr<SchedulingPolicy>>(),
-		     py::arg("nb_qubits"), py::arg("truncator") = std::make_shared<NeverTruncator>(),
+		     py::arg("nb_qubits"), py::arg("truncator") = std::make_shared<NeverTruncator<coeff_t>>(),
 		     py::arg("noise_model") = NoiseModel<coeff_t>(),
 		     py::arg("merge_policy") = std::make_shared<AlwaysAfterSplittingPolicy>(),
 		     py::arg("truncate_policy") = std::make_shared<AlwaysAfterSplittingPolicy>())
@@ -380,4 +479,126 @@ PYBIND11_MODULE(_core, m) {
 			ss << pt;
 			return ss.str();
 		});
+
+	py::class_<Circuit<SymbolicCoeff_t>>(m, "SymbolicCircuit",
+				     "Represents a quantum circuit and provides a high-level simulation interface.")
+		.def(py::init<unsigned, std::shared_ptr<Truncator<SymbolicCoeff_t>>, const NoiseModel<SymbolicCoeff_t>&,
+			      std::shared_ptr<SchedulingPolicy>, std::shared_ptr<SchedulingPolicy>>(),
+		     py::arg("nb_qubits"), py::arg("truncator") = std::make_shared<NeverTruncator<SymbolicCoeff_t>>(),
+		     py::arg("noise_model") = NoiseModel<SymbolicCoeff_t>(),
+		     py::arg("merge_policy") = std::make_shared<AlwaysAfterSplittingPolicy>(),
+		     py::arg("truncate_policy") = std::make_shared<AlwaysAfterSplittingPolicy>())
+		.def("nb_qubits", &Circuit<SymbolicCoeff_t>::nb_qubits, "Gets the number of qubits in the circuit.")
+		// Use lambdas to resolve templated overloads
+		.def(
+			"add_operation",
+			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1) { self.add_operation(op, q1); },
+			"Adds a single-qubit gate.", py::arg("op"), py::arg("qubit"))
+		.def(
+			"add_operation",
+			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, SymbolicCoeff_t p) {
+				self.add_operation(op, q1, p);
+			},
+			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
+		.def(
+			"add_operation",
+			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, unsigned q2) {
+				self.add_operation(op, q1, q2);
+			},
+			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
+		.def("run", &Circuit<SymbolicCoeff_t>::run, "Runs the simulation on the circuit.")
+		.def("reset", &Circuit<SymbolicCoeff_t>::reset, "Clears all operations from the circuit.")
+		.def("set_truncator", &Circuit<SymbolicCoeff_t>::set_truncator, "Sets a new truncator for the circuit.")
+		.def("set_merge_policy", &Circuit<SymbolicCoeff_t>::set_merge_policy,
+		     "Sets a new policy for when to merge Pauli terms.")
+		.def("set_truncate_policy", &Circuit<SymbolicCoeff_t>::set_truncate_policy,
+		     "Sets a new policy for when to truncate the observable.");
+
+	py::class_<sPTC::ReadOnlyNonOwningPauliTermPacked>(m, "SymbolicReadOnlyPackedPauliTermView",
+							  "A read-only, non-owning view of a packed Pauli term.")
+		.def_property_readonly("coefficient", &sPTC::ReadOnlyNonOwningPauliTermPacked::coefficient,
+				       "The coefficient of the term.")
+		.def_property_readonly("nb_qubits", &sPTC::ReadOnlyNonOwningPauliTermPacked::size,
+				       "The number of qubits in the term.")
+		.def("pauli_weight", &sPTC::ReadOnlyNonOwningPauliTermPacked::pauli_weight,
+		     "Calculates the Pauli weight (number of non-identity operators).")
+		.def("expectation_value", &sPTC::ReadOnlyNonOwningPauliTermPacked::expectation_value,
+		     "Calculates the expectation value of this single term.")
+		.def(
+			"to_pauli_term",
+			[](const sPTC::ReadOnlyNonOwningPauliTermPacked& self) {
+				return static_cast<PauliTerm<SymbolicCoeff_t>>(self);
+			},
+			"Creates an owning PauliTerm copy from this view.")
+		.def("__len__", &sPTC::ReadOnlyNonOwningPauliTermPacked::size)
+		.def("__getitem__", &sPTC::ReadOnlyNonOwningPauliTermPacked::get_pauli,
+		     "Gets the Pauli operator at a specific qubit index.")
+		.def(py::self == py::self)
+		.def(
+			"__eq__",
+			[](const sPTC::ReadOnlyNonOwningPauliTermPacked& self, const PauliTerm<SymbolicCoeff_t>& other) {
+				return self == other;
+			},
+			"Compares this view with an owning PauliTerm object.")
+		.def("__repr__", [](const sPTC::ReadOnlyNonOwningPauliTermPacked& pt) {
+			std::stringstream ss;
+			ss << pt;
+			return ss.str();
+		});
+
+	py::class_<sPTC::NonOwningPauliTermPacked>(m, "SymbolicPackedPauliTermView",
+						  "A mutable, non-owning view of a packed Pauli term.")
+		.def_property("coefficient", &sPTC::NonOwningPauliTermPacked::coefficient,
+			      &sPTC::NonOwningPauliTermPacked::set_coefficient,
+			      "The coefficient of the term (read/write).")
+		.def_property_readonly("nb_qubits", &sPTC::NonOwningPauliTermPacked::size,
+				       "The number of qubits in the term.")
+		.def("pauli_weight", &sPTC::NonOwningPauliTermPacked::pauli_weight,
+		     "Calculates the Pauli weight (number of non-identity operators).")
+		.def("expectation_value", &sPTC::NonOwningPauliTermPacked::expectation_value,
+		     "Calculates the expectation value of this single term.")
+		.def(
+			"to_pauli_term",
+			[](const sPTC::NonOwningPauliTermPacked& self) { return static_cast<PauliTerm<SymbolicCoeff_t>>(self); },
+			"Creates an owning PauliTerm copy from this view.")
+		.def("add_coeff", &sPTC::NonOwningPauliTermPacked::add_coeff, "Adds a value to the term's coefficient.") 
+		.def("simplify", &sPTC::NonOwningPauliTermPacked::simplify<SymbolicCoeff_t>, "Simplify (in-place) a symbolic pauli term coefficient and replace variables.")
+		.def("__len__", &sPTC::NonOwningPauliTermPacked::size)
+		.def("__getitem__", &sPTC::NonOwningPauliTermPacked::get_pauli,
+		     "Gets the Pauli operator at a specific qubit index.")
+		.def("__setitem__", &sPTC::NonOwningPauliTermPacked::set_pauli,
+		     "Sets the Pauli operator at a specific qubit index.")
+		.def(py::self == py::self)
+		.def(
+			"__eq__",
+			[](const sPTC::NonOwningPauliTermPacked& self, const PauliTerm<SymbolicCoeff_t>& other) {
+				return self == other;
+			},
+			"Compares this view with an owning PauliTerm object.")
+		.def("__repr__", [](const sPTC::NonOwningPauliTermPacked& pt) {
+			std::stringstream ss;
+			ss << pt;
+			return ss.str();
+		});
+
+	py::class_<SymbolicCoeff_t>(m, "SymbolicCoefficient", "An easy to use symbolic coefficient.")
+		.def(py::init<coeff_t>(), "Construct from a constant value.")
+		.def(py::init<Variable>(), "Construct from a variable.")
+		.def("to_string", &SymbolicCoeff_t::to_string, "Convert to string using a formatting for real.")
+		.def("evaluate", &SymbolicCoeff_t::evaluate, "Evaluate into a real by replacing variables.")
+		.def("symbolic_evaluate", &SymbolicCoeff_t::symbolic_evaluate, "Evaluate into another symbolic coefficient by replacing some variables.")
+		.def("simplified", &SymbolicCoeff_t::simplified, "Returns simplified symbolic coefficient using arithmetic rules.")
+       		.def("__repr__", [](SymbolicCoeff_t const& coeff) { return coeff.to_string(); })
+	      	.def(py::self *= py::self)
+	      	.def(py::self += py::self)
+	      	.def(py::self /= py::self)
+	      	.def(py::self -= py::self)
+	     	.def(-py::self)
+	    	.def(py::self + py::self)
+	    	.def(py::self * py::self)
+	    	.def(py::self / py::self)
+	    	.def(py::self - py::self)
+	   	.def("cos", &SymbolicCoeff_t::cos, "Apply cosinus")
+	   	.def("sin", &SymbolicCoeff_t::sin, "Apply sinus")
+	   	.def("sqrt", &SymbolicCoeff_t::sqrt, "Apply sqrt");
 }
