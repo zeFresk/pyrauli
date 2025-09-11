@@ -16,6 +16,7 @@
 #include "pauli_term.hpp"
 #include "scheduler.hpp"
 #include "truncate.hpp"
+#include "symbolic/coefficient.hpp"
 
 namespace py = pybind11;
 
@@ -402,8 +403,14 @@ PYBIND11_MODULE(_core, m) {
 		});
 
 	// Symbolic 
+	py::class_<Variable>(m, "Variable", "Symbolic string variable")
+		.def(py::init<std::string>());
+
 	py::class_<SymbolicCoeff_t>(m, "SymbolicCoefficient", "An easy to use symbolic coefficient.")
 		.def(py::init<coeff_t>(), "Construct from a constant value.")
+		.def(py::init([](const std::string& variable_name) {
+			     return SymbolicCoeff_t{Variable{variable_name}};
+		     }), "Construct from a variable name (string).")
 		.def(py::init<Variable>(), "Construct from a variable.")
 		.def("to_string", &SymbolicCoeff_t::to_string, "Convert to string using a formatting for real.", py::arg("format") = "{:.3f}")
 		.def("evaluate", &SymbolicCoeff_t::evaluate, "Evaluate into a real by replacing variables.", py::arg("variables") = std::unordered_map<std::string, SymbolicCoeff_t>{})
@@ -423,20 +430,70 @@ PYBIND11_MODULE(_core, m) {
 	      	.def(py::self += float())
 	      	.def(py::self /= float())
 	      	.def(py::self -= float())
-	     	.def(-py::self)
 	    	.def(py::self + float())
 	    	.def(py::self * float())
 	    	.def(py::self / float())
 	    	.def(py::self - float())
+	    	.def(float() + py::self)
+	    	.def(float() * py::self)
+	    	.def(float() / py::self)
+	    	.def(float() - py::self)
 
 	   	.def("cos", &SymbolicCoeff_t::cos, "Apply cosinus")
 	   	.def("sin", &SymbolicCoeff_t::sin, "Apply sinus")
 	   	.def("sqrt", &SymbolicCoeff_t::sqrt, "Apply sqrt");
+
+	py::class_<PauliTerm<SymbolicCoeff_t>>(
+		m, "SymbolicPauliTerm",
+		"Represents a single term in an observable, consisting of a Pauli string and a coefficient.")
+		.def(py::init<std::string_view, SymbolicCoeff_t>(), py::arg("pauli_string"), py::arg("coefficient") = SymbolicCoeff_t{1.0f},
+		     "Constructs from a string representation and a coefficient.")
+		.def(py::init([](std::string_view sv, std::string  const& variable_name) {
+			return PauliTerm<SymbolicCoeff_t>{sv, SymbolicCoeff_t{Variable{variable_name}}};
+		     }),
+		     "Constructs from a string representation and a coefficient.")
+		.def(py::init([](std::string_view sv, coeff_t coeff) {
+			     return PauliTerm<SymbolicCoeff_t>{sv, SymbolicCoeff_t{coeff}};
+		     }), "Construct from a constant coefficient")
+		.def("apply_pauli", &PauliTerm<SymbolicCoeff_t>::apply_pauli,
+		     "Applies a Pauli gate to a specific qubit of the term.")
+		.def("apply_clifford", &PauliTerm<SymbolicCoeff_t>::apply_clifford,
+		     "Applies a Clifford gate to a specific qubit of the term.")
+		.def("apply_unital_noise", &PauliTerm<SymbolicCoeff_t>::apply_unital_noise,
+		     "Applies a unital noise channel to a specific qubit of the term.")
+		.def("apply_cx", &PauliTerm<SymbolicCoeff_t>::apply_cx, "Applies a CNOT gate to the term.")
+		.def("apply_rz", &PauliTerm<SymbolicCoeff_t>::apply_rz, "Applies an Rz gate, potentially splitting the term.")
+		.def("apply_amplitude_damping_xy", &PauliTerm<SymbolicCoeff_t>::apply_amplitude_damping_xy,
+		     "Applies the X/Y part of the amplitude damping channel.")
+		.def("apply_amplitude_damping_z", &PauliTerm<SymbolicCoeff_t>::apply_amplitude_damping_z,
+		     "Applies the Z part of the amplitude damping channel, splitting the term.")
+		.def("expectation_value", &PauliTerm<SymbolicCoeff_t>::expectation_value,
+		     "Calculates the expectation value of this single term.")
+		.def("pauli_weight", &PauliTerm<SymbolicCoeff_t>::pauli_weight,
+		     "Calculates the Pauli weight (number of non-identity operators).")
+		.def_property_readonly("coefficient", &PauliTerm<SymbolicCoeff_t>::coefficient, "The coefficient of the term.")
+		.def("__getitem__", [](const PauliTerm<SymbolicCoeff_t>& pt, size_t i) { return pt[i]; })
+		.def("__setitem__", [](PauliTerm<SymbolicCoeff_t>& pt, size_t i, const Pauli& p) { pt[i] = p; })
+		.def("__len__", &PauliTerm<SymbolicCoeff_t>::size)
+		.def(py::self == py::self)
+		.def(py::self != py::self)
+		.def("__repr__", [](const PauliTerm<SymbolicCoeff_t>& pt) {
+			std::stringstream ss;
+			ss << pt;
+			return ss.str();
+		});
+
 	
 	py::class_<SymbolicObs_t>(m, "SymbolicObservable",
 					"Represents a quantum observable symbolically, as a linear combination of Pauli strings.")
-		.def(py::init<std::string_view, SymbolicCoeff_t>(), py::arg("pauli_string"), py::arg("coeff") = 1.0,
+		.def(py::init<std::string_view, SymbolicCoeff_t>(), py::arg("pauli_string"), py::arg("coeff") = SymbolicCoeff_t{1.f},
 		     "Constructs an observable from a single Pauli string.")
+		.def(py::init([](std::string_view sv, std::string const& variable_name) {
+			     return Observable<SymbolicCoeff_t>{sv, SymbolicCoeff_t{Variable{variable_name}}};
+		     }), "Construct from a variable coefficient")
+		.def(py::init([](std::string_view sv, coeff_t coeff) {
+			     return Observable<SymbolicCoeff_t>{sv, SymbolicCoeff_t{coeff}};
+		     }), "Construct from a constant coefficient")
 		.def(py::init<std::initializer_list<std::string_view>>(),
 		     "Constructs an observable from an initializer_list of Pauli strings.")
 		// Use a lambda to correctly initialize from a list of PauliTerm objects
@@ -452,18 +509,36 @@ PYBIND11_MODULE(_core, m) {
 		     "Applies a single-qubit Pauli gate to the observable.")
 		.def("apply_clifford", &Observable<SymbolicCoeff_t>::apply_clifford,
 		     "Applies a single-qubit Clifford gate to the observable.")
-		.def("apply_unital_noise", &Observable<SymbolicCoeff_t>::apply_unital_noise,
+		.def("apply_unital_noise",
+			     &Observable<SymbolicCoeff_t>::apply_unital_noise,
 		     "Applies a single-qubit unital noise channel.")
+		.def(
+			"apply_unital_noise",
+			[](Observable<SymbolicCoeff_t>& self, UnitalNoise noise, size_t qubit, std::string const& strength) {
+				self.apply_unital_noise(noise, qubit, SymbolicCoeff_t(Variable{strength}));
+			},
+			"Applies a single-qubit unital noise channel, using a variable name for the strength.")
 		.def("apply_cx", &Observable<SymbolicCoeff_t>::apply_cx, "Applies a CNOT (CX) gate to the observable.")
 		.def("apply_rz", &Observable<SymbolicCoeff_t>::apply_rz,
 		     "Applies a single-qubit Rz rotation gate to the observable.")
-		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping,
-		     "Applies an amplitude damping noise channel.")
+		.def(
+			"apply_rz",
+			[](Observable<SymbolicCoeff_t>& self, size_t qubit, std::string const& param) {
+				self.apply_rz(qubit, SymbolicCoeff_t(Variable{param}));
+			},
+			"Applies a single-qubit Rz rotation gate to the observable, using a variable name for the angle.")
+		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping, "Applies an amplitude damping noise channel.")
+		.def(
+			"apply_amplitude_damping",
+			[](Observable<SymbolicCoeff_t>& self, size_t qubit, std::string const& strength) {
+				self.apply_amplitude_damping(qubit, SymbolicCoeff_t(Variable{strength}));
+			},
+			"Applies an amplitude damping noise channel, using a variable name for the strength.")		
 		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value,
 		     "Calculates the expectation value of the observable.")
 		.def("merge", &Observable<SymbolicCoeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
 		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
-		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, "Simplify the observable coefficient and replace variables.")
+		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, py::arg("variable_map") = std::unordered_map<std::string, coeff_t>{}, "Simplify the observable coefficient and replace variables.")
 		.def(
 			"truncate", [](Observable<SymbolicCoeff_t>& obs, SymbolicTruncatorPtr ptr) { return obs.truncate(*ptr); },
 			"Truncates the observable based on a given truncation strategy.")
@@ -490,12 +565,24 @@ PYBIND11_MODULE(_core, m) {
 
 	py::class_<NoiseModel<SymbolicCoeff_t>>(m, "SymbolicNoiseModel", "A model for applying noise to quantum gates.")
 		.def(py::init<>())
-		.def("add_unital_noise_on_gate", &NoiseModel<SymbolicCoeff_t>::add_unital_noise_on_gate,
+		.def("add_unital_noise_on_gate",
+			     &NoiseModel<SymbolicCoeff_t>::add_unital_noise_on_gate,
 		     "Adds a unital noise channel to be applied after a specific gate type.")
-		.def("add_amplitude_damping_on_gate", &NoiseModel<SymbolicCoeff_t>::add_amplitude_damping_on_gate,
-		     "Adds an amplitude damping channel to be applied after a specific gate type.");
-
-
+		.def(
+			"add_unital_noise_on_gate",
+			[](NoiseModel<SymbolicCoeff_t>& self, QGate gate, UnitalNoise noise, std::string const& strength) {
+				self.add_unital_noise_on_gate(gate, noise, SymbolicCoeff_t(Variable{strength}));
+			},
+			"Adds a unital noise channel to be applied after a specific gate type, using a variable name for strength.")
+		.def("add_amplitude_damping_on_gate",
+			     &NoiseModel<SymbolicCoeff_t>::add_amplitude_damping_on_gate,
+		     "Adds an amplitude damping channel to be applied after a specific gate type.")
+		.def(
+			"add_amplitude_damping_on_gate",
+			[](NoiseModel<SymbolicCoeff_t>& self, QGate gate, std::string const& strength) {
+				self.add_amplitude_damping_on_gate(gate, SymbolicCoeff_t(Variable{strength}));
+			},
+			"Adds an amplitude damping channel to be applied after a specific gate type, using a variable name for strength.");
 	// symbolic truncators
 	py::class_<Truncator<SymbolicCoeff_t>, SymbolicTruncatorPtr>(m, "SymbolicTruncator",
 						     "Abstract base class for defining truncation strategies.");
@@ -531,6 +618,12 @@ PYBIND11_MODULE(_core, m) {
 			"add_operation",
 			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, SymbolicCoeff_t p) {
 				self.add_operation(op, q1, p);
+			},
+			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
+		.def(
+			"add_operation",
+			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, std::string const& p) {
+				self.add_operation(op, q1, SymbolicCoeff_t(Variable(p)));
 			},
 			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
 		.def(

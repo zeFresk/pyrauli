@@ -12,7 +12,7 @@ from ._core import (
     SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
     AlwaysAfterSplittingPolicy, Circuit, OperationType, Timing,
     SimulationState, CompressionResult, LambdaPolicy,
-    SymbolicCoefficient, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit
+    SymbolicCoefficient, SymbolicPauliTerm, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit
 )
 
 __all__ = [
@@ -23,9 +23,23 @@ __all__ = [
     "AlwaysBeforeSplittingPolicy", "AlwaysAfterSplittingPolicy", "Circuit",
     "OperationType", "Timing", "SimulationState", "CompressionResult",
     "LambdaPolicy",
-    "SymbolicCoefficient", "SymbolicObservable", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit"
+    "SymbolicCoefficient", "SymbolicObservable", "SymbolicPauliTerm", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit"
 
 ]
+
+try:
+    import sympy
+    def to_sympy(self):
+        """
+        Converts the SymbolicCoefficient to a SymPy expression.
+
+        Returns:
+            A SymPy expression equivalent to the SymbolicCoefficient.
+        """
+        return sympy.sympify(self.to_string())
+    SymbolicCoefficient.to_sympy = to_sympy
+except ImportError:
+    pass
 
 # Conditionally import Qiskit-related functionality
 try:

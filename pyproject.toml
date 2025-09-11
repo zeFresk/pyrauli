@@ -36,6 +36,7 @@ test = [
     "pytest-cov>=5.0.0",
     "pytest-benchmark",
     "numpy",
+    "sympy"
 ]
 
 [tool.scikit-build.wheel]
