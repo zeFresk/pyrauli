@@ -49,4 +49,3 @@ testpaths = [
     "tests",
     # no benchmarks here
 ]
-pythonpath = ["src"]
