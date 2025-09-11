@@ -52,6 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_symbolic.html">Symbolic Simulation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
 <ul>
@@ -142,6 +143,13 @@ the library for the first time or need a specific technical detail.</p>
 <li class="toctree-l2"><a class="reference internal" href="guides/how_to_noise.html#use-noise-models-with-qiskit-backends">Use Noise Models with Qiskit Backends</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_symbolic.html">Symbolic Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_symbolic.html#the-symbolic-toolkit">The Symbolic Toolkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_symbolic.html#working-with-symboliccoefficient">Working with <cite>SymbolicCoefficient</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_symbolic.html#constructing-a-symbolicobservable">Constructing a <cite>SymbolicObservable</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/how_to_symbolic.html#building-and-running-a-symboliccircuit">Building and Running a <cite>SymbolicCircuit</cite></a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -184,6 +192,16 @@ the library for the first time or need a specific technical detail.</p>
 <li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.QGate"><code class="docutils literal notranslate"><span class="pre">QGate</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SchedulingPolicy"><code class="docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SimulationState"><code class="docutils literal notranslate"><span class="pre">SimulationState</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicCircuit"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicCoefficient"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicMultiTruncator"><code class="docutils literal notranslate"><span class="pre">SymbolicMultiTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicNeverTruncator"><code class="docutils literal notranslate"><span class="pre">SymbolicNeverTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicNoise"><code class="docutils literal notranslate"><span class="pre">SymbolicNoise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicNoiseModel"><code class="docutils literal notranslate"><span class="pre">SymbolicNoiseModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicObservable"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicPauliTerm"><code class="docutils literal notranslate"><span class="pre">SymbolicPauliTerm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicTruncator"><code class="docutils literal notranslate"><span class="pre">SymbolicTruncator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.SymbolicWeightTruncator"><code class="docutils literal notranslate"><span class="pre">SymbolicWeightTruncator</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Timing"><code class="docutils literal notranslate"><span class="pre">Timing</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.Truncator"><code class="docutils literal notranslate"><span class="pre">Truncator</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference/api.html#pyrauli.UnitalNoise"><code class="docutils literal notranslate"><span class="pre">UnitalNoise</span></code></a></li>

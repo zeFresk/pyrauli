@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_symbolic.html">Symbolic Simulation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
 <ul>
@@ -121,11 +122,23 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.NoiseModel.add_amplitude_damping_on_gate">add_amplitude_damping_on_gate() (pyrauli.NoiseModel method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicNoiseModel.add_amplitude_damping_on_gate">(pyrauli.SymbolicNoiseModel method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Circuit.add_operation">add_operation() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.add_operation">(pyrauli.SymbolicCircuit method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.NoiseModel.add_unital_noise_on_gate">add_unital_noise_on_gate() (pyrauli.NoiseModel method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicNoiseModel.add_unital_noise_on_gate">(pyrauli.SymbolicNoiseModel method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Timing.After">After (pyrauli.Timing attribute)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.AlwaysAfterSplittingPolicy">AlwaysAfterSplittingPolicy (class in pyrauli)</a>
@@ -133,21 +146,41 @@
       <li><a href="reference/api.html#pyrauli.AlwaysBeforeSplittingPolicy">AlwaysBeforeSplittingPolicy (class in pyrauli)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Noise.amplitude_damping_strength">amplitude_damping_strength (pyrauli.Noise property)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicNoise.amplitude_damping_strength">(pyrauli.SymbolicNoise property)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.QGate.AmplitudeDamping">AmplitudeDamping (pyrauli.QGate attribute)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Observable.apply_amplitude_damping">apply_amplitude_damping() (pyrauli.Observable method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_amplitude_damping">(pyrauli.SymbolicObservable method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.PauliTerm.apply_amplitude_damping_xy">apply_amplitude_damping_xy() (pyrauli.PauliTerm method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_amplitude_damping_xy">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.PauliTerm.apply_amplitude_damping_z">apply_amplitude_damping_z() (pyrauli.PauliTerm method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_amplitude_damping_z">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Observable.apply_clifford">apply_clifford() (pyrauli.Observable method)</a>
 
       <ul>
         <li><a href="reference/api.html#pyrauli.Pauli.apply_clifford">(pyrauli.Pauli method)</a>
 </li>
         <li><a href="reference/api.html#pyrauli.PauliTerm.apply_clifford">(pyrauli.PauliTerm method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_clifford">(pyrauli.SymbolicObservable method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_clifford">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -159,6 +192,10 @@
 </li>
         <li><a href="reference/api.html#pyrauli.PauliTerm.apply_cx">(pyrauli.PauliTerm method)</a>
 </li>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_cx">(pyrauli.SymbolicObservable method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_cx">(pyrauli.SymbolicPauliTerm method)</a>
+</li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.Observable.apply_pauli">apply_pauli() (pyrauli.Observable method)</a>
 
@@ -167,11 +204,19 @@
 </li>
         <li><a href="reference/api.html#pyrauli.PauliTerm.apply_pauli">(pyrauli.PauliTerm method)</a>
 </li>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_pauli">(pyrauli.SymbolicObservable method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_pauli">(pyrauli.SymbolicPauliTerm method)</a>
+</li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.Observable.apply_rz">apply_rz() (pyrauli.Observable method)</a>
 
       <ul>
         <li><a href="reference/api.html#pyrauli.PauliTerm.apply_rz">(pyrauli.PauliTerm method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_rz">(pyrauli.SymbolicObservable method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_rz">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.Observable.apply_unital_noise">apply_unital_noise() (pyrauli.Observable method)</a>
@@ -180,6 +225,10 @@
         <li><a href="reference/api.html#pyrauli.Pauli.apply_unital_noise">(pyrauli.Pauli method)</a>
 </li>
         <li><a href="reference/api.html#pyrauli.PauliTerm.apply_unital_noise">(pyrauli.PauliTerm method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_unital_noise">(pyrauli.SymbolicObservable method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_unital_noise">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -205,7 +254,11 @@
       <li><a href="reference/api.html#pyrauli.CliffordGate">CliffordGate (class in pyrauli)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.PauliTerm.coefficient">coefficient (pyrauli.PauliTerm property)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.coefficient">(pyrauli.SymbolicPauliTerm property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.CoefficientTruncator">CoefficientTruncator (class in pyrauli)</a>
@@ -213,6 +266,8 @@
       <li><a href="reference/api.html#pyrauli.Pauli.commutes_with">commutes_with() (pyrauli.Pauli method)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.CompressionResult">CompressionResult (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.cos">cos() (pyrauli.SymbolicCoefficient method)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.QGate.Cx">Cx (pyrauli.QGate attribute)</a>
 </li>
@@ -229,7 +284,11 @@
 </li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.Noise.dephasing_strength">dephasing_strength (pyrauli.Noise property)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicNoise.dephasing_strength">(pyrauli.SymbolicNoise property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.QGate.Depolarizing">Depolarizing (pyrauli.QGate attribute)</a>
@@ -239,17 +298,27 @@
 </li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.Noise.depolarizing_strength">depolarizing_strength (pyrauli.Noise property)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicNoise.depolarizing_strength">(pyrauli.SymbolicNoise property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.evaluate">evaluate() (pyrauli.SymbolicCoefficient method)</a>
+</li>
       <li><a href="reference/api.html#pyrauli.Observable.expectation_value">expectation_value() (pyrauli.Observable method)</a>
 
       <ul>
         <li><a href="reference/api.html#pyrauli.PauliTerm.expectation_value">(pyrauli.PauliTerm method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.expectation_value">(pyrauli.SymbolicObservable method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.expectation_value">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -317,7 +386,11 @@
       <li><a href="reference/api.html#pyrauli.OperationType.Merge">Merge (pyrauli.OperationType attribute)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Observable.merge">merge() (pyrauli.Observable method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.merge">(pyrauli.SymbolicObservable method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.SimulationState.merge_history">merge_history (pyrauli.SimulationState property)</a>
@@ -356,7 +429,11 @@
       <li><a href="reference/api.html#pyrauli.SimulationState.nb_gates_applied">nb_gates_applied (pyrauli.SimulationState property)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Circuit.nb_qubits">nb_qubits() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.nb_qubits">(pyrauli.SymbolicCircuit method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.SimulationState.nb_splitting_gates_applied">nb_splitting_gates_applied (pyrauli.SimulationState property)</a>
@@ -398,7 +475,11 @@
       <li><a href="reference/api.html#pyrauli.Pauli">Pauli (class in pyrauli)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.PauliTerm.pauli_weight">pauli_weight() (pyrauli.PauliTerm method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.pauli_weight">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.PauliEnum">PauliEnum (class in pyrauli)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.PauliGate">PauliGate (class in pyrauli)</a>
@@ -433,13 +514,19 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.Circuit.reset">reset() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.reset">(pyrauli.SymbolicCircuit method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Circuit.run">run() (pyrauli.Circuit method)</a>
 
       <ul>
         <li><a href="reference/api.html#pyrauli.PBackend.run">(pyrauli.PBackend method)</a>
 </li>
         <li><a href="reference/api.html#pyrauli.PyrauliEstimator.run">(pyrauli.PyrauliEstimator method)</a>
+</li>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.run">(pyrauli.SymbolicCircuit method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -455,18 +542,64 @@
       <li><a href="reference/api.html#pyrauli.SchedulingPolicy">SchedulingPolicy (class in pyrauli)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Circuit.set_merge_policy">set_merge_policy() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.set_merge_policy">(pyrauli.SymbolicCircuit method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Circuit.set_truncate_policy">set_truncate_policy() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.set_truncate_policy">(pyrauli.SymbolicCircuit method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Circuit.set_truncator">set_truncator() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.set_truncator">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.simplified">simplified() (pyrauli.SymbolicCoefficient method)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicObservable.simplify">simplify() (pyrauli.SymbolicObservable method)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.SimulationState">SimulationState (class in pyrauli)</a>
 </li>
-      <li><a href="reference/api.html#pyrauli.Observable.size">size() (pyrauli.Observable method)</a>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.sin">sin() (pyrauli.SymbolicCoefficient method)</a>
 </li>
+      <li><a href="reference/api.html#pyrauli.Observable.size">size() (pyrauli.Observable method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.size">(pyrauli.SymbolicObservable method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.OperationType.SplittingGate">SplittingGate (pyrauli.OperationType attribute)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.sqrt">sqrt() (pyrauli.SymbolicCoefficient method)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.symbolic_evaluate">symbolic_evaluate() (pyrauli.SymbolicCoefficient method)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCircuit">SymbolicCircuit (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient">SymbolicCoefficient (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicMultiTruncator">SymbolicMultiTruncator (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicNeverTruncator">SymbolicNeverTruncator (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicNoise">SymbolicNoise (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicNoiseModel">SymbolicNoiseModel (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicObservable">SymbolicObservable (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm">SymbolicPauliTerm (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicTruncator">SymbolicTruncator (class in pyrauli)</a>
+</li>
+      <li><a href="reference/api.html#pyrauli.SymbolicWeightTruncator">SymbolicWeightTruncator (class in pyrauli)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -480,12 +613,18 @@
 </li>
       <li><a href="reference/api.html#pyrauli.Timing">Timing (class in pyrauli)</a>
 </li>
+      <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.to_string">to_string() (pyrauli.SymbolicCoefficient method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.OperationType.Truncate">Truncate (pyrauli.OperationType attribute)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Observable.truncate">truncate() (pyrauli.Observable method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.truncate">(pyrauli.SymbolicObservable method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.SimulationState.truncate_history">truncate_history (pyrauli.SimulationState property)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Truncator">Truncator (class in pyrauli)</a>
