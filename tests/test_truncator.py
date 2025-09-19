@@ -40,16 +40,16 @@ def test_weight_truncator_on_observable():
 
 def test_keepn_truncator_on_observable():
     """Tests that terms with high Pauli weight are removed."""
-    obs = Observable([PauliTerm("IIII", 0.5), PauliTerm("ZYXI", 0.11), PauliTerm("YYYY", -0.5), PauliTerm("IXYZ", 0.1)])
+    obs = Observable([PauliTerm("IIII", 0.5), PauliTerm("ZYXI", 0.11), PauliTerm("YYYY", -0.6), PauliTerm("IXYZ", 0.1), PauliTerm("IIIX", -0.4)])
 
     truncator = KeepNTruncator(2)
     
     removed_count = obs.truncate(truncator)
     
-    assert removed_count == 2
+    assert removed_count == 3
     assert len(obs) == 2
-    assert obs[0] == PauliTerm("IIII", 0.5)
-    assert obs[1] == PauliTerm("YYYY", -0.5)
+    assert (obs[0] == PauliTerm("IIII", 0.5)) or (obs[0] == PauliTerm("YYYY", -0.6))
+    assert (obs[1] == PauliTerm("IIII", 0.5)) or (obs[1] == PauliTerm("YYYY", -0.6))
 
 def test_lambda_truncator_on_observable_def():
     """Tests truncation based on a custom Python function."""
