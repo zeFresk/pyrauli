@@ -14,6 +14,12 @@ def test_symbolic_obs():
     final_observable = circuit.run(observable)
     expectation_value = final_observable.expectation_value()
 
+    # Call this before evaluating
+    compiled_ev = expectation_value.compile()
+
+    # Recommanded for printing
+    simplified_ev = expectation_value.simplified()
+
     # Evaluate for a specific angle
-    value = expectation_value.evaluate({"theta": 3.14159 / 4})
+    value = compiled_ev.evaluate({"theta": 3.14159 / 4})
     # [symbolic_evaluation]
