@@ -190,8 +190,7 @@ PYBIND11_MODULE(_core, m) {
 		     "Calculates the expectation value of the observable.")
 		.def("merge", &Observable<coeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
 		.def("size", &Observable<coeff_t>::size, "Gets the number of Pauli terms in the observable.")
-		.def(
-			"truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { return obs.truncate(*ptr); },
+		.def("truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { return obs.truncate(*ptr); },
 			"Truncates the observable based on a given truncation strategy.")
 		.def(py::self == py::self)
 		.def(py::self != py::self)
@@ -408,14 +407,14 @@ PYBIND11_MODULE(_core, m) {
 
 	py::class_<SymbolicCoeff_t>(m, "SymbolicCoefficient", "An easy to use symbolic coefficient.")
 		.def(py::init<coeff_t>(), "Construct from a constant value.")
-		.def(py::init([](const std::string& variable_name) {
-			     return SymbolicCoeff_t{Variable{variable_name}};
-		     }), "Construct from a variable name (string).")
+		.def(py::init<std::string>(), "Construct from a variable name (string).")
 		.def(py::init<Variable>(), "Construct from a variable.")
 		.def("to_string", &SymbolicCoeff_t::to_string, "Convert to string using a formatting for real.", py::arg("format") = "{:.3f}")
 		.def("evaluate", &SymbolicCoeff_t::evaluate, "Evaluate into a real by replacing variables.", py::arg("variables") = std::unordered_map<std::string, SymbolicCoeff_t>{})
 		.def("symbolic_evaluate", &SymbolicCoeff_t::symbolic_evaluate, "Evaluate into another symbolic coefficient by replacing some variables.", py::arg("variables") = std::unordered_map<std::string, SymbolicCoeff_t>{})
 		.def("simplified", &SymbolicCoeff_t::simplified, "Returns simplified symbolic coefficient using arithmetic rules.")
+		.def("optimize", &SymbolicCoeff_t::optimize, "Returns a simplified and compiled symbolic coefficient.")
+		.def("compile", &SymbolicCoeff_t::compile, "Returns a fast compiled symbolic coefficient for faster evaluation.")
        		.def("__repr__", [](SymbolicCoeff_t const& coeff) { return coeff.to_string(); })
 	      	.def(py::self *= py::self)
 	      	.def(py::self += py::self)
@@ -438,10 +437,12 @@ PYBIND11_MODULE(_core, m) {
 	    	.def(float() * py::self)
 	    	.def(float() / py::self)
 	    	.def(float() - py::self)
-
 	   	.def("cos", &SymbolicCoeff_t::cos, "Apply cosinus")
 	   	.def("sin", &SymbolicCoeff_t::sin, "Apply sinus")
 	   	.def("sqrt", &SymbolicCoeff_t::sqrt, "Apply sqrt");
+
+	py::class_<CompiledExpression<coeff_t>>(m, "CompiledExpression", "A very fast static symbolic expression, optimized for evaluation.")
+		.def("evaluate", &CompiledExpression<coeff_t>::evaluate, "Evaluate the compîled expressions with the provided variables.");
 
 	py::class_<PauliTerm<SymbolicCoeff_t>>(
 		m, "SymbolicPauliTerm",

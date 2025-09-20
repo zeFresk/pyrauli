@@ -63,6 +63,19 @@ def test_simplified():
     simplified_expr = expr.simplified()
     assert simplified_expr.to_string() == "x"
 
+def test_optimized():
+    x = SymbolicCoefficient("x")
+    expr = (x + x) * x - (x + x)
+    opt = expr.optimize()
+    assert opt.evaluate({"x": 2}) == 4.
+
+def test_compile():
+    x = SymbolicCoefficient("x")
+    expr = (x + x) * x - (x + x)
+    opt = expr.compile()
+    assert opt.evaluate({"x": 2}) == 4.
+
+
 
 def test_to_sympy():
     x = SymbolicCoefficient("x")

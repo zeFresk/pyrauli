@@ -51,3 +51,14 @@ def test_snippet_symbolic_coeff():
     simplified_expr = expr.simplified()
     print(f"Simplified expression: {simplified_expr}")
     # [symbolic_simplify]
+
+    # [symbolic_compile]
+    x = SymbolicCoefficient("x")
+    expr = (x * 1 + 0) - (x * 0)
+
+    compiled_expression = x.compile()
+    res = compiled_expression.evaluate({"x": 4})
+
+    #equivalent to calling .simplified() and .compile()
+    optimized_simplified_expression = x.optimize() 
+    # [symbolic_compile]
