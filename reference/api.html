@@ -211,8 +211,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.SymbolicCoefficient"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.compile"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.compile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.cos"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.cos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.evaluate"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.evaluate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.optimize"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.optimize()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.simplified"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.simplified()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.sin"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.sin()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCoefficient.sqrt"><code class="docutils literal notranslate"><span class="pre">SymbolicCoefficient.sqrt()</span></code></a></li>
@@ -1154,6 +1156,12 @@ engine of pyrauli.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>An easy to use symbolic coefficient.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrauli.SymbolicCoefficient.compile">
+<span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CompiledExpression&lt;float&gt;</span></span></span><a class="headerlink" href="#pyrauli.SymbolicCoefficient.compile" title="Link to this definition"></a></dt>
+<dd><p>Returns a fast compiled symbolic coefficient for faster evaluation.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicCoefficient.cos">
 <span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></span><a class="headerlink" href="#pyrauli.SymbolicCoefficient.cos" title="Link to this definition"></a></dt>
 <dd><p>Apply cosinus</p>
@@ -1163,6 +1171,12 @@ engine of pyrauli.</p>
 <dt class="sig sig-object py" id="pyrauli.SymbolicCoefficient.evaluate">
 <span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pyrauli.SymbolicCoefficient.evaluate" title="Link to this definition"></a></dt>
 <dd><p>Evaluate into a real by replacing variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyrauli.SymbolicCoefficient.optimize">
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CompiledExpression&lt;float&gt;</span></span></span><a class="headerlink" href="#pyrauli.SymbolicCoefficient.optimize" title="Link to this definition"></a></dt>
+<dd><p>Returns a simplified and compiled symbolic coefficient.</p>
 </dd></dl>
 
 <dl class="py method">

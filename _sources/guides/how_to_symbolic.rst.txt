@@ -41,6 +41,8 @@ A key feature is the ability to substitute variables with values. There are two 
 1.  **.evaluate()**: This method substitutes all variables and computes a final floating-point number. It will raise an error if any variables are left unbound.
 2.  **.symbolic_evaluate()**: This method substitutes only the specified variables, returning a new, potentially simpler `SymbolicCoefficient`.
 
+.. tip:: **Faster evaluations**: Once you're done building your symbolic expression, compile it into a :py:class:`~pyrauli.CompiledExpression` using :py:meth:`~pyrauli.SymbolicExpression.compile`. This will speed up evaluation by orders of magnitude.
+
 .. literalinclude:: /../tests/snippets/test_symbolic_coefficient_guide.py
    :language: python
    :start-after: # [symbolic_evaluate]
@@ -57,6 +59,21 @@ The :py:meth:`~pyrauli.SymbolicCoefficient.simplified` method applies arithmetic
    :start-after: # [symbolic_simplify]
    :end-before: # [symbolic_simplify]
    :dedent: 4
+
+Compiling Expressions
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The :py:meth:`~pyrauli.SymbolicCoefficient.compile` transforms a symbolic expression into a static and highly optimized :py:class:`~pyrauli.CompiledExpression`.
+
+Compiled expression are fixed and can only be evaluated, but are thousands of times faster to evaluate.
+
+.. literalinclude:: /../tests/snippets/test_symbolic_coefficient_guide.py
+   :language: python
+   :start-after: # [symbolic_compile]
+   :end-before: # [symbolic_compile]
+   :dedent: 4
+
+.. tip:: Simplifying and compiling can be done at the same time using :py:meth:`~pyrauli.SymbolicExpression.optimize`. However, simplifying can sometimes be very long. If the goal is only to evaluate quicker, start with compiling, then simplifying using optimize.
 
 Constructing a `SymbolicObservable`
 -------------------------------------
@@ -97,3 +114,5 @@ The final result is a new :py:class:`~pyrauli.SymbolicObservable`. To get the fi
    :dedent: 4
 
 This workflow allows you to run the simulation once to get a general symbolic result and then analyze that result for many different parameter values without needing to re-run the simulation each time.
+
+.. tip:: Don't forget to compile your expressions if you are running a lot of evaluations.

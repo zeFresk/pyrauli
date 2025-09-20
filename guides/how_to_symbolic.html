@@ -58,6 +58,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#working-with-symboliccoefficient">Working with <cite>SymbolicCoefficient</cite></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#evaluating-expressions">Evaluating Expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#simplifying-expressions">Simplifying Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-expressions">Compiling Expressions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#constructing-a-symbolicobservable">Constructing a <cite>SymbolicObservable</cite></a></li>
@@ -149,6 +150,10 @@
 <li><p><strong>.evaluate()</strong>: This method substitutes all variables and computes a final floating-point number. It will raise an error if any variables are left unbound.</p></li>
 <li><p><strong>.symbolic_evaluate()</strong>: This method substitutes only the specified variables, returning a new, potentially simpler <cite>SymbolicCoefficient</cite>.</p></li>
 </ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Faster evaluations</strong>: Once you’re done building your symbolic expression, compile it into a <code class="xref py py-class docutils literal notranslate"><span class="pre">CompiledExpression</span></code> using <code class="xref py py-meth docutils literal notranslate"><span class="pre">compile()</span></code>. This will speed up evaluation by orders of magnitude.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">expression</span> <span class="o">=</span> <span class="n">SymbolicCoefficient</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">SymbolicCoefficient</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 
 <span class="c1"># Evaluate fully by providing all variables</span>
@@ -174,6 +179,25 @@
 <span class="n">simplified_expr</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">simplified</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simplified expression: </span><span class="si">{</span><span class="n">simplified_expr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
+</div>
+</section>
+<section id="compiling-expressions">
+<h3>Compiling Expressions<a class="headerlink" href="#compiling-expressions" title="Link to this heading"></a></h3>
+<p>The <a class="reference internal" href="../reference/api.html#pyrauli.SymbolicCoefficient.compile" title="pyrauli.SymbolicCoefficient.compile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compile()</span></code></a> transforms a symbolic expression into a static and highly optimized <code class="xref py py-class docutils literal notranslate"><span class="pre">CompiledExpression</span></code>.</p>
+<p>Compiled expression are fixed and can only be evaluated, but are thousands of times faster to evaluate.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">SymbolicCoefficient</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">compiled_expression</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">compiled_expression</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>
+
+<span class="c1">#equivalent to calling .simplified() and .compile()</span>
+<span class="n">optimized_simplified_expression</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span> 
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Simplifying and compiling can be done at the same time using <code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code>. However, simplifying can sometimes be very long. If the goal is only to evaluate quicker, start with compiling, then simplifying using optimize.</p>
 </div>
 </section>
 </section>
@@ -238,11 +262,21 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_observable</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
 <span class="n">expectation_value</span> <span class="o">=</span> <span class="n">final_observable</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span>
 
+<span class="c1"># Call this before evaluating</span>
+<span class="n">compiled_ev</span> <span class="o">=</span> <span class="n">expectation_value</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="c1"># Recommanded for printing</span>
+<span class="n">simplified_ev</span> <span class="o">=</span> <span class="n">expectation_value</span><span class="o">.</span><span class="n">simplified</span><span class="p">()</span>
+
 <span class="c1"># Evaluate for a specific angle</span>
-<span class="n">value</span> <span class="o">=</span> <span class="n">expectation_value</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;theta&quot;</span><span class="p">:</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">4</span><span class="p">})</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">compiled_ev</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;theta&quot;</span><span class="p">:</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">4</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>This workflow allows you to run the simulation once to get a general symbolic result and then analyze that result for many different parameter values without needing to re-run the simulation each time.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Don’t forget to compile your expressions if you are running a lot of evaluations.</p>
+</div>
 </section>
 </section>
 
