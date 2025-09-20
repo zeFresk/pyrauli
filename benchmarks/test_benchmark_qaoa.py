@@ -41,3 +41,12 @@ def test_qaoa_N4P1_run(maxcut_qaoa_N4P1, benchmark):
     qc, obs = maxcut_qaoa_N4P1
 
     benchmark(qc.run, obs)
+
+def test_qaoa_N4P1_ev_evaluate_optimized(maxcut_qaoa_N4P1, benchmark):
+    qc, obs = maxcut_qaoa_N4P1 
+    ev_opt = qc.run(obs).expectation_value().optimize()
+
+    def eval_fn(opt):
+        return opt.evaluate({"tz": 0.616, "tx": 0.393})
+    
+    benchmark(eval_fn, ev_opt)
