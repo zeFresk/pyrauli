@@ -19,7 +19,7 @@ from qiskit.primitives.containers import PubResult, PrimitiveResult, DataBin
 from qiskit.quantum_info import SparsePauliOp
 from qiskit.circuit import ParameterVector
 
-from . import Circuit, Observable, NoiseModel, Truncator, NeverTruncator, SchedulingPolicy, AlwaysAfterSplittingPolicy
+from . import Circuit, Observable, NoiseModel, Truncator, NeverTruncator, SchedulingPolicy, AlwaysAfterSplittingPolicy, RuntimePolicy, default_batch_policy
 from .converters import from_qiskit
 
 class PyrauliEstimator(BaseEstimatorV2):
@@ -49,7 +49,8 @@ class PyrauliEstimator(BaseEstimatorV2):
                  noise_model: Optional[NoiseModel] = None, 
                  truncator: Truncator = NeverTruncator(), 
                  merge_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy(), 
-                 truncate_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy()) -> None:
+                 truncate_policy: SchedulingPolicy = AlwaysAfterSplittingPolicy(),
+                 runtime: RuntimePolicy = default_batch_policy) -> None:
         """
         Initializes the PyrauliEstimator.
 
@@ -65,6 +66,7 @@ class PyrauliEstimator(BaseEstimatorV2):
         self._truncator = truncator or NeverTruncator()
         self._merge_policy = merge_policy or AlwaysAfterSplittingPolicy()
         self._truncate_policy = truncate_policy or AlwaysAfterSplittingPolicy()
+        self._runtime = runtime or default_batch_policy
         self._executor = ThreadPoolExecutor(max_workers=1)
 
     def run(self, run_input: Union[List[Tuple], Tuple], **options: Any) -> 'PJob':
@@ -100,6 +102,7 @@ class PyrauliEstimator(BaseEstimatorV2):
         trunc = self._truncator if "truncator" not in options else options.get("truncator")
         trunc_pol = self._truncate_policy if "truncate_policy" not in options else options.get("truncate_policy")
         merge_pol = self._merge_policy if "merge_policy" not in options else options.get("merge_policy")
+        runtime = self._runtime if "runtime" not in options else options.get("runtime")
 
         results = []
         for pub in pubs:
@@ -115,32 +118,47 @@ class PyrauliEstimator(BaseEstimatorV2):
                 pyrauli_circuit.set_merge_policy(merge_pol)
                 pyrauli_circuit.set_truncate_policy(trunc_pol)
 
-            exp_values = self._simulate_observables(pyrauli_circuits, observables, trunc, merge_pol, trunc_pol) 
+            exp_values = self._simulate_observables(pyrauli_circuits, observables, runtime) 
+            print(exp_values)
+            evs = np.array(exp_values)
+            print(evs)
             
             # Format the result for this pub
-            results.append({"success": True, "data": {"evs": np.atleast_1d(np.squeeze(np.array(exp_values)))}, "metadata": {}, 'shots': 1})
+            results.append({"success": True, "data": {"evs": exp_values}, "metadata": {}, 'shots': 1})
             
         return Result.from_dict({"job_id": job_id, "results": results, "success": True, "backend_name": self.name})
 
     def _simulate_observables(self, 
                               pyrauli_circuits: List[Circuit], 
-                              observables: List[SparsePauliOp], 
-                              trunc: Optional[Truncator] = None, 
-                              merge_pol: Optional[SchedulingPolicy] = None, 
-                              trunc_pol: Optional[SchedulingPolicy] = None) -> List[List[float]]:
+                              observables: Union[List[List[SparsePauliOp]], List[SparsePauliOp]], 
+                              runtime: RuntimePolicy) -> np.ndarray:
         """
         Simulates a list of observables for a given pyrauli circuit.
         """
-        ret = []
-        for olist in observables:
-            exp_values = []
-            for obs in olist:
-                pyrauli_obs = from_qiskit(obs, reverse=True)
-                for pqc in pyrauli_circuits: 
-                    final_observable = pqc.run(pyrauli_obs)
-                    exp_values.append(final_observable.expectation_value())
-            ret += [exp_values]
-        return ret
+        if not observables:
+            return np.array([])
+
+        nb_obs_arr = len(observables)
+        nb_qcs = len(pyrauli_circuits)
+
+        long = False
+        if (isinstance(observables, np.ndarray) and observables.ndim == 2) or (isinstance(observables[0], list)):
+            observables = [o for obs in observables for o in obs]
+            long = True
+
+        pobs = [from_qiskit(o, reverse=True) for o in observables]
+
+        results_per_circuit = [
+            pqc.expectation_value(pobs, runtime=runtime) for pqc in pyrauli_circuits
+        ]
+
+        matrix_circ_obs = np.array(results_per_circuit)
+        matrix_obs_circ = matrix_circ_obs.T
+
+        if long:
+            return np.atleast_1d(np.squeeze(matrix_obs_circ.flatten().reshape(nb_obs_arr, nb_qcs)))
+        else:
+            return matrix_obs_circ.flatten()
 
     def _unpack_pub(self, pub: Tuple) -> Tuple[QuantumCircuit, List[SparsePauliOp], Optional[Any]]:
         """

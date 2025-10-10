@@ -17,6 +17,7 @@
 #include "scheduler.hpp"
 #include "truncate.hpp"
 #include "symbolic/coefficient.hpp"
+#include "policy.hpp"
 
 namespace py = pybind11;
 
@@ -69,8 +70,21 @@ bool operator==(SymbolicCoeff_t const& lhs, SymbolicCoeff_t const& rhs) {
 	return lhs.to_string() == rhs.to_string();
 }
 
+auto default_runtime = RuntimePolicy{DefaultExecutionPolicy{}};
+
 PYBIND11_MODULE(_core, m) {
 	m.doc() = "Core C++ functionality for pyrauli, wrapped with pybind11";
+
+	py::class_<SequentialPolicy>(m, "SequentialPolicy", "Sequential runtime");
+	#if defined(_OPENMP)
+		py::class_<OpenMPPolicy>(m, "ParallelPolicy", "OpenMP Parallel runtime");
+	#endif
+	py::class_<RuntimePolicy>(m, "RuntimePolicy", "Runtime execution policy.")
+		.def(py::init([] () { return default_runtime; }));
+	m.attr("seq") = py::cast(RuntimePolicy{seq});
+	#if defined(_OPENMP)
+		m.attr("par") = py::cast(RuntimePolicy{par});
+	#endif
 
 	// Enums
 	py::enum_<Pauli_enum>(m, "PauliEnum", "Enumeration for single Pauli operators (I, X, Y, Z).")
@@ -175,20 +189,20 @@ PYBIND11_MODULE(_core, m) {
 			     return Observable<coeff_t>(paulis.begin(), paulis.end());
 		     }),
 		     "Constructs an observable from a list of Pauli strings.")
-		.def("apply_pauli", &Observable<coeff_t>::apply_pauli,
-		     "Applies a single-qubit Pauli gate to the observable.")
-		.def("apply_clifford", &Observable<coeff_t>::apply_clifford,
-		     "Applies a single-qubit Clifford gate to the observable.")
-		.def("apply_unital_noise", &Observable<coeff_t>::apply_unital_noise,
-		     "Applies a single-qubit unital noise channel.")
-		.def("apply_cx", &Observable<coeff_t>::apply_cx, "Applies a CNOT (CX) gate to the observable.")
-		.def("apply_rz", &Observable<coeff_t>::apply_rz,
-		     "Applies a single-qubit Rz rotation gate to the observable.")
-		.def("apply_amplitude_damping", &Observable<coeff_t>::apply_amplitude_damping,
-		     "Applies an amplitude damping noise channel.")
-		.def("expectation_value", &Observable<coeff_t>::expectation_value,
-		     "Calculates the expectation value of the observable.")
-		.def("merge", &Observable<coeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
+		.def("apply_pauli", &Observable<coeff_t>::apply_pauli<RuntimePolicy>,
+		     "Applies a single-qubit Pauli gate to the observable.", py::arg("pauli_gate"), py::arg("qubit"), py::arg("runtime") = default_runtime)
+		.def("apply_clifford", &Observable<coeff_t>::apply_clifford<RuntimePolicy>,
+		     "Applies a single-qubit Clifford gate to the observable.", py::arg("clifford_gate"), py::arg("qubit"), py::arg("runtime") = default_runtime)
+		.def("apply_unital_noise", &Observable<coeff_t>::apply_unital_noise<RuntimePolicy>,
+		     "Applies a single-qubit unital noise channel.", py::arg("unital_noise_type"), py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("apply_cx", &Observable<coeff_t>::apply_cx<RuntimePolicy>, "Applies a CNOT (CX) gate to the observable.", py::arg("qubit_control"), py::arg("qubit_target"), py::arg("runtime") = default_runtime)
+		.def("apply_rz", &Observable<coeff_t>::apply_rz<RuntimePolicy>,
+		     "Applies a single-qubit Rz rotation gate to the observable.", py::arg("qubit"), py::arg("theta"), py::arg("runtime") = default_runtime)
+		.def("apply_amplitude_damping", &Observable<coeff_t>::apply_amplitude_damping<RuntimePolicy>,
+		     "Applies an amplitude damping noise channel.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Observable<coeff_t>::expectation_value<RuntimePolicy>,
+		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
+		.def("merge", &Observable<coeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
 		.def("size", &Observable<coeff_t>::size, "Gets the number of Pauli terms in the observable.")
 		.def("truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { return obs.truncate(*ptr); },
 			"Truncates the observable based on a given truncation strategy.")
@@ -205,7 +219,6 @@ PYBIND11_MODULE(_core, m) {
 			ss << obs;
 			return ss.str();
 		});
-
 
 	// NoiseModel class
 	py::class_<Noise<coeff_t>>(m, "Noise", "Defines the strengths of different noise channels.")
@@ -327,13 +340,17 @@ PYBIND11_MODULE(_core, m) {
 				self.add_operation(op, q1, q2);
 			},
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
-		.def("run", &Circuit<coeff_t>::run, "Runs the simulation on the circuit.")
+		.def("run", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("run", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<coeff_t>::expectation_value<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<coeff_t>::expectation_value<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("reset", &Circuit<coeff_t>::reset, "Clears all operations from the circuit.")
 		.def("set_truncator", &Circuit<coeff_t>::set_truncator, "Sets a new truncator for the circuit.")
 		.def("set_merge_policy", &Circuit<coeff_t>::set_merge_policy,
 		     "Sets a new policy for when to merge Pauli terms.")
 		.def("set_truncate_policy", &Circuit<coeff_t>::set_truncate_policy,
 		     "Sets a new policy for when to truncate the observable.");
+
 
 	py::class_<PTC::ReadOnlyNonOwningPauliTermPacked>(m, "ReadOnlyPackedPauliTermView",
 							  "A read-only, non-owning view of a packed Pauli term.")
@@ -506,38 +523,20 @@ PYBIND11_MODULE(_core, m) {
 			     return Observable<SymbolicCoeff_t>(paulis.begin(), paulis.end());
 		     }),
 		     "Constructs an observable from a list of Pauli strings.")
-		.def("apply_pauli", &Observable<SymbolicCoeff_t>::apply_pauli,
-		     "Applies a single-qubit Pauli gate to the observable.")
-		.def("apply_clifford", &Observable<SymbolicCoeff_t>::apply_clifford,
-		     "Applies a single-qubit Clifford gate to the observable.")
-		.def("apply_unital_noise",
-			     &Observable<SymbolicCoeff_t>::apply_unital_noise,
-		     "Applies a single-qubit unital noise channel.")
-		.def(
-			"apply_unital_noise",
-			[](Observable<SymbolicCoeff_t>& self, UnitalNoise noise, size_t qubit, std::string const& strength) {
-				self.apply_unital_noise(noise, qubit, SymbolicCoeff_t(Variable{strength}));
-			},
-			"Applies a single-qubit unital noise channel, using a variable name for the strength.")
-		.def("apply_cx", &Observable<SymbolicCoeff_t>::apply_cx, "Applies a CNOT (CX) gate to the observable.")
-		.def("apply_rz", &Observable<SymbolicCoeff_t>::apply_rz,
-		     "Applies a single-qubit Rz rotation gate to the observable.")
-		.def(
-			"apply_rz",
-			[](Observable<SymbolicCoeff_t>& self, size_t qubit, std::string const& param) {
-				self.apply_rz(qubit, SymbolicCoeff_t(Variable{param}));
-			},
-			"Applies a single-qubit Rz rotation gate to the observable, using a variable name for the angle.")
-		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping, "Applies an amplitude damping noise channel.")
-		.def(
-			"apply_amplitude_damping",
-			[](Observable<SymbolicCoeff_t>& self, size_t qubit, std::string const& strength) {
-				self.apply_amplitude_damping(qubit, SymbolicCoeff_t(Variable{strength}));
-			},
-			"Applies an amplitude damping noise channel, using a variable name for the strength.")		
-		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value,
-		     "Calculates the expectation value of the observable.")
-		.def("merge", &Observable<SymbolicCoeff_t>::merge, "Merges Pauli terms with identical Pauli strings.")
+		.def("apply_pauli", &Observable<SymbolicCoeff_t>::apply_pauli<RuntimePolicy>,
+		     "Applies a single-qubit Pauli gate to the observable.", py::arg("pauli_gate"), py::arg("qubit"), py::arg("runtime") = default_runtime)
+		.def("apply_clifford", &Observable<SymbolicCoeff_t>::apply_clifford<RuntimePolicy>,
+		     "Applies a single-qubit Clifford gate to the observable.", py::arg("clifford_gate"), py::arg("qubit"), py::arg("runtime") = default_runtime)
+		.def("apply_unital_noise", &Observable<SymbolicCoeff_t>::apply_unital_noise<RuntimePolicy>,
+		     "Applies a single-qubit unital noise channel.", py::arg("unital_noise_type"), py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("apply_cx", &Observable<SymbolicCoeff_t>::apply_cx<RuntimePolicy>, "Applies a CNOT (CX) gate to the observable.", py::arg("qubit_control"), py::arg("qubit_target"), py::arg("runtime") = default_runtime)
+		.def("apply_rz", &Observable<SymbolicCoeff_t>::apply_rz<RuntimePolicy>,
+		     "Applies a single-qubit Rz rotation gate to the observable.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping<RuntimePolicy>,
+		     "Applies an amplitude damping noise channel.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value<RuntimePolicy>,
+		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
+		.def("merge", &Observable<SymbolicCoeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
 		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
 		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, py::arg("variable_map") = std::unordered_map<std::string, coeff_t>{}, "Simplify the observable coefficient and replace variables.")
 		.def(
@@ -556,7 +555,6 @@ PYBIND11_MODULE(_core, m) {
 			ss << obs;
 			return ss.str();
 		});
-
 
 	py::class_<Noise<SymbolicCoeff_t>>(m, "SymbolicNoise", "Defines the strengths of different noise channels.")
 		.def(py::init<>())
@@ -633,7 +631,10 @@ PYBIND11_MODULE(_core, m) {
 				self.add_operation(op, q1, q2);
 			},
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
-		.def("run", &Circuit<SymbolicCoeff_t>::run, "Runs the simulation on the circuit.")
+		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("reset", &Circuit<SymbolicCoeff_t>::reset, "Clears all operations from the circuit.")
 		.def("set_truncator", &Circuit<SymbolicCoeff_t>::set_truncator, "Sets a new truncator for the circuit.")
 		.def("set_merge_policy", &Circuit<SymbolicCoeff_t>::set_merge_policy,
@@ -706,5 +707,5 @@ PYBIND11_MODULE(_core, m) {
 			std::stringstream ss;
 			ss << pt;
 			return ss.str();
-		});	
+		});
 }
