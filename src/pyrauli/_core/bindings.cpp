@@ -17,6 +17,7 @@
 #include "scheduler.hpp"
 #include "truncate.hpp"
 #include "symbolic/coefficient.hpp"
+#include "policy.hpp"
 
 namespace py = pybind11;
 
