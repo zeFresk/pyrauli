@@ -12,7 +12,7 @@ from ._core import (
     SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
     AlwaysAfterSplittingPolicy, Circuit, OperationType, Timing,
     SimulationState, CompressionResult, LambdaPolicy,
-    SymbolicCoefficient, SymbolicPauliTerm, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit, seq
+    SymbolicCoefficient, SymbolicPauliTerm, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit, seq, RuntimePolicy,
 )
 
 __all__ = [
@@ -23,14 +23,17 @@ __all__ = [
     "AlwaysBeforeSplittingPolicy", "AlwaysAfterSplittingPolicy", "Circuit",
     "OperationType", "Timing", "SimulationState", "CompressionResult",
     "LambdaPolicy",
-    "SymbolicCoefficient", "SymbolicObservable", "SymbolicPauliTerm", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit", seq
+    "SymbolicCoefficient", "SymbolicObservable", "SymbolicPauliTerm", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit", "seq", "RuntimePolicy",
 ]
 
 try:
     from ._core import par
-    __all__ += ["par"]
+    __all__.extend(["par"])
+    default_batch_policy = par
+    default_single_policy = seq
 except ImportError:
-    pass
+    default_batch_policy = seq
+    default_single_policy = seq
 
 try:
     import sympy

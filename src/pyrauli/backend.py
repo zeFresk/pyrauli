@@ -48,7 +48,7 @@ class PBackend(BackendV2):
 
     """
 
-    def __init__(self, num_qubits: int = 128, noise_model: pyrauli.NoiseModel = None, truncator: pyrauli.Truncator = pyrauli.NeverTruncator(), merge_policy: pyrauli.SchedulingPolicy = pyrauli.AlwaysAfterSplittingPolicy(), truncate_policy: pyrauli.SchedulingPolicy = pyrauli.AlwaysAfterSplittingPolicy(), **kwargs):
+    def __init__(self, num_qubits: int = 128, noise_model: pyrauli.NoiseModel = None, truncator: pyrauli.Truncator = pyrauli.NeverTruncator(), merge_policy: pyrauli.SchedulingPolicy = pyrauli.AlwaysAfterSplittingPolicy(), truncate_policy: pyrauli.SchedulingPolicy = pyrauli.AlwaysAfterSplittingPolicy(), runtime : pyrauli.RuntimePolicy = pyrauli.default_batch_policy, **kwargs):
         """
         Initializes the PBackend.
 
@@ -67,6 +67,7 @@ class PBackend(BackendV2):
         self._merge_policy = merge_policy or pyrauli.AlwaysAfterSplittingPolicy()
         self._truncate_policy = truncate_policy or pyrauli.AlwaysAfterSplittingPolicy()
         self._target = Target(description="Pyrauli Backend Target", num_qubits=num_qubits)
+        self._runtime = runtime or pyrauli.default_batch_policy
 
         # Define the basis gates for the target
         self._target.add_instruction(HGate(), {(i,): None for i in range(self._num_qubits)})
@@ -106,5 +107,5 @@ class PBackend(BackendV2):
         Returns:
             A JobV1 object that represents the execution.
         """
-        pyest = PyrauliEstimator(noise_model=self._noise_model, truncator=self._truncator, merge_policy=self._merge_policy, truncate_policy=self._truncate_policy)
+        pyest = PyrauliEstimator(noise_model=self._noise_model, truncator=self._truncator, merge_policy=self._merge_policy, truncate_policy=self._truncate_policy, runtime=self._runtime)
         return pyest.run(run_input, **options)

@@ -342,8 +342,8 @@ PYBIND11_MODULE(_core, m) {
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
 		.def("run", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
-		.def("expectation_value", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
-		.def("expectation_value", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<coeff_t>::expectation_value<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<coeff_t>::expectation_value<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("reset", &Circuit<coeff_t>::reset, "Clears all operations from the circuit.")
 		.def("set_truncator", &Circuit<coeff_t>::set_truncator, "Sets a new truncator for the circuit.")
 		.def("set_merge_policy", &Circuit<coeff_t>::set_merge_policy,
@@ -633,8 +633,8 @@ PYBIND11_MODULE(_core, m) {
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
 		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
-		.def("expectation_value", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
-		.def("expectation_value", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("reset", &Circuit<SymbolicCoeff_t>::reset, "Clears all operations from the circuit.")
 		.def("set_truncator", &Circuit<SymbolicCoeff_t>::set_truncator, "Sets a new truncator for the circuit.")
 		.def("set_merge_policy", &Circuit<SymbolicCoeff_t>::set_merge_policy,
