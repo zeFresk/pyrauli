@@ -38,7 +38,7 @@ def test_apply_cx():
 
 def test_apply_rz():
     obs = SymbolicObservable("X")
-    obs.apply_rz(0, "theta")
+    obs.apply_rz(0, SymbolicCoefficient("theta"))
     assert obs.size() == 2
     assert str(obs[0]) == "1 * cos(theta) X"
     assert str(obs[1]) == "1 * -(sin(theta)) Y"
@@ -46,13 +46,13 @@ def test_apply_rz():
 
 def test_apply_unital_noise():
     obs = SymbolicObservable("X")
-    obs.apply_unital_noise(UnitalNoise.Depolarizing, 0, "p")
+    obs.apply_unital_noise(UnitalNoise.Depolarizing, 0, SymbolicCoefficient("p"))
     assert str(obs[0].coefficient.simplified()) == "1 - p"
 
 
 def test_apply_amplitude_damping():
     obs = SymbolicObservable("Z")
-    obs.apply_amplitude_damping(0, "p")
+    obs.apply_amplitude_damping(0, SymbolicCoefficient("p"))
     assert obs.size() == 2
 
 

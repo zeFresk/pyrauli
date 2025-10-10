@@ -12,7 +12,7 @@ from ._core import (
     SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
     AlwaysAfterSplittingPolicy, Circuit, OperationType, Timing,
     SimulationState, CompressionResult, LambdaPolicy,
-    SymbolicCoefficient, SymbolicPauliTerm, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit
+    SymbolicCoefficient, SymbolicPauliTerm, SymbolicObservable, SymbolicNoise, SymbolicNoiseModel, SymbolicTruncator, SymbolicWeightTruncator, SymbolicNeverTruncator, SymbolicMultiTruncator, SymbolicCircuit, seq
 )
 
 __all__ = [
@@ -23,9 +23,14 @@ __all__ = [
     "AlwaysBeforeSplittingPolicy", "AlwaysAfterSplittingPolicy", "Circuit",
     "OperationType", "Timing", "SimulationState", "CompressionResult",
     "LambdaPolicy",
-    "SymbolicCoefficient", "SymbolicObservable", "SymbolicPauliTerm", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit"
-
+    "SymbolicCoefficient", "SymbolicObservable", "SymbolicPauliTerm", "SymbolicNoise", "SymbolicNoiseModel", "SymbolicTruncator", "SymbolicWeightTruncator", "SymbolicNeverTruncator", "SymbolicMultiTruncator", "SymbolicCircuit", seq
 ]
+
+try:
+    from ._core import par
+    __all__ += ["par"]
+except ImportError:
+    pass
 
 try:
     import sympy

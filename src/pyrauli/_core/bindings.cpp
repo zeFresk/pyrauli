@@ -75,10 +75,15 @@ auto default_runtime = RuntimePolicy{DefaultExecutionPolicy{}};
 PYBIND11_MODULE(_core, m) {
 	m.doc() = "Core C++ functionality for pyrauli, wrapped with pybind11";
 
-	m.attr("seq") = RuntimePolicy{seq};
-
+	py::class_<SequentialPolicy>(m, "SequentialPolicy", "Sequential runtime");
 	#if defined(_OPENMP)
-		m.attr("par") = RuntimePolicy{par};
+		py::class_<OpenMPPolicy>(m, "ParallelPolicy", "OpenMP Parallel runtime");
+	#endif
+	py::class_<RuntimePolicy>(m, "RuntimePolicy", "Runtime execution policy.")
+		.def(py::init([] () { return default_runtime; }));
+	m.attr("seq") = py::cast(RuntimePolicy{seq});
+	#if defined(_OPENMP)
+		m.attr("par") = py::cast(RuntimePolicy{par});
 	#endif
 
 	// Enums
@@ -192,7 +197,7 @@ PYBIND11_MODULE(_core, m) {
 		     "Applies a single-qubit unital noise channel.", py::arg("unital_noise_type"), py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
 		.def("apply_cx", &Observable<coeff_t>::apply_cx<RuntimePolicy>, "Applies a CNOT (CX) gate to the observable.", py::arg("qubit_control"), py::arg("qubit_target"), py::arg("runtime") = default_runtime)
 		.def("apply_rz", &Observable<coeff_t>::apply_rz<RuntimePolicy>,
-		     "Applies a single-qubit Rz rotation gate to the observable.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		     "Applies a single-qubit Rz rotation gate to the observable.", py::arg("qubit"), py::arg("theta"), py::arg("runtime") = default_runtime)
 		.def("apply_amplitude_damping", &Observable<coeff_t>::apply_amplitude_damping<RuntimePolicy>,
 		     "Applies an amplitude damping noise channel.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Observable<coeff_t>::expectation_value<RuntimePolicy>,
@@ -214,7 +219,6 @@ PYBIND11_MODULE(_core, m) {
 			ss << obs;
 			return ss.str();
 		});
-
 
 	// NoiseModel class
 	py::class_<Noise<coeff_t>>(m, "Noise", "Defines the strengths of different noise channels.")
@@ -703,5 +707,5 @@ PYBIND11_MODULE(_core, m) {
 			std::stringstream ss;
 			ss << pt;
 			return ss.str();
-		});	
+		});
 }
