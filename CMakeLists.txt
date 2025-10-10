@@ -5,6 +5,32 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON) # static -> dynamic
 
 include(FetchContent)
 
+if(APPLE)
+    find_program(BREW_EXECUTABLE brew)
+
+    if(BREW_EXECUTABLE)
+        message(STATUS "Homebrew found, checking for libomp.")
+        
+        # 3. Get the Homebrew prefix (e.g., /opt/homebrew or /usr/local)
+        execute_process(
+            COMMAND ${BREW_EXECUTABLE} --prefix
+            OUTPUT_VARIABLE BREW_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            RESULT_VARIABLE BREW_RESULT
+        )
+
+        if(BREW_RESULT EQUAL 0)
+            set(LIBOMP_ROOT "${BREW_PREFIX}/opt/libomp")
+            
+            if(EXISTS "${LIBOMP_ROOT}")
+                list(APPEND CMAKE_PREFIX_PATH "${LIBOMP_ROOT}")
+		set(OpenMP_ROOT "${LIBOMP_ROOT}")
+            endif()
+        endif()
+    endif()
+endif()
+
+
 FetchContent_Declare(
 		pybind11
 		GIT_REPOSITORY https://github.com/pybind/pybind11.git
