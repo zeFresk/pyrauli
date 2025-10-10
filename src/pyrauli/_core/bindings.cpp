@@ -552,7 +552,6 @@ PYBIND11_MODULE(_core, m) {
 			return ss.str();
 		});
 
-/*
 	py::class_<Noise<SymbolicCoeff_t>>(m, "SymbolicNoise", "Defines the strengths of different noise channels.")
 		.def(py::init<>())
 		.def_readwrite("depolarizing_strength", &Noise<SymbolicCoeff_t>::depolarizing_strength)
@@ -628,7 +627,10 @@ PYBIND11_MODULE(_core, m) {
 				self.add_operation(op, q1, q2);
 			},
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
-		.def("run", &Circuit<SymbolicCoeff_t>::run, "Runs the simulation on the circuit.")
+		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
+		.def("expectation_value", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of their expectation values.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("reset", &Circuit<SymbolicCoeff_t>::reset, "Clears all operations from the circuit.")
 		.def("set_truncator", &Circuit<SymbolicCoeff_t>::set_truncator, "Sets a new truncator for the circuit.")
 		.def("set_merge_policy", &Circuit<SymbolicCoeff_t>::set_merge_policy,
@@ -702,5 +704,4 @@ PYBIND11_MODULE(_core, m) {
 			ss << pt;
 			return ss.str();
 		});	
-	*/
 }
