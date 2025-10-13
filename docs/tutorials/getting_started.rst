@@ -1,4 +1,4 @@
-.. _getting_started(V)
+.. _getting_started
 
 Getting started: Your First Simulation
 ======================================
