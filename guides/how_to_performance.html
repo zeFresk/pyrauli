@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimize Performance with Parallel Execution &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Integrate with Qiskit" href="how_to_qiskit.html" />
+    <link rel="prev" title="Manage Simulation Complexity" href="how_to_complexity.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/getting_started.html">Getting started: Your First Simulation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="how_to_circuit.html">Build and Run Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_observables.html">Work with Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optimize Performance with Parallel Execution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-runtimepolicy">The <cite>RuntimePolicy</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-a-single-observable-in-parallel">Running a Single Observable in Parallel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#batching-observables-for-maximum-throughput">Batching Observables for Maximum Throughput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-parallelism-in-qiskit">Enabling Parallelism in Qiskit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_qiskit.html">Integrate with Qiskit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_noise.html">Simulate Noisy Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_symbolic.html">Symbolic Simulation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/theory.html">Core Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Optimize Performance with Parallel Execution</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/how_to_performance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optimize-performance-with-parallel-execution">
+<span id="how-to-performance"></span><h1>Optimize Performance with Parallel Execution<a class="headerlink" href="#optimize-performance-with-parallel-execution" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> is designed for high-performance simulation, and its C++ backend
+includes a parallel execution engine powered by OpenMP. This guide shows how
+to leverage this feature to significantly speed up simulations, especially
+when working with many observables.</p>
+<section id="the-runtimepolicy">
+<h2>The <cite>RuntimePolicy</cite><a class="headerlink" href="#the-runtimepolicy" title="Link to this heading"></a></h2>
+<p>The execution strategy is controlled by a <a class="reference internal" href="../reference/api.html#pyrauli.RuntimePolicy" title="pyrauli.RuntimePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimePolicy</span></code></a> object.
+<code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> provides two policies:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyrauli.seq</span></code>: A sequential (single-threaded) execution policy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyrauli.par</span></code>: A parallel (multi-threaded) execution policy.</p></li>
+</ul>
+<p>You can pass these policies to the <code class="docutils literal notranslate"><span class="pre">runtime</span></code> parameter of the simulation methods.</p>
+</section>
+<section id="running-a-single-observable-in-parallel">
+<h2>Running a Single Observable in Parallel<a class="headerlink" href="#running-a-single-observable-in-parallel" title="Link to this heading"></a></h2>
+<p>You can achieve a performance boost even when simulating just a single observable
+by using the parallel runtime. The internal operations for evolving the observable—especially
+during splitting gates like Rz—are parallelized across multiple CPU cores.</p>
+<p>While this is faster than sequential execution, it is not as efficient as parallel
+batching. The overhead of managing threads is better amortized when distributed
+across many independent observables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circuit</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZIII&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run the simulation for one observable using the parallel policy</span>
+<span class="n">ev</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">(</span><span class="n">observable</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="n">pyrauli</span><span class="o">.</span><span class="n">par</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expectation value (parallel): </span><span class="si">{</span><span class="n">ev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="batching-observables-for-maximum-throughput">
+<h2>Batching Observables for Maximum Throughput<a class="headerlink" href="#batching-observables-for-maximum-throughput" title="Link to this heading"></a></h2>
+<p>The greatest performance benefit of the parallel engine comes from batching—that is,
+running the circuit simulation for a <em>list</em> of observables in a single call.
+<code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> will automatically distribute the work across multiple CPU cores.</p>
+<p>The example below computes the expectation values for three different observables
+in one parallel call.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circuit</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">rz</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">observables</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZIII&quot;</span><span class="p">),</span>
+    <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;IZII&quot;</span><span class="p">),</span>
+    <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;IIZI&quot;</span><span class="p">),</span>
+    <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;IIIZ&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Run the simulation for the batch of observables in parallel</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">(</span><span class="n">observables</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="n">pyrauli</span><span class="o">.</span><span class="n">par</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">ev</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Observable </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: EV = </span><span class="si">{</span><span class="n">ev</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Error = </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Always prefer passing a list of observables to a single <code class="docutils literal notranslate"><span class="pre">.expectation_value()</span></code>
+or <code class="docutils literal notranslate"><span class="pre">.run()</span></code> call over looping in Python. The performance gain from
+processing the batch in C++ is substantial.</p>
+</div>
+</section>
+<section id="enabling-parallelism-in-qiskit">
+<h2>Enabling Parallelism in Qiskit<a class="headerlink" href="#enabling-parallelism-in-qiskit" title="Link to this heading"></a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> with Qiskit, you can enable parallel execution by default
+by passing the policy during the backend or estimator’s initialization.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyrauli</span><span class="w"> </span><span class="kn">import</span> <span class="n">PBackend</span>
+
+<span class="c1"># Initialize the backend with the parallel execution policy as the default</span>
+<span class="n">backend</span> <span class="o">=</span> <span class="n">PBackend</span><span class="p">(</span><span class="n">runtime</span><span class="o">=</span><span class="n">pyrauli</span><span class="o">.</span><span class="n">par</span><span class="p">)</span>
+
+<span class="c1"># All jobs run on this backend will now use the parallel engine by default</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">cx</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">observables</span> <span class="o">=</span> <span class="p">[</span><span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;ZI&quot;</span><span class="p">),</span> <span class="n">SparsePauliOp</span><span class="p">(</span><span class="s2">&quot;IZ&quot;</span><span class="p">)]</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">([(</span><span class="n">qc</span><span class="p">,</span> <span class="n">observables</span><span class="p">)])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expectation values: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">evs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="how_to_complexity.html" class="btn btn-neutral float-left" title="Manage Simulation Complexity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="how_to_qiskit.html" class="btn btn-neutral float-right" title="Integrate with Qiskit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

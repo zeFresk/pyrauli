@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../guides/how_to_circuit.html">Build and Run Circuits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/how_to_observables.html">Work with Observables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/how_to_performance.html">Optimize Performance with Parallel Execution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/how_to_symbolic.html">Symbolic Simulation</a></li>
@@ -99,7 +100,7 @@
            <div itemprop="articleBody">
              
   <section id="getting-started-your-first-simulation">
-<span id="getting-started"></span><h1>Getting started: Your First Simulation<a class="headerlink" href="#getting-started-your-first-simulation" title="Link to this heading"></a></h1>
+<h1>Getting started: Your First Simulation<a class="headerlink" href="#getting-started-your-first-simulation" title="Link to this heading"></a></h1>
 <p>In this tutorial, you will learn the complete, end-to-end workflow for
 simulating a quantum circuit with <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code>. We will build a Bell state, one
 of the most fundamental entangled states in quantum computing, and measure a
@@ -119,6 +120,19 @@ using pip.</p>
 <p>To use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> as a Qiskit backend, install it with the <code class="docutils literal notranslate"><span class="pre">[qiskit]</span></code> extra:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;pyrauli[qiskit]&#39;</span>
 </pre></div>
+</div>
+<p><strong>Installation Parallel Support</strong></p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> and enable the high-performance parallel execution engine, install it on a machine with OpenMP already installed. Most non-mac users should not have to do anything special.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;pyrauli&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The parallel execution engine is built on OpenMP. On macOS, you may need
+to install the OpenMP runtime library separately:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>libomp
+</pre></div>
+</div>
 </div>
 </section>
 <section id="simulating-a-bell-state">

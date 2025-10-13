@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_circuit.html">Build and Run Circuits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_observables.html">Work with Observables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_performance.html">Optimize Performance with Parallel Execution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_symbolic.html">Symbolic Simulation</a></li>
@@ -261,10 +262,10 @@
       </ul></li>
       <li><a href="reference/api.html#pyrauli.CoefficientTruncator">CoefficientTruncator (class in pyrauli)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.Pauli.commutes_with">commutes_with() (pyrauli.Pauli method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.compile">compile() (pyrauli.SymbolicCoefficient method)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.CompressionResult">CompressionResult (class in pyrauli)</a>
@@ -273,6 +274,12 @@
 </li>
       <li><a href="reference/api.html#pyrauli.QGate.Cx">Cx (pyrauli.QGate attribute)</a>
 </li>
+      <li><a href="reference/api.html#pyrauli.Circuit.cx">cx() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.cx">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -348,6 +355,14 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.Circuit.h">h() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.h">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="I">I</h2>
@@ -359,6 +374,14 @@
         <li><a href="reference/api.html#pyrauli.PauliGate.I">(pyrauli.PauliGate attribute)</a>
 </li>
         <li><a href="reference/api.html#pyrauli.QGate.I">(pyrauli.QGate attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.Circuit.i">i() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.i">(pyrauli.SymbolicCircuit method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -543,6 +566,12 @@
 </li>
       <li><a href="reference/api.html#pyrauli.QGate.Rz">Rz (pyrauli.QGate attribute)</a>
 </li>
+      <li><a href="reference/api.html#pyrauli.Circuit.rz">rz() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.rz">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -625,14 +654,20 @@
 </li>
       <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.to_string">to_string() (pyrauli.SymbolicCoefficient method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.OperationType.Truncate">Truncate (pyrauli.OperationType attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#pyrauli.Observable.truncate">truncate() (pyrauli.Observable method)</a>
 
       <ul>
         <li><a href="reference/api.html#pyrauli.SymbolicObservable.truncate">(pyrauli.SymbolicObservable method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#pyrauli.Observable.truncate_error">truncate_error() (pyrauli.Observable method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.truncate_error">(pyrauli.SymbolicObservable method)</a>
 </li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.SimulationState.truncate_history">truncate_history (pyrauli.SimulationState property)</a>
@@ -696,6 +731,14 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.Circuit.x">x() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.x">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="Y">Y</h2>
@@ -710,6 +753,14 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.Circuit.y">y() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.y">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="Z">Z</h2>
@@ -721,6 +772,14 @@
         <li><a href="reference/api.html#pyrauli.PauliGate.Z">(pyrauli.PauliGate attribute)</a>
 </li>
         <li><a href="reference/api.html#pyrauli.QGate.Z">(pyrauli.QGate attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.Circuit.z">z() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.z">(pyrauli.SymbolicCircuit method)</a>
 </li>
       </ul></li>
   </ul></td>
