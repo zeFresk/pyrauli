@@ -204,6 +204,7 @@ PYBIND11_MODULE(_core, m) {
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<coeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
 		.def("size", &Observable<coeff_t>::size, "Gets the number of Pauli terms in the observable.")
+		.def("truncate_error", &Observable<coeff_t>::truncate_error, "Gets the accumulated truncation error.")
 		.def("truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { return obs.truncate(*ptr); },
 			"Truncates the observable based on a given truncation strategy.")
 		.def(py::self == py::self)
@@ -340,6 +341,13 @@ PYBIND11_MODULE(_core, m) {
 				self.add_operation(op, q1, q2);
 			},
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
+		.def("h", &Circuit<coeff_t>::h, "Adds a Hadamard gate.", py::arg("qubit"))
+		.def("cx", &Circuit<coeff_t>::cx, "Adds a CNOT (CX) gate.", py::arg("control"), py::arg("target"))
+		.def("i", &Circuit<coeff_t>::i, "Adds an Identity gate.", py::arg("qubit"))
+		.def("x", &Circuit<coeff_t>::x, "Adds a Pauli-X gate.", py::arg("qubit"))
+		.def("y", &Circuit<coeff_t>::y, "Adds a Pauli-Y gate.", py::arg("qubit"))
+		.def("z", &Circuit<coeff_t>::z, "Adds a Pauli-Z gate.", py::arg("qubit"))
+		.def("rz", &Circuit<coeff_t>::rz, "Adds an Rz rotation gate.", py::arg("qubit"), py::arg("theta"))		
 		.def("run", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<coeff_t>::expectation_value<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
@@ -538,6 +546,7 @@ PYBIND11_MODULE(_core, m) {
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<SymbolicCoeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
 		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
+		.def("truncate_error", &Observable<SymbolicCoeff_t>::truncate_error, "Gets the accumulated truncation error.")
 		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, py::arg("variable_map") = std::unordered_map<std::string, coeff_t>{}, "Simplify the observable coefficient and replace variables.")
 		.def(
 			"truncate", [](Observable<SymbolicCoeff_t>& obs, SymbolicTruncatorPtr ptr) { return obs.truncate(*ptr); },
@@ -631,6 +640,13 @@ PYBIND11_MODULE(_core, m) {
 				self.add_operation(op, q1, q2);
 			},
 			"Adds a two-qubit gate.", py::arg("op"), py::arg("control"), py::arg("target"))
+		.def("h", &Circuit<SymbolicCoeff_t>::h, "Adds a Hadamard gate.", py::arg("qubit"))
+		.def("cx", &Circuit<SymbolicCoeff_t>::cx, "Adds a CNOT (CX) gate.", py::arg("control"), py::arg("target"))
+		.def("i", &Circuit<SymbolicCoeff_t>::i, "Adds an Identity gate.", py::arg("qubit"))
+		.def("x", &Circuit<SymbolicCoeff_t>::x, "Adds a Pauli-X gate.", py::arg("qubit"))
+		.def("y", &Circuit<SymbolicCoeff_t>::y, "Adds a Pauli-Y gate.", py::arg("qubit"))
+		.def("z", &Circuit<SymbolicCoeff_t>::z, "Adds a Pauli-Z gate.", py::arg("qubit"))
+		.def("rz", &Circuit<SymbolicCoeff_t>::rz, "Adds an Rz rotation gate.", py::arg("qubit"), py::arg("theta"))
 		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)

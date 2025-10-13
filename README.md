@@ -9,10 +9,12 @@
 
 ## Key Features
 
-  * **High Performance**: Core simulation logic is implemented in C++ for maximum speed, wrapped in a user-friendly Python API.
-  * **Heisenberg Picture Simulation**: Observables are evolved instead of the state vector, which can be significantly more efficient for calculating expectation values on large quantum systems.
-  * **Seamless Qiskit Integration**: Use `pyrauli` as a drop-in backend for your existing Qiskit workflows, or leverage the `PyrauliEstimator` primitive for modern, algorithm-focused development.
-  * **Advanced Complexity Management**: Fine-grained control over the simulation's resource usage through customizable `Truncator` and `SchedulingPolicy` objects.
+*   **High-Performance C++ Backend**: Core simulation logic is implemented in C++ with **OpenMP parallel execution support** for maximum speed.
+*   **Efficient Heisenberg Picture Simulation**: Observables are evolved instead of the state vector, offering significant advantages for calculating expectation values on large systems.
+*   **Native Batch Processing**: Simulate lists of observables in a single, parallelized call for massive throughput.
+*   **Seamless Qiskit Integration**: Use `pyrauli` as a drop-in backend or via the `PyrauliEstimator` primitive for modern, algorithm-focused development.
+*   **Advanced Complexity Management**: Fine-grained control over the simulation via customizable `Truncator` and `SchedulingPolicy` objects, with **built-in truncation error tracking**.
+*   **Powerful Symbolic Toolkit**: Simulate parameterized circuits with symbolic gate angles, noise strengths, and truncation thresholds.
 
 ## Installation
 
@@ -33,6 +35,17 @@ To enable the Qiskit integration features, install the `[qiskit]` extra:
 ```bash
 pip install 'pyrauli[qiskit]'
 ````
+
+**Installation with Parallel Support**
+
+To enable high-performance parallel execution engine, install alongside an existing OpenMP compiler.
+Most user should not have to do anything to enable parallelism.
+
+```bash
+pip install pyrauli 
+```
+
+Note for macOS users: The parallel engine requires the OpenMP runtime. You may need to install it separately, e.g., via Homebrew: `brew install libomp`.
 
 ## Quick Start
 
@@ -62,10 +75,12 @@ expectation_value = final_observable.expectation_value()
 
 print(f"Final observable: {final_observable}")
 print(f"Expectation value: {expectation_value}")
+print(f"Truncation error: {final_observable.truncate_error()}") # 0 here
 
 # Expected output:
 # Final observable: +1 XI
 # Expectation value: 0.0
+# Truncation error: 0.0
 ```
 
 ## Qiskit Backend Usage
