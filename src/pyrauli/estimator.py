@@ -118,25 +118,22 @@ class PyrauliEstimator(BaseEstimatorV2):
                 pyrauli_circuit.set_merge_policy(merge_pol)
                 pyrauli_circuit.set_truncate_policy(trunc_pol)
 
-            exp_values = self._simulate_observables(pyrauli_circuits, observables, runtime) 
-            print(exp_values)
-            evs = np.array(exp_values)
-            print(evs)
-            
+            exp_values, err_values = self._simulate_observables(pyrauli_circuits, observables, runtime) 
+ 
             # Format the result for this pub
-            results.append({"success": True, "data": {"evs": exp_values}, "metadata": {}, 'shots': 1})
+            results.append({"success": True, "data": {"evs": exp_values}, "metadata": {"truncate_error": err_values}, 'shots': 1})
             
         return Result.from_dict({"job_id": job_id, "results": results, "success": True, "backend_name": self.name})
 
     def _simulate_observables(self, 
                               pyrauli_circuits: List[Circuit], 
                               observables: Union[List[List[SparsePauliOp]], List[SparsePauliOp]], 
-                              runtime: RuntimePolicy) -> np.ndarray:
+                              runtime: RuntimePolicy) -> Tuple[np.ndarray, np.ndarray]:
         """
         Simulates a list of observables for a given pyrauli circuit.
         """
         if not observables:
-            return np.array([])
+            return np.array([]), np.array([])
 
         nb_obs_arr = len(observables)
         nb_qcs = len(pyrauli_circuits)
@@ -153,12 +150,13 @@ class PyrauliEstimator(BaseEstimatorV2):
         ]
 
         matrix_circ_obs = np.array(results_per_circuit)
-        matrix_obs_circ = matrix_circ_obs.T
+        matrix_obs_circ = matrix_circ_obs[:, :, 0].T
+        matrix_err_circ = matrix_circ_obs[:, :, 1].T
 
         if long:
-            return np.atleast_1d(np.squeeze(matrix_obs_circ.flatten().reshape(nb_obs_arr, nb_qcs)))
+            return np.atleast_1d(np.squeeze(matrix_obs_circ.flatten().reshape(nb_obs_arr, nb_qcs))), np.atleast_1d(np.squeeze(matrix_err_circ.flatten().reshape(nb_obs_arr, nb_qcs)))
         else:
-            return matrix_obs_circ.flatten()
+            return matrix_obs_circ.flatten(), matrix_err_circ.flatten()
 
     def _unpack_pub(self, pub: Tuple) -> Tuple[QuantumCircuit, List[SparsePauliOp], Optional[Any]]:
         """
