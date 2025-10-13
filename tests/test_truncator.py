@@ -9,7 +9,8 @@ from pyrauli import (
     KeepNTruncator,
     LambdaTruncator,
     MultiTruncator,
-    AlwaysAfterSplittingPolicy
+    AlwaysAfterSplittingPolicy,
+    NeverTruncator
 )
 
 # --- Direct Observable.truncate() Tests ---
@@ -188,3 +189,35 @@ def test_multi_truncator_in_circuit():
     for term in obs_out:
         assert term.pauli_weight() < 3
         assert abs(term.coefficient) >= 0.2
+
+def test_truncator_error_tracking():
+    # [truncator_error]
+    # Use a truncator that will remove terms with small coefficients
+    truncator = CoefficientTruncator(0.1)
+    
+    circuit = Circuit(2, truncator=truncator)
+    circuit.h(0)
+    circuit.h(1)
+    circuit.cx(0, 1)
+    circuit.rz(1, 0.01) # This gate splits the observable
+    circuit.h(0)
+    circuit.h(1)
+
+    observable = Observable("ZZ")
+
+    # The second value returned is the estimated error
+    ev, err = circuit.expectation_value(observable)
+    print(circuit.run(observable))
+
+    print(f"Expectation value: {ev:.4f}")
+    print(f"Estimated truncation error: {err:.4f}")
+    
+    # For comparison, run without truncation 
+    circuit.set_truncator(NeverTruncator())
+
+    exact_ev, _ = circuit.expectation_value(observable)
+    print(f"Exact expectation value: {exact_ev:.4f}")
+    print(f"Actual error: {abs(exact_ev - ev):.4f}")
+    # [truncator_error]
+    assert err > 0
+    assert abs(exact_ev - ev) <= 0.1 # Check that error tracking is accurate
