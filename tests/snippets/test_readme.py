@@ -23,9 +23,11 @@ def test_readme_quick_start():
 
     print(f"Final observable: {final_observable}")
     print(f"Expectation value <Z_0>: {expectation_value}")
+    print(f"Truncation error: {final_observable.truncate_error()}")
 
     assert final_observable == pyrauli.Observable("XI", 1.0)
     assert expectation_value == pytest.approx(0)
+    assert final_observable.truncate_error() == pytest.approx(0)
 
 
 qiskit = pytest.importorskip("qiskit", reason="Qiskit extra not installed")
