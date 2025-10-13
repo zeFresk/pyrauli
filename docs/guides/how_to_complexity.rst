@@ -50,6 +50,25 @@ This allows you to provide a custom Python function that filters the terms.
 .. NOTE::
    This truncator removes :py:class:`~pyrauli.PauliTerm` containing :math:`Y`. However, this is not very efficient.
 
+Quantifying Truncation Error
+----------------------------
+
+Using a truncator can significantly speed up simulations, but it introduces
+a numerical error by discarding parts of the observable. ``pyrauli`` tracks
+an estimate of this error, allowing you to balance performance and accuracy.
+
+The :py:meth:`~pyrauli.Circuit.expectation_value` method returns a tuple containing
+both the expectation value and the accumulated truncation error.
+
+The following example uses a :py:class:`~pyrauli.CoefficientTruncator` and
+inspects the resulting error.
+
+.. literalinclude:: /../tests/test_truncator.py
+   :language: python
+   :start-after: # [truncator_error]
+   :end-before: # [truncator_error]
+   :dedent: 4
+
 Controlling when truncation is applied
 --------------------------------------
 

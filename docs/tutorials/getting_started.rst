@@ -1,4 +1,4 @@
-.. _getting_started:
+.. _getting_started(V)
 
 Getting started: Your First Simulation
 ======================================
@@ -32,6 +32,25 @@ To use ``pyrauli`` as a Qiskit backend, install it with the ``[qiskit]`` extra:
 .. code-block:: bash
 
    pip install 'pyrauli[qiskit]'
+
+**Installation Parallel Support**
+
+To use ``pyrauli`` and enable the high-performance parallel execution engine, install it on a machine with OpenMP already installed. Most non-mac users should not have to do anything special.
+
+.. code-block:: bash
+
+   pip install 'pyrauli'
+
+.. NOTE::
+   The parallel execution engine is built on OpenMP. On macOS, you may need
+   to install the OpenMP runtime library separately:
+
+   .. code-block:: bash
+
+      brew install libomp
+
+.. TIP:
+   You can check if you version supports parallel execution by importing the `par` symbol from pyrauli. If it exists, your version is parallel.
 
 
 Simulating a Bell State
