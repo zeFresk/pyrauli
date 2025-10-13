@@ -204,6 +204,7 @@ PYBIND11_MODULE(_core, m) {
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<coeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
 		.def("size", &Observable<coeff_t>::size, "Gets the number of Pauli terms in the observable.")
+		.def("truncate_error", &Observable<coeff_t>::truncate_error, "Gets the accumulated truncation error.")
 		.def("truncate", [](Observable<coeff_t>& obs, TruncatorPtr ptr) { return obs.truncate(*ptr); },
 			"Truncates the observable based on a given truncation strategy.")
 		.def(py::self == py::self)
@@ -538,6 +539,7 @@ PYBIND11_MODULE(_core, m) {
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<SymbolicCoeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
 		.def("size", &Observable<SymbolicCoeff_t>::size, "Gets the number of Pauli terms in the observable.")
+		.def("truncate_error", &Observable<SymbolicCoeff_t>::truncate_error, "Gets the accumulated truncation error.")
 		.def("simplify", &Observable<SymbolicCoeff_t>::simplify<SymbolicCoeff_t>, py::arg("variable_map") = std::unordered_map<std::string, coeff_t>{}, "Simplify the observable coefficient and replace variables.")
 		.def(
 			"truncate", [](Observable<SymbolicCoeff_t>& obs, SymbolicTruncatorPtr ptr) { return obs.truncate(*ptr); },
