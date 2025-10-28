@@ -29,6 +29,27 @@ def test_readme_quick_start():
     assert expectation_value == pytest.approx(0)
     assert final_observable.truncate_error() == pytest.approx(0)
 
+def test_readme_eiht():
+    # 1. Define simulation parameters
+    n_qubits = 8
+    time = 0.5
+
+    # 2. Define the Hamiltonian axis as a list of Pauli strings
+    # This corresponds to the operator H = X_0 Z_1 X_4 Z_5
+    hamiltonian_axis = ["X", "Z", "I", "I", "X", "Z", "I", "I"]
+
+    # 3. Build the circuit
+    circuit = pyrauli.Circuit(n_qubits)
+
+    # Apply the Hamiltonian evolution in a single, efficient operation
+    circuit.eiht(hamiltonian_axis, time)
+
+    # 4. Define an observable to measure
+    observable = pyrauli.Observable("ZIIIIIII") # Z on qubit 0
+
+    # 5. Run the simulation
+    ev, err = circuit.expectation_value(observable)
+
 
 qiskit = pytest.importorskip("qiskit", reason="Qiskit extra not installed")
 from qiskit.circuit import QuantumCircuit, Parameter

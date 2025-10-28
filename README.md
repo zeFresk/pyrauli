@@ -11,6 +11,7 @@
 
 *   **High-Performance C++ Backend**: Core simulation logic is implemented in C++ with **OpenMP parallel execution support** for maximum speed.
 *   **Efficient Heisenberg Picture Simulation**: Observables are evolved instead of the state vector, offering significant advantages for calculating expectation values on large systems.
+*   **Direct Hamiltonian Evolution**: Simulate time evolution `exp(-iHt)` for complex, multi-local Hamiltonians with a single optimized operation.
 *   **Native Batch Processing**: Simulate lists of observables in a single, parallelized call for massive throughput.
 *   **Seamless Qiskit Integration**: Use `pyrauli` as a drop-in backend or via the `PyrauliEstimator` primitive for modern, algorithm-focused development.
 *   **Advanced Complexity Management**: Fine-grained control over the simulation via customizable `Truncator` and `SchedulingPolicy` objects, with **built-in truncation error tracking**.
@@ -112,6 +113,39 @@ result = job.result()
 ev = result[0].data.evs[0]
 
 print(f"Expectation value: {ev}")
+```
+ 
+## Advanced Usage: Direct Hamiltonian Evolution
+
+`pyrauli` excels at simulating time evolution under complex, non-local Hamiltonians. The `eiht` method allows you to apply the operation `exp(-iHt)` in a single step, where `H` is a multi-qubit Pauli string. This is significantly more efficient and expressive than decomposing the operation into standard gates.
+
+The following example simulates an 8-qubit system evolving under a 4-local Wen Plaquette operator, `H = X_0 Z_1 X_4 Z_5`.
+
+```python
+import pyrauli
+import math
+
+# 1. Define simulation parameters
+n_qubits = 8
+time = 0.5
+
+# 2. Define the Hamiltonian axis as a list of Pauli strings
+# This corresponds to the operator H = X_0 Z_1 X_4 Z_5
+hamiltonian_axis = ["X", "Z", "I", "I", "X", "Z", "I", "I"]
+
+# 3. Build the circuit
+circuit = pyrauli.Circuit(n_qubits)
+
+# Apply the Hamiltonian evolution in a single, efficient operation
+circuit.eiht(hamiltonian_axis, time)
+
+# 4. Define an observable to measure
+observable = pyrauli.Observable("ZIIIIIII") # Z on qubit 0
+
+# 5. Run the simulation
+ev, err = circuit.expectation_value(observable)
+
+print(f"Expectation value of Z_0 after evolution: {ev:.4f}")
 ```
 
 ## Documentation
