@@ -14,6 +14,7 @@
 #include "observable.hpp"
 #include "pauli.hpp"
 #include "pauli_term.hpp"
+#include "pauli_axis.hpp"
 #include "scheduler.hpp"
 #include "truncate.hpp"
 #include "symbolic/coefficient.hpp"
@@ -131,6 +132,9 @@ PYBIND11_MODULE(_core, m) {
 		     "Applies a single-qubit Clifford gate to this operator, modifying it in place.")
 		.def("apply_cx", &Pauli::apply_cx,
 		     "Applies the control part of a CNOT gate to this operator, modifying it and the target in place.")
+		.def("multiply_right", &Pauli::multiply_right,
+		     "Computes the algebraic product with another Pauli (self = self * other) and returns the phase (0 for 1, 1 for i, -1 for -i).",
+		     py::arg("other"))
 		.def(py::self == py::self)
 		.def(py::self != py::self)
 		.def("__repr__", [](const Pauli& p) {
@@ -173,6 +177,24 @@ PYBIND11_MODULE(_core, m) {
 			return ss.str();
 		});
 
+	py::class_<PauliAxis<>>(m, "PauliAxis", "A memory-efficient representation of a Pauli string axis.")
+		.def(py::init<const std::vector<Pauli>&>(), "Constructs from a list of Pauli objects.")
+		.def("__len__", &PauliAxis<>::nb_qubits)
+		.def("nb_qubits", &PauliAxis<>::nb_qubits, "Returns the number of qubits.")
+		.def("__getitem__", [](const PauliAxis<>& self, size_t i) {
+			if (i >= self.nb_qubits()) throw py::index_error();
+			return self[i];
+		}, "Gets the Pauli operator at a specific qubit index.")
+		.def("__repr__", [](const PauliAxis<>& self) {
+			std::stringstream ss;
+			ss << "<PauliAxis: '";
+			for (size_t i = 0; i < self.nb_qubits(); ++i) {
+				ss << self[i];
+			}
+			ss << "'>";
+			return ss.str();
+		});
+
 	// Observable class
 	py::class_<Observable<coeff_t>>(m, "Observable",
 					"Represents a quantum observable as a linear combination of Pauli strings.")
@@ -200,6 +222,9 @@ PYBIND11_MODULE(_core, m) {
 		     "Applies a single-qubit Rz rotation gate to the observable.", py::arg("qubit"), py::arg("theta"), py::arg("runtime") = default_runtime)
 		.def("apply_amplitude_damping", &Observable<coeff_t>::apply_amplitude_damping<RuntimePolicy>,
 		     "Applies an amplitude damping noise channel.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("apply_rp", &Observable<coeff_t>::apply_rp<RuntimePolicy>,
+		     "Applies a global rotation around a Pauli axis.",
+		     py::arg("axis"), py::arg("theta"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Observable<coeff_t>::expectation_value<RuntimePolicy>,
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<coeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
@@ -347,7 +372,13 @@ PYBIND11_MODULE(_core, m) {
 		.def("x", &Circuit<coeff_t>::x, "Adds a Pauli-X gate.", py::arg("qubit"))
 		.def("y", &Circuit<coeff_t>::y, "Adds a Pauli-Y gate.", py::arg("qubit"))
 		.def("z", &Circuit<coeff_t>::z, "Adds a Pauli-Z gate.", py::arg("qubit"))
-		.def("rz", &Circuit<coeff_t>::rz, "Adds an Rz rotation gate.", py::arg("qubit"), py::arg("theta"))		
+		.def("rz", &Circuit<coeff_t>::rz, "Adds an Rz rotation gate.", py::arg("qubit"), py::arg("theta"))
+		.def("rp", &Circuit<coeff_t>::rp,
+		     "Adds a global rotation gate around a specified Pauli axis.",
+		     py::arg("pauli_axis"), py::arg("theta"))
+		.def("eiht", &Circuit<coeff_t>::eiht,
+		     "Adds a global evolution gate for a Hamiltonian term e^(-iHt) where H is the Pauli axis.",
+		     py::arg("pauli_axis"), py::arg("t"))
 		.def("run", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<coeff_t>::expectation_value<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
@@ -542,6 +573,9 @@ PYBIND11_MODULE(_core, m) {
 		     "Applies a single-qubit Rz rotation gate to the observable.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
 		.def("apply_amplitude_damping", &Observable<SymbolicCoeff_t>::apply_amplitude_damping<RuntimePolicy>,
 		     "Applies an amplitude damping noise channel.", py::arg("qubit"), py::arg("noise_strength"), py::arg("runtime") = default_runtime)
+		.def("apply_rp", &Observable<SymbolicCoeff_t>::apply_rp<RuntimePolicy>,
+		     "Applies a global rotation around a Pauli axis (e^i*theta*P).",
+		     py::arg("axis"), py::arg("theta"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value<RuntimePolicy>,
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<SymbolicCoeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
@@ -647,6 +681,12 @@ PYBIND11_MODULE(_core, m) {
 		.def("y", &Circuit<SymbolicCoeff_t>::y, "Adds a Pauli-Y gate.", py::arg("qubit"))
 		.def("z", &Circuit<SymbolicCoeff_t>::z, "Adds a Pauli-Z gate.", py::arg("qubit"))
 		.def("rz", &Circuit<SymbolicCoeff_t>::rz, "Adds an Rz rotation gate.", py::arg("qubit"), py::arg("theta"))
+		.def("rp", &Circuit<SymbolicCoeff_t>::rp,
+		     "Adds a global rotation gate around a specified Pauli axis.",
+		     py::arg("pauli_axis"), py::arg("theta"))
+		.def("eiht", &Circuit<SymbolicCoeff_t>::eiht,
+		     "Adds a global evolution gate for a Hamiltonian term e^(-iHt) where H is the Pauli axis.",
+		     py::arg("pauli_axis"), py::arg("t"))
 		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
