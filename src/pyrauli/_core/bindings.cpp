@@ -376,9 +376,17 @@ PYBIND11_MODULE(_core, m) {
 		.def("rp", &Circuit<coeff_t>::rp,
 		     "Adds a global rotation gate around a specified Pauli axis.",
 		     py::arg("pauli_axis"), py::arg("theta"))
+		.def("rp", [](Circuit<coeff_t>& self, const std::vector<std::string>& axis, coeff_t theta) {
+			self.rp(std::vector<Pauli>(axis.begin(), axis.end()), theta);
+		}, "Adds a global rotation gate from a list of Pauli strings.",
+		   py::arg("pauli_axis"), py::arg("theta"))
 		.def("eiht", &Circuit<coeff_t>::eiht,
 		     "Adds a global evolution gate for a Hamiltonian term e^(-iHt) where H is the Pauli axis.",
 		     py::arg("pauli_axis"), py::arg("t"))
+		.def("eiht", [](Circuit<coeff_t>& self, const std::vector<std::string>& axis, coeff_t t) {
+			self.eiht(std::vector<Pauli>(axis.begin(), axis.end()), t);
+		}, "Adds a global evolution gate from a list of Pauli strings.",
+		   py::arg("pauli_axis"), py::arg("t"))
 		.def("run", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<coeff_t>::expectation_value<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
@@ -684,9 +692,17 @@ PYBIND11_MODULE(_core, m) {
 		.def("rp", &Circuit<SymbolicCoeff_t>::rp,
 		     "Adds a global rotation gate around a specified Pauli axis.",
 		     py::arg("pauli_axis"), py::arg("theta"))
+		.def("rp", [](Circuit<SymbolicCoeff_t>& self, const std::vector<std::string>& axis, const SymbolicCoeff_t& theta) {
+			self.rp(std::vector<Pauli>(axis.begin(), axis.end()), theta);
+		}, "Adds a global rotation gate from a list of Pauli strings.",
+		   py::arg("pauli_axis"), py::arg("theta"))
 		.def("eiht", &Circuit<SymbolicCoeff_t>::eiht,
 		     "Adds a global evolution gate for a Hamiltonian term e^(-iHt) where H is the Pauli axis.",
 		     py::arg("pauli_axis"), py::arg("t"))
+		.def("eiht", [](Circuit<SymbolicCoeff_t>& self, const std::vector<std::string>& axis, const SymbolicCoeff_t& t) {
+			self.eiht(std::vector<Pauli>(axis.begin(), axis.end()), t);
+		}, "Adds a global evolution gate from a list of Pauli strings.",
+		   py::arg("pauli_axis"), py::arg("t"))
 		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
