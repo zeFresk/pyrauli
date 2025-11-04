@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_observables.html">Work with Observables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_complexity.html">Manage Simulation Complexity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_performance.html">Optimize Performance with Parallel Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/how_to_hamiltonian.html">Simulate Hamiltonian Time Evolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_qiskit.html">Integrate with Qiskit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_noise.html">Simulate Noisy Circuits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides/how_to_symbolic.html">Symbolic Simulation</a></li>
@@ -210,6 +211,12 @@
         <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.apply_pauli">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#pyrauli.Observable.apply_rp">apply_rp() (pyrauli.Observable method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicObservable.apply_rp">(pyrauli.SymbolicObservable method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.Observable.apply_rz">apply_rz() (pyrauli.Observable method)</a>
 
       <ul>
@@ -318,6 +325,12 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.Circuit.eiht">eiht() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.eiht">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#pyrauli.SymbolicCoefficient.evaluate">evaluate() (pyrauli.SymbolicCoefficient method)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.Circuit.expectation_value">expectation_value() (pyrauli.Circuit method)</a>
@@ -431,6 +444,8 @@
         <li><a href="reference/api.html#module-pyrauli">pyrauli</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#pyrauli.Pauli.multiply_right">multiply_right() (pyrauli.Pauli method)</a>
+</li>
       <li><a href="reference/api.html#pyrauli.MultiTruncator">MultiTruncator (class in pyrauli)</a>
 </li>
   </ul></td>
@@ -460,6 +475,8 @@
       <li><a href="reference/api.html#pyrauli.Circuit.nb_qubits">nb_qubits() (pyrauli.Circuit method)</a>
 
       <ul>
+        <li><a href="reference/api.html#pyrauli.PauliAxis.nb_qubits">(pyrauli.PauliAxis method)</a>
+</li>
         <li><a href="reference/api.html#pyrauli.SymbolicCircuit.nb_qubits">(pyrauli.SymbolicCircuit method)</a>
 </li>
       </ul></li>
@@ -511,12 +528,14 @@
         <li><a href="reference/api.html#pyrauli.SymbolicPauliTerm.pauli_weight">(pyrauli.SymbolicPauliTerm method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/api.html#pyrauli.PauliEnum">PauliEnum (class in pyrauli)</a>
+      <li><a href="reference/api.html#pyrauli.PauliAxis">PauliAxis (class in pyrauli)</a>
 </li>
-      <li><a href="reference/api.html#pyrauli.PauliGate">PauliGate (class in pyrauli)</a>
+      <li><a href="reference/api.html#pyrauli.PauliEnum">PauliEnum (class in pyrauli)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#pyrauli.PauliGate">PauliGate (class in pyrauli)</a>
+</li>
       <li><a href="reference/api.html#pyrauli.PauliTerm">PauliTerm (class in pyrauli)</a>
 </li>
       <li><a href="reference/api.html#pyrauli.PBackend">PBackend (class in pyrauli)</a>
@@ -548,6 +567,12 @@
 
       <ul>
         <li><a href="reference/api.html#pyrauli.SymbolicCircuit.reset">(pyrauli.SymbolicCircuit method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#pyrauli.Circuit.rp">rp() (pyrauli.Circuit method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#pyrauli.SymbolicCircuit.rp">(pyrauli.SymbolicCircuit method)</a>
 </li>
       </ul></li>
       <li><a href="reference/api.html#pyrauli.Circuit.run">run() (pyrauli.Circuit method)</a>

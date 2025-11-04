@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulate Hamiltonian Time Evolution &mdash; Pyrauli  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Integrate with Qiskit" href="how_to_qiskit.html" />
+    <link rel="prev" title="Optimize Performance with Parallel Execution" href="how_to_performance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pyrauli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/getting_started.html">Getting started: Your First Simulation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-To Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="how_to_circuit.html">Build and Run Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_observables.html">Work with Observables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_complexity.html">Manage Simulation Complexity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_performance.html">Optimize Performance with Parallel Execution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulate Hamiltonian Time Evolution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-eiht-gate-your-primary-tool">The <cite>eiht</cite> Gate: Your Primary Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-rp-gate-vs-eiht">The <cite>Rp</cite> Gate vs. <cite>eiht</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symbolic-time-evolution">Symbolic Time Evolution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_qiskit.html">Integrate with Qiskit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_noise.html">Simulate Noisy Circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_symbolic.html">Symbolic Simulation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/theory.html">Core Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Performance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://zefresk.github.io/pyrauli/dev/bench/">Benchmarks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pyrauli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Simulate Hamiltonian Time Evolution</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/how_to_hamiltonian.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="simulate-hamiltonian-time-evolution">
+<span id="how-to-hamiltonian"></span><h1>Simulate Hamiltonian Time Evolution<a class="headerlink" href="#simulate-hamiltonian-time-evolution" title="Link to this heading"></a></h1>
+<p>A key task in quantum simulation is calculating the time evolution of a system
+under a given Hamiltonian, <code class="docutils literal notranslate"><span class="pre">H</span></code>. <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> is exceptionally well-suited for this
+task when the Hamiltonian can be expressed as a single, multi-qubit Pauli string
+(e.g., <code class="docutils literal notranslate"><span class="pre">H</span> <span class="pre">=</span> <span class="pre">XZIX</span></code>), which is common in physics models and algorithm building blocks.</p>
+<p>This is because the evolution operator, <span class="math notranslate nohighlight">\(U(t) = e^{-iHt}\)</span>, can be applied
+directly to the observable in the Heisenberg picture without needing to be
+decomposed into a complex sequence of one- and two-qubit gates.</p>
+<section id="the-eiht-gate-your-primary-tool">
+<h2>The <cite>eiht</cite> Gate: Your Primary Tool<a class="headerlink" href="#the-eiht-gate-your-primary-tool" title="Link to this heading"></a></h2>
+<p>The primary method for Hamiltonian evolution is <a class="reference internal" href="../reference/api.html#pyrauli.Circuit.eiht" title="pyrauli.Circuit.eiht"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eiht()</span></code></a>.
+It directly applies the evolution operator for a given time <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circuit</span><span class="o">.</span><span class="n">eiht</span><span class="p">(</span><span class="n">pauli_axis</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pauli_axis</span></code>: A list of strings defining the Pauli operators in the Hamiltonian term (e.g., <code class="docutils literal notranslate"><span class="pre">[&quot;X&quot;,</span> <span class="pre">&quot;Z&quot;,</span> <span class="pre">&quot;I&quot;,</span> <span class="pre">&quot;X&quot;]</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: A float representing the evolution time.</p></li>
+</ul>
+<p>The following example simulates an 8-qubit system evolving under a 4-local
+<strong>Wen Plaquette</strong> operator, <span class="math notranslate nohighlight">\(H = X_0 Z_1 X_4 Z_5\)</span>. We then measure the
+expectation value of the <span class="math notranslate nohighlight">\(Z_0\)</span> observable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_qubits</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">evolution_time</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1"># Define the Hamiltonian axis for H = X_0 Z_1 X_4 Z_5</span>
+<span class="n">hamiltonian_axis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
+
+<span class="c1"># 1. Build the circuit</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">eiht</span><span class="p">(</span><span class="n">hamiltonian_axis</span><span class="p">,</span> <span class="n">evolution_time</span><span class="p">)</span>
+
+<span class="c1"># 2. Define an observable to measure</span>
+<span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZIIIIIII&quot;</span><span class="p">)</span> <span class="c1"># Z on qubit 0</span>
+
+<span class="c1"># 3. Run the simulation and get the result</span>
+<span class="n">ev</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expectation value of Z_0 at t=</span><span class="si">{</span><span class="n">evolution_time</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ev</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Verify the result (for this case, EV = cos(2*t))</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">evolution_time</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected theoretical value: </span><span class="si">{</span><span class="n">expected</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="the-rp-gate-vs-eiht">
+<h2>The <cite>Rp</cite> Gate vs. <cite>eiht</cite><a class="headerlink" href="#the-rp-gate-vs-eiht" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> also provides the <a class="reference internal" href="../reference/api.html#pyrauli.Circuit.rp" title="pyrauli.Circuit.rp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rp()</span></code></a> gate, which applies
+a generalized rotation around a Pauli axis. It is important to understand the
+distinction between the two:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.Circuit.eiht" title="pyrauli.Circuit.eiht"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eiht()</span></code></a> implements the standard physics definition of time evolution: <span class="math notranslate nohighlight">\(U = e^{-i P t}\)</span>.</p></li>
+<li><p><a class="reference internal" href="../reference/api.html#pyrauli.Circuit.rp" title="pyrauli.Circuit.rp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rp()</span></code></a> implements the standard quantum gate rotation: <span class="math notranslate nohighlight">\(U = e^{-i P \theta / 2}\)</span>.</p></li>
+</ul>
+<p>This leads to a simple relationship between their parameters: a time evolution
+for time <code class="docutils literal notranslate"><span class="pre">t</span></code> is equivalent to a rotation by an angle <code class="docutils literal notranslate"><span class="pre">theta</span> <span class="pre">=</span> <span class="pre">2*t</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>`circuit.eiht(axis, t)`</strong> is equivalent to <strong>`circuit.rp(axis, 2 * t)`</strong>.</p>
+</div>
+<p>The following code provides a concrete demonstration of this equivalence.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_qubits</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">time</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
+
+<span class="c1"># Create one circuit using eiht</span>
+<span class="n">circuit_eiht</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+<span class="n">circuit_eiht</span><span class="o">.</span><span class="n">eiht</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+
+<span class="c1"># Create another circuit using rp with theta = 2*t</span>
+<span class="n">circuit_rp</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Circuit</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+<span class="n">circuit_rp</span><span class="o">.</span><span class="n">rp</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
+
+<span class="c1"># They should produce the exact same result</span>
+<span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">Observable</span><span class="p">(</span><span class="s2">&quot;ZIII&quot;</span><span class="p">)</span>
+<span class="n">ev_eiht</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">circuit_eiht</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+<span class="n">ev_rp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">circuit_rp</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Result from eiht(t=</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">ev_eiht</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Result from rp(theta=</span><span class="si">{</span><span class="mi">2</span><span class="o">*</span><span class="n">time</span><span class="si">}</span><span class="s2">):   </span><span class="si">{</span><span class="n">ev_rp</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">ev_eiht</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">ev_rp</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="symbolic-time-evolution">
+<h2>Symbolic Time Evolution<a class="headerlink" href="#symbolic-time-evolution" title="Link to this heading"></a></h2>
+<p>A powerful feature of <code class="docutils literal notranslate"><span class="pre">pyrauli</span></code> is that the time parameter <code class="docutils literal notranslate"><span class="pre">t</span></code> can be a
+symbolic variable. This allows you to run the simulation just <em>once</em> to obtain
+a symbolic expression for an expectation value as a function of time. You can
+then evaluate this expression for any number of time points without re-running
+the simulation.</p>
+<p>This is ideal for analyzing the dynamics of a system or for algorithms where
+time is a parameter to be optimized.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_qubits</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
+
+<span class="c1"># 1. Build a SymbolicCircuit with a variable &#39;t&#39; for time</span>
+<span class="n">symbolic_circuit</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">SymbolicCircuit</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+<span class="n">symbolic_circuit</span><span class="o">.</span><span class="n">eiht</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">SymbolicCoefficient</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">))</span>
+
+<span class="c1"># 2. Run the simulation on a standard observable</span>
+<span class="n">observable</span> <span class="o">=</span> <span class="n">pyrauli</span><span class="o">.</span><span class="n">SymbolicObservable</span><span class="p">(</span><span class="s2">&quot;ZIII&quot;</span><span class="p">)</span>
+<span class="n">final_observable</span> <span class="o">=</span> <span class="n">symbolic_circuit</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">observable</span><span class="p">)</span>
+
+<span class="c1"># 3. The final expectation value is a symbolic expression of &#39;t&#39;</span>
+<span class="n">symbolic_ev</span> <span class="o">=</span> <span class="n">final_observable</span><span class="o">.</span><span class="n">expectation_value</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Symbolic expectation value: </span><span class="si">{</span><span class="n">symbolic_ev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Evaluate the expression for different concrete times</span>
+<span class="n">times_to_check</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t_val</span> <span class="ow">in</span> <span class="n">times_to_check</span><span class="p">:</span>
+    <span class="n">numeric_ev</span> <span class="o">=</span> <span class="n">symbolic_ev</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t_val</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EV at t=</span><span class="si">{</span><span class="n">t_val</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">numeric_ev</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="how_to_performance.html" class="btn btn-neutral float-left" title="Optimize Performance with Parallel Execution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="how_to_qiskit.html" class="btn btn-neutral float-right" title="Integrate with Qiskit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Léo &#34;zeFresk&#34; Chéneau.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
