@@ -30,6 +30,7 @@ the library for the first time or need a specific technical detail.
    guides/how_to_observables
    guides/how_to_complexity
    guides/how_to_performance
+   guides/how_to_hamiltonian
    guides/how_to_qiskit
    guides/how_to_noise
    guides/how_to_symbolic

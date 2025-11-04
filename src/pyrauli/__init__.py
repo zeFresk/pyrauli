@@ -6,7 +6,7 @@ simulation, powered by the C++ `propauli` library.
 """
 
 from ._core import (
-    PauliEnum, PauliGate, CliffordGate, UnitalNoise, QGate, Pauli, PauliTerm,
+    PauliEnum, PauliGate, CliffordGate, UnitalNoise, QGate, Pauli, PauliTerm, PauliAxis,
     Observable, Noise, NoiseModel, Truncator, CoefficientTruncator,
     WeightTruncator, KeepNTruncator, NeverTruncator, LambdaTruncator, MultiTruncator,
     SchedulingPolicy, NeverPolicy, AlwaysBeforeSplittingPolicy,
@@ -17,7 +17,7 @@ from ._core import (
 
 __all__ = [
     "PauliEnum", "PauliGate", "CliffordGate", "UnitalNoise", "QGate", "Pauli",
-    "PauliTerm", "Observable", "Noise", "NoiseModel", "Truncator",
+    "PauliTerm", "PauliAxis", "Observable", "Noise", "NoiseModel", "Truncator",
     "CoefficientTruncator", "WeightTruncator", "KeepNTruncator", "NeverTruncator",
     "LambdaTruncator", "MultiTruncator", "SchedulingPolicy", "NeverPolicy",
     "AlwaysBeforeSplittingPolicy", "AlwaysAfterSplittingPolicy", "Circuit",
