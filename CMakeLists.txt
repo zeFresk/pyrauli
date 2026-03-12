@@ -41,7 +41,7 @@ FetchContent_Declare(
 FetchContent_Declare(
 		propauli
 		GIT_REPOSITORY https://github.com/zefresk/propauli.git
-		GIT_TAG u3
+		GIT_TAG v5.1.0
 )
 
 FetchContent_MakeAvailable(pybind11 propauli)
