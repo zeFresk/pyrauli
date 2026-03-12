@@ -110,6 +110,8 @@ PYBIND11_MODULE(_core, m) {
 		.value("Z", QGate::Z)
 		.value("H", QGate::H)
 		.value("Rz", QGate::Rz)
+		.value("Rp", QGate::Rp)
+		.value("U3", QGate::U3)
 		.value("Cx", QGate::Cx)
 		.value("AmplitudeDamping", QGate::AmplitudeDamping)
 		.value("Depolarizing", QGate::Depolarizing)
@@ -225,6 +227,9 @@ PYBIND11_MODULE(_core, m) {
 		.def("apply_rp", &Observable<coeff_t>::apply_rp<RuntimePolicy>,
 		     "Applies a global rotation around a Pauli axis.",
 		     py::arg("axis"), py::arg("theta"), py::arg("runtime") = default_runtime)
+		.def("apply_u3", &Observable<coeff_t>::apply_u3<RuntimePolicy>,
+		     "Applies an U3 gate.",
+		     py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Observable<coeff_t>::expectation_value<RuntimePolicy>,
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<coeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
@@ -362,6 +367,12 @@ PYBIND11_MODULE(_core, m) {
 			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
 		.def(
 			"add_operation",
+			[](Circuit<coeff_t>& self, std::string op, unsigned q1, coeff_t theta, coeff_t phi, coeff_t lambda) {
+				self.add_operation(op, q1, theta, phi, lambda);
+			},
+			"Adds a single-qubit gate with three parameters (U3).", py::arg("op"), py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"))
+		.def(
+			"add_operation",
 			[](Circuit<coeff_t>& self, std::string op, unsigned q1, unsigned q2) {
 				self.add_operation(op, q1, q2);
 			},
@@ -387,6 +398,7 @@ PYBIND11_MODULE(_core, m) {
 			self.eiht(std::vector<Pauli>(axis.begin(), axis.end()), t);
 		}, "Adds a global evolution gate from a list of Pauli strings.",
 		   py::arg("pauli_axis"), py::arg("t"))
+		.def("u3", &Circuit<coeff_t>::u3, "Adds an U3 gate.", py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"))
 		.def("run", &Circuit<coeff_t>::run<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<coeff_t>::run<std::vector<Observable<coeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<coeff_t>::expectation_value<Observable<coeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
@@ -584,6 +596,7 @@ PYBIND11_MODULE(_core, m) {
 		.def("apply_rp", &Observable<SymbolicCoeff_t>::apply_rp<RuntimePolicy>,
 		     "Applies a global rotation around a Pauli axis (e^i*theta*P).",
 		     py::arg("axis"), py::arg("theta"), py::arg("runtime") = default_runtime)
+		.def("apply_u3", &Observable<SymbolicCoeff_t>::apply_u3<RuntimePolicy>, "Applies an U3 gate.", py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Observable<SymbolicCoeff_t>::expectation_value<RuntimePolicy>,
 		     "Calculates the expectation value of the observable.", py::arg("runtime") = default_runtime)
 		.def("merge", &Observable<SymbolicCoeff_t>::merge<RuntimePolicy>, "Merges Pauli terms with identical Pauli strings.", py::arg("runtime") = default_runtime)
@@ -672,6 +685,12 @@ PYBIND11_MODULE(_core, m) {
 			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
 		.def(
 			"add_operation",
+			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, SymbolicCoeff_t theta, SymbolicCoeff_t phi, SymbolicCoeff_t lambda) {
+				self.add_operation(op, q1, theta, phi, lambda);
+			},
+			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"))
+		.def(
+			"add_operation",
 			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, std::string const& p) {
 				self.add_operation(op, q1, SymbolicCoeff_t(Variable(p)));
 			},
@@ -703,6 +722,7 @@ PYBIND11_MODULE(_core, m) {
 			self.eiht(std::vector<Pauli>(axis.begin(), axis.end()), t);
 		}, "Adds a global evolution gate from a list of Pauli strings.",
 		   py::arg("pauli_axis"), py::arg("t"))
+		.def("u3", &Circuit<SymbolicCoeff_t>::u3, "Adds an U3 gate.", py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"))
 		.def("run", &Circuit<SymbolicCoeff_t>::run<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return its evolved self.", py::arg("target_observable"), py::arg("runtime") = default_runtime)
 		.def("run", &Circuit<SymbolicCoeff_t>::run<std::vector<Observable<SymbolicCoeff_t>> const&, RuntimePolicy>, "Simulate a batch of observable and returns each of them.", py::arg("target_observables"), py::arg("runtime") = default_runtime)
 		.def("expectation_value", &Circuit<SymbolicCoeff_t>::expectation_value<Observable<SymbolicCoeff_t> const&, RuntimePolicy>, "Simulate one observable on the circuit and return only its expectation value.", py::arg("target_observable"), py::arg("runtime") = default_runtime)

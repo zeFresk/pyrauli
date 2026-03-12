@@ -4,8 +4,10 @@ from pyrauli import (
     SymbolicNoiseModel,
     SymbolicWeightTruncator,
     UnitalNoise,
+    SymbolicCoefficient,
     QGate
 )
+import math
 import pytest
 
 
@@ -59,3 +61,43 @@ def test_reset():
     obs = SymbolicObservable("Z")
     final_obs = circuit.run(obs)
     assert final_obs[0] == obs[0]
+
+def test_run_symbolic_u3():
+    """
+    Tests the symbolic evaluation of a U3 gate parameterized with strings.
+    """
+    circuit = SymbolicCircuit(1)
+    theta = SymbolicCoefficient("theta")
+    phi = SymbolicCoefficient("phi")
+    lbd = SymbolicCoefficient("lambda")
+    
+    # Apply a U3 gate entirely using symbolic variables
+    circuit.add_operation("u3", 0, theta, phi, lbd)
+
+    obs = SymbolicObservable("Z")
+    final_obs = circuit.run(obs)
+
+    # Evaluate at theta = 0 (Expectation value of Z = cos(0) = 1.0)
+    # phi and lambda don't affect the Z expectation value from |0>
+    ev_zero = final_obs.expectation_value().evaluate({
+        "theta": 0.0, 
+        "phi": 1.0, 
+        "lambda": 2.0
+    })
+    assert ev_zero == pytest.approx(1.0)
+
+    # Evaluate at theta = pi (Expectation value of Z = cos(pi) = -1.0)
+    ev_pi = final_obs.expectation_value().evaluate({
+        "theta": math.pi, 
+        "phi": 0.0, 
+        "lambda": 0.0
+    })
+    assert ev_pi == pytest.approx(-1.0)
+    
+    # Evaluate at theta = pi/2 (Expectation value of Z = cos(pi/2) = 0.0)
+    ev_half_pi = final_obs.expectation_value().evaluate({
+        "theta": math.pi / 2.0, 
+        "phi": math.pi, 
+        "lambda": math.pi
+    })
+    assert ev_half_pi == pytest.approx(0.0, abs=1e-7)

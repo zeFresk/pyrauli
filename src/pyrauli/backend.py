@@ -12,7 +12,7 @@ from qiskit.providers import BackendV2, JobV1, Options, JobStatus
 from qiskit.result import Result
 from qiskit.transpiler import Target
 from qiskit.circuit import QuantumCircuit
-from qiskit.circuit.library import HGate, CXGate, RZGate, Measure
+from qiskit.circuit.library import HGate, CXGate, RZGate, Measure, U3Gate, XGate, YGate, ZGate
 from qiskit.quantum_info import SparsePauliOp
 
 
@@ -76,6 +76,10 @@ class PBackend(BackendV2):
         )
         self._target.add_instruction(Measure(), {(i,): None for i in range(self._num_qubits)})
         self._target.add_instruction(RZGate, name='rz')
+        self._target.add_instruction(U3Gate, name='u3')
+        self._target.add_instruction(XGate, name='x')
+        self._target.add_instruction(YGate, name='y')
+        self._target.add_instruction(ZGate, name='z')
 
     @property
     def target(self) -> Target:
