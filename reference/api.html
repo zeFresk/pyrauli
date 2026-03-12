@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API Reference &mdash; Pyrauli  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -80,6 +80,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.set_merge_policy"><code class="docutils literal notranslate"><span class="pre">Circuit.set_merge_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.set_truncate_policy"><code class="docutils literal notranslate"><span class="pre">Circuit.set_truncate_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.set_truncator"><code class="docutils literal notranslate"><span class="pre">Circuit.set_truncator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.u3"><code class="docutils literal notranslate"><span class="pre">Circuit.u3()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.x"><code class="docutils literal notranslate"><span class="pre">Circuit.x()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.y"><code class="docutils literal notranslate"><span class="pre">Circuit.y()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Circuit.z"><code class="docutils literal notranslate"><span class="pre">Circuit.z()</span></code></a></li>
@@ -87,7 +88,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.CliffordGate"><code class="docutils literal notranslate"><span class="pre">CliffordGate</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.CliffordGate.H"><code class="docutils literal notranslate"><span class="pre">CliffordGate.H</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.CliffordGate.name"><code class="docutils literal notranslate"><span class="pre">CliffordGate.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.CliffordGate.value"><code class="docutils literal notranslate"><span class="pre">CliffordGate.value</span></code></a></li>
 </ul>
 </li>
@@ -122,6 +122,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.apply_pauli"><code class="docutils literal notranslate"><span class="pre">Observable.apply_pauli()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.apply_rp"><code class="docutils literal notranslate"><span class="pre">Observable.apply_rp()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.apply_rz"><code class="docutils literal notranslate"><span class="pre">Observable.apply_rz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.apply_u3"><code class="docutils literal notranslate"><span class="pre">Observable.apply_u3()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.apply_unital_noise"><code class="docutils literal notranslate"><span class="pre">Observable.apply_unital_noise()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.expectation_value"><code class="docutils literal notranslate"><span class="pre">Observable.expectation_value()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Observable.merge"><code class="docutils literal notranslate"><span class="pre">Observable.merge()</span></code></a></li>
@@ -135,7 +136,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.OperationType.Merge"><code class="docutils literal notranslate"><span class="pre">OperationType.Merge</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.OperationType.SplittingGate"><code class="docutils literal notranslate"><span class="pre">OperationType.SplittingGate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.OperationType.Truncate"><code class="docutils literal notranslate"><span class="pre">OperationType.Truncate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.OperationType.name"><code class="docutils literal notranslate"><span class="pre">OperationType.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.OperationType.value"><code class="docutils literal notranslate"><span class="pre">OperationType.value</span></code></a></li>
 </ul>
 </li>
@@ -164,7 +164,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliEnum.X"><code class="docutils literal notranslate"><span class="pre">PauliEnum.X</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliEnum.Y"><code class="docutils literal notranslate"><span class="pre">PauliEnum.Y</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliEnum.Z"><code class="docutils literal notranslate"><span class="pre">PauliEnum.Z</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliEnum.name"><code class="docutils literal notranslate"><span class="pre">PauliEnum.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliEnum.value"><code class="docutils literal notranslate"><span class="pre">PauliEnum.value</span></code></a></li>
 </ul>
 </li>
@@ -173,7 +172,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliGate.X"><code class="docutils literal notranslate"><span class="pre">PauliGate.X</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliGate.Y"><code class="docutils literal notranslate"><span class="pre">PauliGate.Y</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliGate.Z"><code class="docutils literal notranslate"><span class="pre">PauliGate.Z</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliGate.name"><code class="docutils literal notranslate"><span class="pre">PauliGate.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.PauliGate.value"><code class="docutils literal notranslate"><span class="pre">PauliGate.value</span></code></a></li>
 </ul>
 </li>
@@ -201,11 +199,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.Depolarizing"><code class="docutils literal notranslate"><span class="pre">QGate.Depolarizing</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.H"><code class="docutils literal notranslate"><span class="pre">QGate.H</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.I"><code class="docutils literal notranslate"><span class="pre">QGate.I</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.Rp"><code class="docutils literal notranslate"><span class="pre">QGate.Rp</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.Rz"><code class="docutils literal notranslate"><span class="pre">QGate.Rz</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.U3"><code class="docutils literal notranslate"><span class="pre">QGate.U3</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.X"><code class="docutils literal notranslate"><span class="pre">QGate.X</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.Y"><code class="docutils literal notranslate"><span class="pre">QGate.Y</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.Z"><code class="docutils literal notranslate"><span class="pre">QGate.Z</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.name"><code class="docutils literal notranslate"><span class="pre">QGate.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.QGate.value"><code class="docutils literal notranslate"><span class="pre">QGate.value</span></code></a></li>
 </ul>
 </li>
@@ -235,6 +234,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.set_merge_policy"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.set_merge_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.set_truncate_policy"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.set_truncate_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.set_truncator"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.set_truncator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.u3"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.u3()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.x"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.x()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.y"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.y()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicCircuit.z"><code class="docutils literal notranslate"><span class="pre">SymbolicCircuit.z()</span></code></a></li>
@@ -272,6 +272,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.apply_pauli"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.apply_pauli()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.apply_rp"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.apply_rp()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.apply_rz"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.apply_rz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.apply_u3"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.apply_u3()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.apply_unital_noise"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.apply_unital_noise()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.expectation_value"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.expectation_value()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.SymbolicObservable.merge"><code class="docutils literal notranslate"><span class="pre">SymbolicObservable.merge()</span></code></a></li>
@@ -299,7 +300,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.Timing"><code class="docutils literal notranslate"><span class="pre">Timing</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Timing.After"><code class="docutils literal notranslate"><span class="pre">Timing.After</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Timing.Before"><code class="docutils literal notranslate"><span class="pre">Timing.Before</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.Timing.name"><code class="docutils literal notranslate"><span class="pre">Timing.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.Timing.value"><code class="docutils literal notranslate"><span class="pre">Timing.value</span></code></a></li>
 </ul>
 </li>
@@ -307,7 +307,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#pyrauli.UnitalNoise"><code class="docutils literal notranslate"><span class="pre">UnitalNoise</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.UnitalNoise.Dephasing"><code class="docutils literal notranslate"><span class="pre">UnitalNoise.Dephasing</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.UnitalNoise.Depolarizing"><code class="docutils literal notranslate"><span class="pre">UnitalNoise.Depolarizing</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyrauli.UnitalNoise.name"><code class="docutils literal notranslate"><span class="pre">UnitalNoise.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyrauli.UnitalNoise.value"><code class="docutils literal notranslate"><span class="pre">UnitalNoise.value</span></code></a></li>
 </ul>
 </li>
@@ -353,21 +352,21 @@
 simulation, powered by the C++ <cite>propauli</cite> library.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.AlwaysAfterSplittingPolicy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">AlwaysAfterSplittingPolicy</span></span><a class="headerlink" href="#pyrauli.AlwaysAfterSplittingPolicy" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">AlwaysAfterSplittingPolicy</span></span><a class="headerlink" href="#pyrauli.AlwaysAfterSplittingPolicy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></p>
 <p>A policy that applies an optimization just after every splitting gate.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.AlwaysBeforeSplittingPolicy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">AlwaysBeforeSplittingPolicy</span></span><a class="headerlink" href="#pyrauli.AlwaysBeforeSplittingPolicy" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">AlwaysBeforeSplittingPolicy</span></span><a class="headerlink" href="#pyrauli.AlwaysBeforeSplittingPolicy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></p>
 <p>A policy that applies an optimization just before every splitting gate.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.Circuit">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Circuit</span></span><a class="headerlink" href="#pyrauli.Circuit" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Circuit</span></span><a class="headerlink" href="#pyrauli.Circuit" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a quantum circuit and provides a high-level simulation interface.</p>
 <dl class="py method">
@@ -383,6 +382,10 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 </ol>
 <p>Adds a single-qubit gate with a parameter.</p>
 <ol class="arabic simple" start="3">
+<li><p>add_operation(self: pyrauli._core.Circuit, op: str, qubit: int, theta: float, phi: float, lambda: float) -&gt; None</p></li>
+</ol>
+<p>Adds a single-qubit gate with three parameters (U3).</p>
+<ol class="arabic simple" start="4">
 <li><p>add_operation(self: pyrauli._core.Circuit, op: str, control: int, target: int) -&gt; None</p></li>
 </ol>
 <p>Adds a two-qubit gate.</p>
@@ -413,11 +416,11 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 <span class="sig-name descname"><span class="pre">expectation_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.Circuit.expectation_value" title="Link to this definition"></a></dt>
 <dd><p>Overloaded function.</p>
 <ol class="arabic simple">
-<li><p>expectation_value(self: pyrauli._core.Circuit, target_observable: pyrauli._core.Observable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca0f8970&gt;) -&gt; tuple[float, float]</p></li>
+<li><p>expectation_value(self: pyrauli._core.Circuit, target_observable: pyrauli._core.Observable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2a1ff0&gt;) -&gt; tuple[float, float]</p></li>
 </ol>
 <p>Simulate one observable on the circuit and return only its expectation value.</p>
 <ol class="arabic simple" start="2">
-<li><p>expectation_value(self: pyrauli._core.Circuit, target_observables: list[pyrauli._core.Observable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca159bf0&gt;) -&gt; list[tuple[float, float]]</p></li>
+<li><p>expectation_value(self: pyrauli._core.Circuit, target_observables: list[pyrauli._core.Observable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2a3670&gt;) -&gt; list[tuple[float, float]]</p></li>
 </ol>
 <p>Simulate a batch of observable and returns each of their expectation values.</p>
 </dd></dl>
@@ -465,11 +468,11 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.Circuit.run" title="Link to this definition"></a></dt>
 <dd><p>Overloaded function.</p>
 <ol class="arabic simple">
-<li><p>run(self: pyrauli._core.Circuit, target_observable: pyrauli._core.Observable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca159a30&gt;) -&gt; pyrauli._core.Observable</p></li>
+<li><p>run(self: pyrauli._core.Circuit, target_observable: pyrauli._core.Observable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2ccc30&gt;) -&gt; pyrauli._core.Observable</p></li>
 </ol>
 <p>Simulate one observable on the circuit and return its evolved self.</p>
 <ol class="arabic simple" start="2">
-<li><p>run(self: pyrauli._core.Circuit, target_observables: list[pyrauli._core.Observable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca149bf0&gt;) -&gt; list[pyrauli._core.Observable]</p></li>
+<li><p>run(self: pyrauli._core.Circuit, target_observables: list[pyrauli._core.Observable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2ac2f0&gt;) -&gt; list[pyrauli._core.Observable]</p></li>
 </ol>
 <p>Simulate a batch of observable and returns each of them.</p>
 </dd></dl>
@@ -499,6 +502,12 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrauli.Circuit.u3">
+<span class="sig-name descname"><span class="pre">u3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Circuit" title="pyrauli._core.Circuit"><span class="pre">pyrauli._core.Circuit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Circuit.u3" title="Link to this definition"></a></dt>
+<dd><p>Adds an U3 gate.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Circuit.x">
 <span class="sig-name descname"><span class="pre">x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Circuit" title="pyrauli._core.Circuit"><span class="pre">pyrauli._core.Circuit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Circuit.x" title="Link to this definition"></a></dt>
 <dd><p>Adds a Pauli-X gate.</p>
@@ -520,7 +529,7 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.CliffordGate">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">CliffordGate</span></span><a class="headerlink" href="#pyrauli.CliffordGate" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">CliffordGate</span></span><a class="headerlink" href="#pyrauli.CliffordGate" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Enumeration for single-qubit Clifford gates.</p>
 <p>Members:</p>
@@ -529,31 +538,31 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.CliffordGate.H">
-<span class="sig-name descname"><span class="pre">H</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CliffordGate.H:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.CliffordGate.H" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">H</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CliffordGate.H:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.CliffordGate.H" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.CliffordGate.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.CliffordGate.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">CliffordGate.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.CliffordGate.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.CliffordGate.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.CliffordGate.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.CoefficientTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">CoefficientTruncator</span></span><a class="headerlink" href="#pyrauli.CoefficientTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">CoefficientTruncator</span></span><a class="headerlink" href="#pyrauli.CoefficientTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
 <p>Truncator that removes Pauli terms with small coefficients.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.CompressionResult">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">CompressionResult</span></span><a class="headerlink" href="#pyrauli.CompressionResult" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">CompressionResult</span></span><a class="headerlink" href="#pyrauli.CompressionResult" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Stores the result of a compression (merge or truncate) operation.</p>
 <dl class="py method">
@@ -564,13 +573,13 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.CompressionResult.nb_terms_before">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nb_terms_before</span></span><a class="headerlink" href="#pyrauli.CompressionResult.nb_terms_before" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nb_terms_before</span></span><a class="headerlink" href="#pyrauli.CompressionResult.nb_terms_before" title="Link to this definition"></a></dt>
 <dd><p>Number of terms before compression.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.CompressionResult.nb_terms_merged">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nb_terms_merged</span></span><a class="headerlink" href="#pyrauli.CompressionResult.nb_terms_merged" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nb_terms_merged</span></span><a class="headerlink" href="#pyrauli.CompressionResult.nb_terms_merged" title="Link to this definition"></a></dt>
 <dd><p>Number of terms removed/merged.</p>
 </dd></dl>
 
@@ -578,71 +587,71 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.KeepNTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">KeepNTruncator</span></span><a class="headerlink" href="#pyrauli.KeepNTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">KeepNTruncator</span></span><a class="headerlink" href="#pyrauli.KeepNTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
 <p>A truncator that removes least significant Pauli Terms, when their numbers is above a threshold.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.LambdaPolicy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">LambdaPolicy</span></span><a class="headerlink" href="#pyrauli.LambdaPolicy" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">LambdaPolicy</span></span><a class="headerlink" href="#pyrauli.LambdaPolicy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></p>
 <p>A policy that uses a Python function to determine when to apply optimizations.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.LambdaTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">LambdaTruncator</span></span><a class="headerlink" href="#pyrauli.LambdaTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">LambdaTruncator</span></span><a class="headerlink" href="#pyrauli.LambdaTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
 <p>A truncator that uses a Python function as a predicate.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.MultiTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">MultiTruncator</span></span><a class="headerlink" href="#pyrauli.MultiTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">MultiTruncator</span></span><a class="headerlink" href="#pyrauli.MultiTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
 <p>A truncator that combines multiple truncators at runtime.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.NeverPolicy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">NeverPolicy</span></span><a class="headerlink" href="#pyrauli.NeverPolicy" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">NeverPolicy</span></span><a class="headerlink" href="#pyrauli.NeverPolicy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchedulingPolicy</span></code></a></p>
 <p>A policy that never applies an optimization.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.NeverTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">NeverTruncator</span></span><a class="headerlink" href="#pyrauli.NeverTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">NeverTruncator</span></span><a class="headerlink" href="#pyrauli.NeverTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
 <p>A truncator that never removes any terms.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.Noise">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Noise</span></span><a class="headerlink" href="#pyrauli.Noise" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Noise</span></span><a class="headerlink" href="#pyrauli.Noise" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Defines the strengths of different noise channels.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.Noise.amplitude_damping_strength">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude_damping_strength</span></span><a class="headerlink" href="#pyrauli.Noise.amplitude_damping_strength" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">amplitude_damping_strength</span></span><a class="headerlink" href="#pyrauli.Noise.amplitude_damping_strength" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.Noise.dephasing_strength">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dephasing_strength</span></span><a class="headerlink" href="#pyrauli.Noise.dephasing_strength" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">dephasing_strength</span></span><a class="headerlink" href="#pyrauli.Noise.dephasing_strength" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.Noise.depolarizing_strength">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depolarizing_strength</span></span><a class="headerlink" href="#pyrauli.Noise.depolarizing_strength" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">depolarizing_strength</span></span><a class="headerlink" href="#pyrauli.Noise.depolarizing_strength" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.NoiseModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">NoiseModel</span></span><a class="headerlink" href="#pyrauli.NoiseModel" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">NoiseModel</span></span><a class="headerlink" href="#pyrauli.NoiseModel" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>A model for applying noise to quantum gates.</p>
 <dl class="py method">
@@ -661,60 +670,66 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.Observable">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Observable</span></span><a class="headerlink" href="#pyrauli.Observable" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Observable</span></span><a class="headerlink" href="#pyrauli.Observable" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a quantum observable as a linear combination of Pauli strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_amplitude_damping">
-<span class="sig-name descname"><span class="pre">apply_amplitude_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca2685f0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_amplitude_damping" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_amplitude_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2cb4b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_amplitude_damping" title="Link to this definition"></a></dt>
 <dd><p>Applies an amplitude damping noise channel.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_clifford">
-<span class="sig-name descname"><span class="pre">apply_clifford</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clifford_gate:</span> <span class="pre">pyrauli._core.CliffordGate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efecc96f1b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_clifford" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_clifford</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">clifford_gate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.CliffordGate" title="pyrauli._core.CliffordGate"><span class="pre">pyrauli._core.CliffordGate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2c81b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_clifford" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit Clifford gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_cx">
-<span class="sig-name descname"><span class="pre">apply_cx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_control:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_target:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca19cff0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_cx" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_cx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_control</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2c0670&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_cx" title="Link to this definition"></a></dt>
 <dd><p>Applies a CNOT (CX) gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_pauli">
-<span class="sig-name descname"><span class="pre">apply_pauli</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_gate:</span> <span class="pre">pyrauli._core.PauliGate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca12ee30&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_pauli" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_pauli</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_gate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.PauliGate" title="pyrauli._core.PauliGate"><span class="pre">pyrauli._core.PauliGate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2c8f30&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_pauli" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit Pauli gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_rp">
-<span class="sig-name descname"><span class="pre">apply_rp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis:</span> <span class="pre">pyrauli._core.PauliAxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca322130&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_rp" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_rp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.PauliAxis" title="pyrauli._core.PauliAxis"><span class="pre">pyrauli._core.PauliAxis</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2cb030&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_rp" title="Link to this definition"></a></dt>
 <dd><p>Applies a global rotation around a Pauli axis.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_rz">
-<span class="sig-name descname"><span class="pre">apply_rz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca322670&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_rz" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_rz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2c8e70&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_rz" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit Rz rotation gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrauli.Observable.apply_u3">
+<span class="sig-name descname"><span class="pre">apply_u3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7af500170&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_u3" title="Link to this definition"></a></dt>
+<dd><p>Applies an U3 gate.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.apply_unital_noise">
-<span class="sig-name descname"><span class="pre">apply_unital_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unital_noise_type:</span> <span class="pre">pyrauli._core.UnitalNoise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca12f2b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_unital_noise" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_unital_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">unital_noise_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.UnitalNoise" title="pyrauli._core.UnitalNoise"><span class="pre">pyrauli._core.UnitalNoise</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7aee805f0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.Observable.apply_unital_noise" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit unital noise channel.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.expectation_value">
-<span class="sig-name descname"><span class="pre">expectation_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca0c9730&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pyrauli.Observable.expectation_value" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">expectation_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2ca5b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pyrauli.Observable.expectation_value" title="Link to this definition"></a></dt>
 <dd><p>Calculates the expectation value of the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.merge">
-<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca0c9470&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.Observable.merge" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2ca170&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.Observable.merge" title="Link to this definition"></a></dt>
 <dd><p>Merges Pauli terms with identical Pauli strings.</p>
 </dd></dl>
 
@@ -726,7 +741,7 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.Observable.truncate">
-<span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.Observable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0:</span> <span class="pre">Truncator&lt;float&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.Observable.truncate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Observable" title="pyrauli._core.Observable"><span class="pre">pyrauli._core.Observable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Truncator&lt;float&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.Observable.truncate" title="Link to this definition"></a></dt>
 <dd><p>Truncates the observable based on a given truncation strategy.</p>
 </dd></dl>
 
@@ -740,7 +755,7 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.OperationType">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">OperationType</span></span><a class="headerlink" href="#pyrauli.OperationType" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">OperationType</span></span><a class="headerlink" href="#pyrauli.OperationType" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Type of operation in the simulation.</p>
 <p>Members:</p>
@@ -752,39 +767,39 @@ simulation, powered by the C++ <cite>propauli</cite> library.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.OperationType.BasicGate">
-<span class="sig-name descname"><span class="pre">BasicGate</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.BasicGate:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.OperationType.BasicGate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">BasicGate</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.BasicGate:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.OperationType.BasicGate" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.OperationType.Merge">
-<span class="sig-name descname"><span class="pre">Merge</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.Merge:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#pyrauli.OperationType.Merge" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Merge</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.Merge:</span> <span class="pre">2&gt;</span></span><a class="headerlink" href="#pyrauli.OperationType.Merge" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.OperationType.SplittingGate">
-<span class="sig-name descname"><span class="pre">SplittingGate</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.SplittingGate:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pyrauli.OperationType.SplittingGate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">SplittingGate</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.SplittingGate:</span> <span class="pre">1&gt;</span></span><a class="headerlink" href="#pyrauli.OperationType.SplittingGate" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.OperationType.Truncate">
-<span class="sig-name descname"><span class="pre">Truncate</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.Truncate:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#pyrauli.OperationType.Truncate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Truncate</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;OperationType.Truncate:</span> <span class="pre">3&gt;</span></span><a class="headerlink" href="#pyrauli.OperationType.Truncate" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.OperationType.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.OperationType.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">OperationType.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.OperationType.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.OperationType.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.OperationType.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.PBackend">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_qubits:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_model:</span> <span class="pre">~pyrauli._core.NoiseModel</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncator:</span> <span class="pre">~pyrauli._core.Truncator</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.NeverTruncator</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_policy:</span> <span class="pre">~pyrauli._core.SchedulingPolicy</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate_policy:</span> <span class="pre">~pyrauli._core.SchedulingPolicy</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">~pyrauli._core.RuntimePolicy</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.ParallelPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.PBackend" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.NoiseModel" title="pyrauli._core.NoiseModel"><span class="pre">NoiseModel</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><span class="pre">Truncator</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.NeverTruncator</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><span class="pre">SchedulingPolicy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate_policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><span class="pre">SchedulingPolicy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.RuntimePolicy" title="pyrauli._core.RuntimePolicy"><span class="pre">RuntimePolicy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.ParallelPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.PBackend" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BackendV2</span></code></p>
 <p>A Qiskit BackendV2 that uses the pyrauli simulator.</p>
 <p>This backend integrates pyrauli’s Pauli back-propagation engine into the
@@ -813,7 +828,7 @@ and as a simulator for running quantum circuits.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.PBackend.max_circuits">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_circuits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyrauli.PBackend.max_circuits" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">max_circuits</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#pyrauli.PBackend.max_circuits" title="Link to this definition"></a></dt>
 <dd><p>The maximum number of circuits that can be run in a single job.</p>
 </dd></dl>
 
@@ -837,7 +852,7 @@ and as a simulator for running quantum circuits.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.PBackend.target">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Target</span></em><a class="headerlink" href="#pyrauli.PBackend.target" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">target</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Target</span></span><a class="headerlink" href="#pyrauli.PBackend.target" title="Link to this definition"></a></dt>
 <dd><p>The Qiskit Target object for this backend, detailing supported gates and connectivity.</p>
 </dd></dl>
 
@@ -845,7 +860,7 @@ and as a simulator for running quantum circuits.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.Pauli">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Pauli</span></span><a class="headerlink" href="#pyrauli.Pauli" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Pauli</span></span><a class="headerlink" href="#pyrauli.Pauli" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a single Pauli operator (I, X, Y, or Z).</p>
 <dl class="py method">
@@ -902,7 +917,7 @@ and as a simulator for running quantum circuits.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.PauliAxis">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliAxis</span></span><a class="headerlink" href="#pyrauli.PauliAxis" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliAxis</span></span><a class="headerlink" href="#pyrauli.PauliAxis" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>A memory-efficient representation of a Pauli string axis.</p>
 <dl class="py method">
@@ -915,7 +930,7 @@ and as a simulator for running quantum circuits.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.PauliEnum">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliEnum</span></span><a class="headerlink" href="#pyrauli.PauliEnum" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliEnum</span></span><a class="headerlink" href="#pyrauli.PauliEnum" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Enumeration for single Pauli operators (I, X, Y, Z).</p>
 <p>Members:</p>
@@ -927,39 +942,39 @@ and as a simulator for running quantum circuits.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliEnum.I">
-<span class="sig-name descname"><span class="pre">I</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.I:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.PauliEnum.I" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">I</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.I:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.PauliEnum.I" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliEnum.X">
-<span class="sig-name descname"><span class="pre">X</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.X:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pyrauli.PauliEnum.X" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">X</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.X:</span> <span class="pre">1&gt;</span></span><a class="headerlink" href="#pyrauli.PauliEnum.X" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliEnum.Y">
-<span class="sig-name descname"><span class="pre">Y</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.Y:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#pyrauli.PauliEnum.Y" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Y</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.Y:</span> <span class="pre">2&gt;</span></span><a class="headerlink" href="#pyrauli.PauliEnum.Y" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliEnum.Z">
-<span class="sig-name descname"><span class="pre">Z</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.Z:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#pyrauli.PauliEnum.Z" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Z</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliEnum.Z:</span> <span class="pre">3&gt;</span></span><a class="headerlink" href="#pyrauli.PauliEnum.Z" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.PauliEnum.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.PauliEnum.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">PauliEnum.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.PauliEnum.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.PauliEnum.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.PauliEnum.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.PauliGate">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliGate</span></span><a class="headerlink" href="#pyrauli.PauliGate" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliGate</span></span><a class="headerlink" href="#pyrauli.PauliGate" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Enumeration for single-qubit Pauli gates (I, X, Y, Z).</p>
 <p>Members:</p>
@@ -971,39 +986,39 @@ and as a simulator for running quantum circuits.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliGate.I">
-<span class="sig-name descname"><span class="pre">I</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.I:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.PauliGate.I" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">I</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.I:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.PauliGate.I" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliGate.X">
-<span class="sig-name descname"><span class="pre">X</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.X:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pyrauli.PauliGate.X" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">X</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.X:</span> <span class="pre">1&gt;</span></span><a class="headerlink" href="#pyrauli.PauliGate.X" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliGate.Y">
-<span class="sig-name descname"><span class="pre">Y</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.Y:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#pyrauli.PauliGate.Y" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Y</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.Y:</span> <span class="pre">2&gt;</span></span><a class="headerlink" href="#pyrauli.PauliGate.Y" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.PauliGate.Z">
-<span class="sig-name descname"><span class="pre">Z</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.Z:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#pyrauli.PauliGate.Z" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Z</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PauliGate.Z:</span> <span class="pre">3&gt;</span></span><a class="headerlink" href="#pyrauli.PauliGate.Z" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.PauliGate.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.PauliGate.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">PauliGate.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.PauliGate.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.PauliGate.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.PauliGate.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.PauliTerm">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliTerm</span></span><a class="headerlink" href="#pyrauli.PauliTerm" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PauliTerm</span></span><a class="headerlink" href="#pyrauli.PauliTerm" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a single term in an observable, consisting of a Pauli string and a coefficient.</p>
 <dl class="py method">
@@ -1050,7 +1065,7 @@ and as a simulator for running quantum circuits.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.PauliTerm.coefficient">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coefficient</span></span><a class="headerlink" href="#pyrauli.PauliTerm.coefficient" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">coefficient</span></span><a class="headerlink" href="#pyrauli.PauliTerm.coefficient" title="Link to this definition"></a></dt>
 <dd><p>The coefficient of the term.</p>
 </dd></dl>
 
@@ -1070,7 +1085,7 @@ and as a simulator for running quantum circuits.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.PyrauliEstimator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PyrauliEstimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_model:</span> <span class="pre">~pyrauli._core.NoiseModel</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncator:</span> <span class="pre">~pyrauli._core.Truncator</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.NeverTruncator</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_policy:</span> <span class="pre">~pyrauli._core.SchedulingPolicy</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate_policy:</span> <span class="pre">~pyrauli._core.SchedulingPolicy</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">~pyrauli._core.RuntimePolicy</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.ParallelPolicy</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.PyrauliEstimator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">PyrauliEstimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.NoiseModel" title="pyrauli._core.NoiseModel"><span class="pre">NoiseModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><span class="pre">Truncator</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.NeverTruncator</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><span class="pre">SchedulingPolicy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate_policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SchedulingPolicy" title="pyrauli._core.SchedulingPolicy"><span class="pre">SchedulingPolicy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.AlwaysAfterSplittingPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.RuntimePolicy" title="pyrauli._core.RuntimePolicy"><span class="pre">RuntimePolicy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;pyrauli._core.ParallelPolicy</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.PyrauliEstimator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimatorV2</span></code></p>
 <p>A Qiskit Estimator primitive that uses the pyrauli C++ simulator.</p>
 <p>This estimator calculates the expectation values of observables for given
@@ -1112,7 +1127,7 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.QGate">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">QGate</span></span><a class="headerlink" href="#pyrauli.QGate" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">QGate</span></span><a class="headerlink" href="#pyrauli.QGate" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Enumeration for all supported quantum gates and noise channels.</p>
 <p>Members:</p>
@@ -1123,6 +1138,8 @@ engine of pyrauli.</p>
 <p>Z</p>
 <p>H</p>
 <p>Rz</p>
+<p>Rp</p>
+<p>U3</p>
 <p>Cx</p>
 <p>AmplitudeDamping</p>
 <p>Depolarizing</p>
@@ -1130,118 +1147,128 @@ engine of pyrauli.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.AmplitudeDamping">
-<span class="sig-name descname"><span class="pre">AmplitudeDamping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.AmplitudeDamping:</span> <span class="pre">8&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.AmplitudeDamping" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">AmplitudeDamping</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.AmplitudeDamping:</span> <span class="pre">9&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.AmplitudeDamping" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.Cx">
-<span class="sig-name descname"><span class="pre">Cx</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Cx:</span> <span class="pre">7&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.Cx" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Cx</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Cx:</span> <span class="pre">8&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Cx" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.Dephasing">
-<span class="sig-name descname"><span class="pre">Dephasing</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Dephasing:</span> <span class="pre">10&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.Dephasing" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Dephasing</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Dephasing:</span> <span class="pre">11&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Dephasing" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.Depolarizing">
-<span class="sig-name descname"><span class="pre">Depolarizing</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Depolarizing:</span> <span class="pre">9&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.Depolarizing" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Depolarizing</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Depolarizing:</span> <span class="pre">10&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Depolarizing" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.H">
-<span class="sig-name descname"><span class="pre">H</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.H:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.H" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">H</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.H:</span> <span class="pre">4&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.H" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.I">
-<span class="sig-name descname"><span class="pre">I</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.I:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.I" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">I</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.I:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.I" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrauli.QGate.Rp">
+<span class="sig-name descname"><span class="pre">Rp</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Rp:</span> <span class="pre">6&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Rp" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.Rz">
-<span class="sig-name descname"><span class="pre">Rz</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Rz:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.Rz" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Rz</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Rz:</span> <span class="pre">5&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Rz" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrauli.QGate.U3">
+<span class="sig-name descname"><span class="pre">U3</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.U3:</span> <span class="pre">7&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.U3" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.X">
-<span class="sig-name descname"><span class="pre">X</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.X:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.X" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">X</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.X:</span> <span class="pre">1&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.X" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.Y">
-<span class="sig-name descname"><span class="pre">Y</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Y:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.Y" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Y</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Y:</span> <span class="pre">2&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Y" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.QGate.Z">
-<span class="sig-name descname"><span class="pre">Z</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Z:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#pyrauli.QGate.Z" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Z</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QGate.Z:</span> <span class="pre">3&gt;</span></span><a class="headerlink" href="#pyrauli.QGate.Z" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.QGate.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.QGate.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">QGate.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.QGate.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.QGate.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.QGate.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.RuntimePolicy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">RuntimePolicy</span></span><a class="headerlink" href="#pyrauli.RuntimePolicy" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">RuntimePolicy</span></span><a class="headerlink" href="#pyrauli.RuntimePolicy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Runtime execution policy.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SchedulingPolicy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SchedulingPolicy</span></span><a class="headerlink" href="#pyrauli.SchedulingPolicy" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SchedulingPolicy</span></span><a class="headerlink" href="#pyrauli.SchedulingPolicy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Abstract base class for defining scheduling policies.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SimulationState">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SimulationState</span></span><a class="headerlink" href="#pyrauli.SimulationState" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SimulationState</span></span><a class="headerlink" href="#pyrauli.SimulationState" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Holds the state of the simulation at a given point in time.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SimulationState.merge_history">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge_history</span></span><a class="headerlink" href="#pyrauli.SimulationState.merge_history" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">merge_history</span></span><a class="headerlink" href="#pyrauli.SimulationState.merge_history" title="Link to this definition"></a></dt>
 <dd><p>History of merge operations.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SimulationState.nb_gates_applied">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nb_gates_applied</span></span><a class="headerlink" href="#pyrauli.SimulationState.nb_gates_applied" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nb_gates_applied</span></span><a class="headerlink" href="#pyrauli.SimulationState.nb_gates_applied" title="Link to this definition"></a></dt>
 <dd><p>Total number of gates applied so far.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SimulationState.nb_splitting_gates_applied">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nb_splitting_gates_applied</span></span><a class="headerlink" href="#pyrauli.SimulationState.nb_splitting_gates_applied" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nb_splitting_gates_applied</span></span><a class="headerlink" href="#pyrauli.SimulationState.nb_splitting_gates_applied" title="Link to this definition"></a></dt>
 <dd><p>Number of splitting gates applied so far.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SimulationState.nb_splitting_gates_left">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nb_splitting_gates_left</span></span><a class="headerlink" href="#pyrauli.SimulationState.nb_splitting_gates_left" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nb_splitting_gates_left</span></span><a class="headerlink" href="#pyrauli.SimulationState.nb_splitting_gates_left" title="Link to this definition"></a></dt>
 <dd><p>Number of splitting gates remaining in the circuit.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SimulationState.terms_history">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">terms_history</span></span><a class="headerlink" href="#pyrauli.SimulationState.terms_history" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">terms_history</span></span><a class="headerlink" href="#pyrauli.SimulationState.terms_history" title="Link to this definition"></a></dt>
 <dd><p>History of observable sizes after each operation.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SimulationState.truncate_history">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">truncate_history</span></span><a class="headerlink" href="#pyrauli.SimulationState.truncate_history" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">truncate_history</span></span><a class="headerlink" href="#pyrauli.SimulationState.truncate_history" title="Link to this definition"></a></dt>
 <dd><p>History of truncate operations.</p>
 </dd></dl>
 
@@ -1249,7 +1276,7 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicCircuit">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicCircuit</span></span><a class="headerlink" href="#pyrauli.SymbolicCircuit" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicCircuit</span></span><a class="headerlink" href="#pyrauli.SymbolicCircuit" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a quantum circuit and provides a high-level simulation interface.</p>
 <dl class="py method">
@@ -1265,10 +1292,14 @@ engine of pyrauli.</p>
 </ol>
 <p>Adds a single-qubit gate with a parameter.</p>
 <ol class="arabic simple" start="3">
-<li><p>add_operation(self: pyrauli._core.SymbolicCircuit, op: str, qubit: int, param: str) -&gt; None</p></li>
+<li><p>add_operation(self: pyrauli._core.SymbolicCircuit, op: str, qubit: int, theta: pyrauli._core.SymbolicCoefficient, phi: pyrauli._core.SymbolicCoefficient, lambda: pyrauli._core.SymbolicCoefficient) -&gt; None</p></li>
 </ol>
 <p>Adds a single-qubit gate with a parameter.</p>
 <ol class="arabic simple" start="4">
+<li><p>add_operation(self: pyrauli._core.SymbolicCircuit, op: str, qubit: int, param: str) -&gt; None</p></li>
+</ol>
+<p>Adds a single-qubit gate with a parameter.</p>
+<ol class="arabic simple" start="5">
 <li><p>add_operation(self: pyrauli._core.SymbolicCircuit, op: str, control: int, target: int) -&gt; None</p></li>
 </ol>
 <p>Adds a two-qubit gate.</p>
@@ -1299,11 +1330,11 @@ engine of pyrauli.</p>
 <span class="sig-name descname"><span class="pre">expectation_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.SymbolicCircuit.expectation_value" title="Link to this definition"></a></dt>
 <dd><p>Overloaded function.</p>
 <ol class="arabic simple">
-<li><p>expectation_value(self: pyrauli._core.SymbolicCircuit, target_observable: pyrauli._core.SymbolicObservable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca1661f0&gt;) -&gt; tuple[pyrauli._core.SymbolicCoefficient, pyrauli._core.SymbolicCoefficient]</p></li>
+<li><p>expectation_value(self: pyrauli._core.SymbolicCircuit, target_observable: pyrauli._core.SymbolicObservable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2989f0&gt;) -&gt; tuple[pyrauli._core.SymbolicCoefficient, pyrauli._core.SymbolicCoefficient]</p></li>
 </ol>
 <p>Simulate one observable on the circuit and return only its expectation value.</p>
 <ol class="arabic simple" start="2">
-<li><p>expectation_value(self: pyrauli._core.SymbolicCircuit, target_observables: list[pyrauli._core.SymbolicObservable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca12e2b0&gt;) -&gt; list[tuple[pyrauli._core.SymbolicCoefficient, pyrauli._core.SymbolicCoefficient]]</p></li>
+<li><p>expectation_value(self: pyrauli._core.SymbolicCircuit, target_observables: list[pyrauli._core.SymbolicObservable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2a0130&gt;) -&gt; list[tuple[pyrauli._core.SymbolicCoefficient, pyrauli._core.SymbolicCoefficient]]</p></li>
 </ol>
 <p>Simulate a batch of observable and returns each of their expectation values.</p>
 </dd></dl>
@@ -1351,11 +1382,11 @@ engine of pyrauli.</p>
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyrauli.SymbolicCircuit.run" title="Link to this definition"></a></dt>
 <dd><p>Overloaded function.</p>
 <ol class="arabic simple">
-<li><p>run(self: pyrauli._core.SymbolicCircuit, target_observable: pyrauli._core.SymbolicObservable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca162030&gt;) -&gt; pyrauli._core.SymbolicObservable</p></li>
+<li><p>run(self: pyrauli._core.SymbolicCircuit, target_observable: pyrauli._core.SymbolicObservable, runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae2ae2f0&gt;) -&gt; pyrauli._core.SymbolicObservable</p></li>
 </ol>
 <p>Simulate one observable on the circuit and return its evolved self.</p>
 <ol class="arabic simple" start="2">
-<li><p>run(self: pyrauli._core.SymbolicCircuit, target_observables: list[pyrauli._core.SymbolicObservable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7efeca15b670&gt;) -&gt; list[pyrauli._core.SymbolicObservable]</p></li>
+<li><p>run(self: pyrauli._core.SymbolicCircuit, target_observables: list[pyrauli._core.SymbolicObservable], runtime: Union[pyrauli._core.SequentialPolicy, pyrauli._core.ParallelPolicy] = &lt;pyrauli._core.SequentialPolicy object at 0x7fa7ae299730&gt;) -&gt; list[pyrauli._core.SymbolicObservable]</p></li>
 </ol>
 <p>Simulate a batch of observable and returns each of them.</p>
 </dd></dl>
@@ -1385,6 +1416,12 @@ engine of pyrauli.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrauli.SymbolicCircuit.u3">
+<span class="sig-name descname"><span class="pre">u3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCircuit" title="pyrauli._core.SymbolicCircuit"><span class="pre">pyrauli._core.SymbolicCircuit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicCircuit.u3" title="Link to this definition"></a></dt>
+<dd><p>Adds an U3 gate.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicCircuit.x">
 <span class="sig-name descname"><span class="pre">x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCircuit" title="pyrauli._core.SymbolicCircuit"><span class="pre">pyrauli._core.SymbolicCircuit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicCircuit.x" title="Link to this definition"></a></dt>
 <dd><p>Adds a Pauli-X gate.</p>
@@ -1406,7 +1443,7 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicCoefficient">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicCoefficient</span></span><a class="headerlink" href="#pyrauli.SymbolicCoefficient" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicCoefficient</span></span><a class="headerlink" href="#pyrauli.SymbolicCoefficient" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>An easy to use symbolic coefficient.</p>
 <dl class="py method">
@@ -1467,43 +1504,43 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicMultiTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicMultiTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicMultiTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicMultiTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicMultiTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SymbolicTruncator" title="pyrauli._core.SymbolicTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicTruncator</span></code></a></p>
 <p>A truncator that combines multiple truncators at runtime.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicNeverTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicNeverTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicNeverTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicNeverTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicNeverTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SymbolicTruncator" title="pyrauli._core.SymbolicTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicTruncator</span></code></a></p>
 <p>A truncator that never removes any terms.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicNoise">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicNoise</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicNoise</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Defines the strengths of different noise channels.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SymbolicNoise.amplitude_damping_strength">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude_damping_strength</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise.amplitude_damping_strength" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">amplitude_damping_strength</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise.amplitude_damping_strength" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SymbolicNoise.dephasing_strength">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dephasing_strength</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise.dephasing_strength" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">dephasing_strength</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise.dephasing_strength" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SymbolicNoise.depolarizing_strength">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depolarizing_strength</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise.depolarizing_strength" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">depolarizing_strength</span></span><a class="headerlink" href="#pyrauli.SymbolicNoise.depolarizing_strength" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicNoiseModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicNoiseModel</span></span><a class="headerlink" href="#pyrauli.SymbolicNoiseModel" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicNoiseModel</span></span><a class="headerlink" href="#pyrauli.SymbolicNoiseModel" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>A model for applying noise to quantum gates.</p>
 <dl class="py method">
@@ -1538,60 +1575,66 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicObservable</span></span><a class="headerlink" href="#pyrauli.SymbolicObservable" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicObservable</span></span><a class="headerlink" href="#pyrauli.SymbolicObservable" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a quantum observable symbolically, as a linear combination of Pauli strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_amplitude_damping">
-<span class="sig-name descname"><span class="pre">apply_amplitude_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength:</span> <span class="pre">pyrauli._core.SymbolicCoefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca1638b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_amplitude_damping" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_amplitude_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2a9930&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_amplitude_damping" title="Link to this definition"></a></dt>
 <dd><p>Applies an amplitude damping noise channel.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_clifford">
-<span class="sig-name descname"><span class="pre">apply_clifford</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clifford_gate:</span> <span class="pre">pyrauli._core.CliffordGate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca14b170&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_clifford" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_clifford</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">clifford_gate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.CliffordGate" title="pyrauli._core.CliffordGate"><span class="pre">pyrauli._core.CliffordGate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2a0970&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_clifford" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit Clifford gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_cx">
-<span class="sig-name descname"><span class="pre">apply_cx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_control:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_target:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca0a35b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_cx" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_cx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_control</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae50c0b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_cx" title="Link to this definition"></a></dt>
 <dd><p>Applies a CNOT (CX) gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_pauli">
-<span class="sig-name descname"><span class="pre">apply_pauli</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_gate:</span> <span class="pre">pyrauli._core.PauliGate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca0a2fb0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_pauli" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_pauli</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_gate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.PauliGate" title="pyrauli._core.PauliGate"><span class="pre">pyrauli._core.PauliGate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2c0f70&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_pauli" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit Pauli gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_rp">
-<span class="sig-name descname"><span class="pre">apply_rp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis:</span> <span class="pre">pyrauli._core.PauliAxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta:</span> <span class="pre">pyrauli._core.SymbolicCoefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca23e270&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_rp" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_rp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.PauliAxis" title="pyrauli._core.PauliAxis"><span class="pre">pyrauli._core.PauliAxis</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2ad930&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_rp" title="Link to this definition"></a></dt>
 <dd><p>Applies a global rotation around a Pauli axis (e^i*theta*P).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_rz">
-<span class="sig-name descname"><span class="pre">apply_rz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength:</span> <span class="pre">pyrauli._core.SymbolicCoefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca12f2f0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_rz" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_rz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7aebeaf70&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_rz" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit Rz rotation gate to the observable.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_u3">
+<span class="sig-name descname"><span class="pre">apply_u3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2d5070&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_u3" title="Link to this definition"></a></dt>
+<dd><p>Applies an U3 gate.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.apply_unital_noise">
-<span class="sig-name descname"><span class="pre">apply_unital_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unital_noise_type:</span> <span class="pre">pyrauli._core.UnitalNoise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength:</span> <span class="pre">pyrauli._core.SymbolicCoefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca14bf70&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_unital_noise" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_unital_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">unital_noise_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.UnitalNoise" title="pyrauli._core.UnitalNoise"><span class="pre">pyrauli._core.UnitalNoise</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2c8630&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.apply_unital_noise" title="Link to this definition"></a></dt>
 <dd><p>Applies a single-qubit unital noise channel.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.expectation_value">
-<span class="sig-name descname"><span class="pre">expectation_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca15a470&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.expectation_value" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">expectation_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae4fe270&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyrauli.SymbolicCoefficient" title="pyrauli._core.SymbolicCoefficient"><span class="pre">pyrauli._core.SymbolicCoefficient</span></a></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.expectation_value" title="Link to this definition"></a></dt>
 <dd><p>Calculates the expectation value of the observable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.merge">
-<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime:</span> <span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span> <span class="pre">=</span> <span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7efeca323370&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.merge" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union[pyrauli._core.SequentialPolicy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pyrauli._core.ParallelPolicy]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;pyrauli._core.SequentialPolicy</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fa7ae2965b0&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.merge" title="Link to this definition"></a></dt>
 <dd><p>Merges Pauli terms with identical Pauli strings.</p>
 </dd></dl>
 
@@ -1609,7 +1652,7 @@ engine of pyrauli.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyrauli.SymbolicObservable.truncate">
-<span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">pyrauli._core.SymbolicObservable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0:</span> <span class="pre">Truncator&lt;SymbolicCoefficient&lt;float&gt;</span> <span class="pre">&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.truncate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrauli.SymbolicObservable" title="pyrauli._core.SymbolicObservable"><span class="pre">pyrauli._core.SymbolicObservable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Truncator&lt;SymbolicCoefficient&lt;float&gt;</span> <span class="pre">&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyrauli.SymbolicObservable.truncate" title="Link to this definition"></a></dt>
 <dd><p>Truncates the observable based on a given truncation strategy.</p>
 </dd></dl>
 
@@ -1623,7 +1666,7 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicPauliTerm">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicPauliTerm</span></span><a class="headerlink" href="#pyrauli.SymbolicPauliTerm" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicPauliTerm</span></span><a class="headerlink" href="#pyrauli.SymbolicPauliTerm" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Represents a single term in an observable, consisting of a Pauli string and a coefficient.</p>
 <dl class="py method">
@@ -1670,7 +1713,7 @@ engine of pyrauli.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.SymbolicPauliTerm.coefficient">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coefficient</span></span><a class="headerlink" href="#pyrauli.SymbolicPauliTerm.coefficient" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">coefficient</span></span><a class="headerlink" href="#pyrauli.SymbolicPauliTerm.coefficient" title="Link to this definition"></a></dt>
 <dd><p>The coefficient of the term.</p>
 </dd></dl>
 
@@ -1690,21 +1733,21 @@ engine of pyrauli.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Abstract base class for defining truncation strategies.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.SymbolicWeightTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicWeightTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicWeightTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">SymbolicWeightTruncator</span></span><a class="headerlink" href="#pyrauli.SymbolicWeightTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.SymbolicTruncator" title="pyrauli._core.SymbolicTruncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicTruncator</span></code></a></p>
 <p>Truncator that removes Pauli terms with high Pauli weight.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.Timing">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Timing</span></span><a class="headerlink" href="#pyrauli.Timing" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Timing</span></span><a class="headerlink" href="#pyrauli.Timing" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Timing of a policy application relative to an operation.</p>
 <p>Members:</p>
@@ -1714,36 +1757,36 @@ engine of pyrauli.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.Timing.After">
-<span class="sig-name descname"><span class="pre">After</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Timing.After:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pyrauli.Timing.After" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">After</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Timing.After:</span> <span class="pre">1&gt;</span></span><a class="headerlink" href="#pyrauli.Timing.After" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.Timing.Before">
-<span class="sig-name descname"><span class="pre">Before</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Timing.Before:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.Timing.Before" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Before</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Timing.Before:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.Timing.Before" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.Timing.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.Timing.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Timing.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.Timing.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.Timing.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.Timing.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.Truncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Truncator</span></span><a class="headerlink" href="#pyrauli.Truncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">Truncator</span></span><a class="headerlink" href="#pyrauli.Truncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Abstract base class for defining truncation strategies.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.UnitalNoise">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">UnitalNoise</span></span><a class="headerlink" href="#pyrauli.UnitalNoise" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">UnitalNoise</span></span><a class="headerlink" href="#pyrauli.UnitalNoise" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Enumeration for unital noise channels.</p>
 <p>Members:</p>
@@ -1753,29 +1796,29 @@ engine of pyrauli.</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.UnitalNoise.Dephasing">
-<span class="sig-name descname"><span class="pre">Dephasing</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnitalNoise.Dephasing:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pyrauli.UnitalNoise.Dephasing" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Dephasing</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnitalNoise.Dephasing:</span> <span class="pre">1&gt;</span></span><a class="headerlink" href="#pyrauli.UnitalNoise.Dephasing" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyrauli.UnitalNoise.Depolarizing">
-<span class="sig-name descname"><span class="pre">Depolarizing</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnitalNoise.Depolarizing:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pyrauli.UnitalNoise.Depolarizing" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Depolarizing</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;UnitalNoise.Depolarizing:</span> <span class="pre">0&gt;</span></span><a class="headerlink" href="#pyrauli.UnitalNoise.Depolarizing" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pyrauli.UnitalNoise.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrauli.UnitalNoise.name" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">UnitalNoise.name</span> <span class="pre">-&gt;</span> <span class="pre">str</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyrauli.UnitalNoise.value">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.UnitalNoise.value" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pyrauli.UnitalNoise.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyrauli.WeightTruncator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">WeightTruncator</span></span><a class="headerlink" href="#pyrauli.WeightTruncator" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrauli.</span></span><span class="sig-name descname"><span class="pre">WeightTruncator</span></span><a class="headerlink" href="#pyrauli.WeightTruncator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyrauli.Truncator" title="pyrauli._core.Truncator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Truncator</span></code></a></p>
 <p>Truncator that removes Pauli terms with high Pauli weight.</p>
 </dd></dl>
