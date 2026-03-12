@@ -367,6 +367,12 @@ PYBIND11_MODULE(_core, m) {
 			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
 		.def(
 			"add_operation",
+			[](Circuit<coeff_t>& self, std::string op, unsigned q1, coeff_t theta, coeff_t phi, coeff_t lambda) {
+				self.add_operation(op, q1, theta, phi, lambda);
+			},
+			"Adds a single-qubit gate with three parameters (U3).", py::arg("op"), py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"))
+		.def(
+			"add_operation",
 			[](Circuit<coeff_t>& self, std::string op, unsigned q1, unsigned q2) {
 				self.add_operation(op, q1, q2);
 			},
@@ -677,6 +683,12 @@ PYBIND11_MODULE(_core, m) {
 				self.add_operation(op, q1, p);
 			},
 			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("param"))
+		.def(
+			"add_operation",
+			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, SymbolicCoeff_t theta, SymbolicCoeff_t phi, SymbolicCoeff_t lambda) {
+				self.add_operation(op, q1, theta, phi, lambda);
+			},
+			"Adds a single-qubit gate with a parameter.", py::arg("op"), py::arg("qubit"), py::arg("theta"), py::arg("phi"), py::arg("lambda"))
 		.def(
 			"add_operation",
 			[](Circuit<SymbolicCoeff_t>& self, std::string op, unsigned q1, std::string const& p) {

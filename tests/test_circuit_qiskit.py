@@ -92,3 +92,47 @@ def test_from_qiskit_parameterized_circuit():
     assert result_manual.expectation_value() == pytest.approx(expected_ev)
     assert result_converted.expectation_value() == pytest.approx(expected_ev)
     assert result_converted == result_manual
+
+def test_from_qiskit_u3_circuit():
+    """
+    Tests the converter with a parameterized Qiskit circuit containing a U gate.
+    """
+    theta = Parameter("θ")
+    phi = Parameter("φ")
+    lam = Parameter("λ")
+
+    # 1. Create parameterized Qiskit circuit
+    qc_qiskit = QuantumCircuit(1)
+    # Note: In Qiskit, the general single-qubit gate is applied using .u()
+    qc_qiskit.u(theta, phi, lam, 0)
+
+    # Bind the parameters to specific values
+    t_val = math.pi / 3  # cos(pi/3) = 0.5
+    p_val = math.pi / 4
+    l_val = math.pi / 8
+    
+    bound_qc = qc_qiskit.assign_parameters({
+        theta: t_val, 
+        phi: p_val, 
+        lam: l_val
+    })
+
+    # 2. Manually create the equivalent pyrauli circuit
+    qc_manual = Circuit(1)
+    qc_manual.add_operation("u3", 0, t_val, p_val, l_val)
+
+    # 3. Convert the bound Qiskit circuit
+    qc_converted = from_qiskit(bound_qc)
+
+    # 4. Run with an observable and assert equality
+    observable = Observable("Z")
+    result_manual = qc_manual.run(observable)
+    result_converted = qc_converted.run(observable)
+
+    # For a U3 gate applied to |0>, the Z expectation value is exactly cos(theta)
+    expected_ev = math.cos(t_val) 
+
+    assert result_manual.expectation_value() == pytest.approx(expected_ev)
+    assert result_converted.expectation_value() == pytest.approx(expected_ev)
+    # Verify the generated state/observables are structurally identical
+    assert result_converted == result_manual

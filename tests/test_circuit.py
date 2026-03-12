@@ -241,3 +241,58 @@ def test_exp_iXXXXt_evolution():
     # Check the results against the known ground truth values
     for ev in evs_rp:
         assert ev == pytest.approx(expected_ev, abs=1e-4)
+
+def test_u3_evolution():
+    """
+    Tests the equivalence of the native U3 gate with its transpiled gate decomposition.
+    
+    This verifies that applying a U3(1.0, 2.0, 3.0) yields the exact same expectation
+    values across all Pauli bases as the equivalent sequence of Rz and H gates.
+    """
+    n_qubits = 1
+    theta = 1.0
+    phi = 2.0
+    lam = 3.0
+
+    # 1. Define the equivalent circuits
+    qc_u3 = Circuit(n_qubits)
+    qc_transpiled = Circuit(n_qubits)
+
+    # Circuit 1: Native U3
+    qc_u3.add_operation("u3", 0, theta, phi, lam)
+
+    # Circuit 2: Transpiled equivalent (Forward execution: Rz(lam) -> Ry(theta) -> Rz(phi))
+    qc_transpiled.add_operation("rz", 0, lam - math.pi / 2.0)
+    qc_transpiled.add_operation("h", 0)
+    qc_transpiled.add_operation("rz", 0, theta)
+    qc_transpiled.add_operation("h", 0)
+    qc_transpiled.add_operation("rz", 0, phi + math.pi / 2.0)
+
+    # 3. Define observables and their expected analytical values for U3(1.0, 2.0, 3.0)
+    # <X> = sin(theta) * cos(phi)
+    # <Y> = sin(theta) * sin(phi)
+    # <Z> = cos(theta)
+    observables = [
+        Observable("X"),
+        Observable("Y"),
+        Observable("Z"),
+    ]
+    expected_evs = [
+        -0.350175488, # X
+        0.765147401,  # Y
+        0.540302305,  # Z
+    ]
+
+    # 4. Run simulations
+    res_u3 = qc_u3.expectation_value(observables)
+    res_transpiled = qc_transpiled.expectation_value(observables)
+
+    # 5. Extract expectation values
+    evs_u3 = [ev for ev, err in res_u3]
+    evs_transpiled = [ev for ev, err in res_transpiled]
+
+    # 6. Assert equivalence and correctness
+    assert evs_u3 == pytest.approx(evs_transpiled, abs=1e-5)
+
+    for ev_u3, exp_ev in zip(evs_u3, expected_evs):
+        assert ev_u3 == pytest.approx(exp_ev, abs=1e-4)
