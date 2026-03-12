@@ -94,17 +94,13 @@ def from_qiskit_qc(qiskit_circuit: QuantumCircuit, noise_model: pyrauli.NoiseMod
         elif op_name == "iswap":
             q0, q1 = qubits[0], qubits[1]
             
-            # 1. Apply SWAP (Standard 3-CNOT decomposition)
+            # 1. Optimized SWAP * CZ sequence (Reduces 4 CNOTs down to 2)
+            pyrauli_circuit.h(q0)
             pyrauli_circuit.cx(q0, q1)
             pyrauli_circuit.cx(q1, q0)
-            pyrauli_circuit.cx(q0, q1)
-            
-            # 2. Apply CZ -> H(1) CX(0,1) H(1)
-            pyrauli_circuit.h(q1)
-            pyrauli_circuit.cx(q0, q1)
             pyrauli_circuit.h(q1)
             
-            # 3. Apply S gates (S = Rz(pi/2))
+            # 2. Apply S gates (S = Rz(pi/2)) to complete the iSWAP phase
             pyrauli_circuit.rz(q0, math.pi / 2)
             pyrauli_circuit.rz(q1, math.pi / 2)
         elif op_name == "rzz":
